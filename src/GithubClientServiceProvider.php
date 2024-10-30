@@ -2,9 +2,9 @@
 
 namespace JordanPartridge\GithubClient;
 
+use JordanPartridge\GithubClient\Commands\GithubClientCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use JordanPartridge\GithubClient\Commands\GithubClientCommand;
 
 class GithubClientServiceProvider extends PackageServiceProvider
 {
