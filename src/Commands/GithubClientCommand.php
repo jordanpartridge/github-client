@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace JordanPartridge\GithubClient\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class GithubClientCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'github-client';
 
     public $description = 'My command';
 

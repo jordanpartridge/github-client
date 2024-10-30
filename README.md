@@ -1,93 +1,93 @@
-# :package_description
+# github-client 🚀
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/:vendor_slug/:package_slug.svg?style=flat-square)](https://packagist.org/packages/:vendor_slug/:package_slug)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/:vendor_slug/:package_slug/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/:vendor_slug/:package_slug/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/:vendor_slug/:package_slug/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/:vendor_slug/:package_slug/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/:vendor_slug/:package_slug.svg?style=flat-square)](https://packagist.org/packages/:vendor_slug/:package_slug)
-<!--delete-->
----
-This repo can be used to scaffold a Laravel package. Follow these steps to get started:
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/jordanpartridge/github-client.svg?style=flat-square)](https://packagist.org/packages/jordanpartridge/github-client)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/jordanpartridge/github-client/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/jordanpartridge/github-client/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/jordanpartridge/github-client/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/jordanpartridge/github-client/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
+[![Total Downloads](https://img.shields.io/packagist/dt/jordanpartridge/github-client.svg?style=flat-square)](https://packagist.org/packages/jordanpartridge/github-client)
 
-1. Press the "Use this template" button at the top of this repo to create a new repo with the contents of this skeleton.
-2. Run "php ./configure.php" to run a script that will replace all placeholders throughout all the files.
-3. Have fun creating your package.
-4. If you need help creating a package, consider picking up our <a href="https://laravelpackage.training">Laravel Package Training</a> video course.
----
-<!--/delete-->
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+Time to `git push` your GitHub API game to the next level! A Laravel-first GitHub client built on Saloon that makes working with GitHub's API a breeze. Let's `git 'er done`!
 
-## Support us
+## 🔥 Features
 
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/:package_name.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/:package_name)
+- Built on Saloon - the coolest way to handle APIs in Laravel
+- Fully typed responses - no more guessing what you'll `git` back
+- Ready to roll with Laravel's config & auth systems
+- Test coverage that would make your CI/CD pipeline jealous
+- Facades, dependency injection, or however you roll
+- Modern PHP 8.1+ (because we're not living in the `dark ages` branch)
 
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
-
-## Installation
-
-You can install the package via composer:
+## 🚀 Quick Start
 
 ```bash
-composer require :vendor_slug/:package_slug
+composer require jordanpartridge/github-client
 ```
 
-You can publish and run the migrations with:
-
-```bash
-php artisan vendor:publish --tag=":package_slug-migrations"
-php artisan migrate
+First grab your GitHub token from [GitHub Settings](https://github.com/settings/tokens), then drop it in your `.env`:
+```
+GITHUB_TOKEN=your-token-here
 ```
 
-You can publish the config file with:
-
-```bash
-php artisan vendor:publish --tag=":package_slug-config"
-```
-
-This is the contents of the published config file:
-
+Now you're ready to rock:
 ```php
-return [
-];
+use JordanPartridge\GithubClient\Facades\GitHub;
+
+// Fetch repos faster than you can say "git clone"
+$repo = GitHub::repository('jordanpartridge/github-client');
+echo $repo->name; // 'github-client'
+
+// Create issues without the issues
+$issue = GitHub::issues()->create('jordanpartridge/github-client', [
+    'title' => 'This is awesome',
+    'body'  => 'But could be more awesome 🚀'
+]);
 ```
 
-Optionally, you can publish the views using
-
-```bash
-php artisan vendor:publish --tag=":package_slug-views"
-```
-
-## Usage
-
+Want dependency injection? We've got you:
 ```php
-$variable = new VendorName\Skeleton();
-echo $variable->echoPhrase('Hello, VendorName!');
+use JordanPartridge\GithubClient\Contracts\GitHub;
+
+public function __construct(
+    private readonly GitHub $github
+) {}
 ```
 
-## Testing
+## ⚙️ Configuration
+
+Need to tweak something? Publish the config:
+```bash
+php artisan vendor:publish --tag="github-client-config"
+```
+
+## 📖 Documentation
+
+Head over to [the docs](https://github.com/jordanpartridge/github-client#documentation) - they don't byte!
+
+## 🧪 Testing
 
 ```bash
 composer test
 ```
 
-## Changelog
+Because untested code is like an empty commit message - nobody wants that.
 
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
+## 🤝 Contributing
 
-## Contributing
+Found a bug? `git commit` to fixing it with a PR!
+Want a feature? `git checkout` our issues page!
 
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
+Just remember to:
+1. Add tests (we're not animals)
+2. Follow PSR-12 (keep it clean)
+3. Be awesome (you already are)
 
-## Security Vulnerabilities
+## 📝 License
 
-Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
+MIT. `git checkout` whatever you need!
 
-## Credits
+## 💖 Credits
 
-- [:author_name](https://github.com/:author_username)
+`git blame` these awesome folks:
+- [Jordan Partridge](https://github.com/jordanpartridge)
 - [All Contributors](../../contributors)
 
-## License
-
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+Built with Saloon, Laravel love, and probably too much coffee ☕️
