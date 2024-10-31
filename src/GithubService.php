@@ -2,4 +2,7 @@
 
 namespace JordanPartridge\GithubClient;
 
-class GithubClient {}
+class GithubService
+{
+
+}

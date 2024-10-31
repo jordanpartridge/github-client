@@ -21,5 +21,9 @@ class GithubClientServiceProvider extends PackageServiceProvider
             ->hasViews()
             ->hasMigration('create_github_client_table')
             ->hasCommand(GithubClientCommand::class);
+
+        $this->app->bind(GithubConnector::class, function () {
+            return new GithubConnector(config('github-client.token'));
+        });
     }
 }

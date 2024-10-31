@@ -1,6 +1,5 @@
 <?php
 
-// config for JordanPartridge/GithubClient
 return [
-
+    'token' => env('GITHUB_TOKEN'),
 ];
