@@ -14,10 +14,10 @@ beforeEach(function () {
     $mockClient = new MockClient([
         '*' => MockResponse::make([
             [
-                'id' => 1,
-                'name' => 'test-repo',
+                'id'        => 1,
+                'name'      => 'test-repo',
                 'full_name' => 'test/test-repo',
-                'private' => false,
+                'visibility'   => Visibility::PUBLIC,
             ],
         ], 200),
     ]);
@@ -26,7 +26,7 @@ beforeEach(function () {
 });
 
 it('throws type error when passing string instead of Visibility enum', function () {
-    expect(fn () => Github::repos()->all(
+    expect(fn() => Github::repos()->all(
         per_page: 30,
         page: 2,
         visibility: 'public' // Should be Visibility::PUBLIC
@@ -40,12 +40,16 @@ it('accepts Visibility enum', function () {
         visibility: Visibility::PUBLIC
     );
 
-    expect($response->json())->toBeArray()
-        ->and($response->json())->toHaveKey('0.full_name');
+    $repos = $response->json();
+    expect($repos)
+        ->toBeArray()
+        ->and($repos[0])
+        ->toHaveKeys(['id', 'name', 'full_name',  'visibility'])
+        ->and($repos[0]['visibility'])->toBe('public');
 });
 
 it('throws validation errors for invalid sort', function () {
-    expect(fn () => Github::repos()->all(
+    expect(fn() => Github::repos()->all(
         per_page: 30,
         page: 2,
         visibility: Visibility::PUBLIC,
@@ -65,7 +69,7 @@ it('accepts valid Sort enum', function () {
 });
 
 it('throws type error when passing invalid direction', function () {
-    expect(fn () => Github::repos()->all(
+    expect(fn() => Github::repos()->all(
         per_page: 30,
         page: 2,
         visibility: Visibility::PUBLIC,
@@ -87,7 +91,7 @@ it('accepts valid Direction enum', function () {
 });
 
 it('throws validation error for invalid per page', function () {
-    expect(fn () => Github::repos()->all(
+    expect(fn() => Github::repos()->all(
         per_page: 101,
         page: 2,
         visibility: Visibility::PUBLIC,
