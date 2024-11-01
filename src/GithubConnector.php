@@ -2,6 +2,7 @@
 
 namespace JordanPartridge\GithubClient;
 
+use InvalidArgumentException;
 use Saloon\Helpers\OAuth2\OAuthConfig;
 use Saloon\Http\Auth\TokenAuthenticator;
 use Saloon\Http\Connector;
@@ -13,8 +14,15 @@ class GithubConnector extends Connector
     use AcceptsJson;
     use AuthorizationCodeGrant;
 
+    /**
+     * Token can be passed in the constructor, this can be generated from the Github Developer Settings.
+     *
+     * @see https://github.com/settings/tokens
+     * @param string $token
+     */
     public function __construct(string $token)
     {
+        $this->validateToken($token);
         $this->authenticate(new TokenAuthenticator($token));
     }
 
@@ -24,6 +32,13 @@ class GithubConnector extends Connector
     public function resolveBaseUrl(): string
     {
         return 'https://api.github.com';
+    }
+
+    private function validateToken(string $token): void
+    {
+        if (empty($token)) {
+            throw new InvalidArgumentException('Token is required');
+        }
     }
 
     /**
