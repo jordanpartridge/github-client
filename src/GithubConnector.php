@@ -4,6 +4,7 @@ namespace JordanPartridge\GithubClient;
 
 use InvalidArgumentException;
 use JordanPartridge\GithubClient\Contracts\GithubConnectorInterface;
+use JordanPartridge\GithubClient\Resources\RepoResource;
 use Saloon\Http\Auth\TokenAuthenticator;
 use Saloon\Http\Connector;
 use Saloon\Traits\OAuth2\AuthorizationCodeGrant;
@@ -38,6 +39,11 @@ class GithubConnector extends Connector implements GithubConnectorInterface
         if (empty(trim($token))) {
             throw new InvalidArgumentException('Token is required');
         }
+    }
+
+    public function repos(): RepoResource
+    {
+        return new RepoResource($this);
     }
 
     /**

@@ -13,6 +13,6 @@ class Github
 
     public function repos(): RepoResource
     {
-        return new RepoResource($this->connector);
+        return $this->connector->repos();
     }
 }
