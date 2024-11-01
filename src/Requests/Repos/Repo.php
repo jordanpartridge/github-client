@@ -7,7 +7,6 @@ use Saloon\Http\Request;
 
 class Repo extends Request
 {
-
     protected Method $method = Method::GET;
 
     public function __construct(
@@ -16,6 +15,6 @@ class Repo extends Request
 
     public function resolveEndpoint(): string
     {
-        return '/repos/' . $this->repo_name;
+        return '/repos/'.$this->repo_name;
     }
 }

@@ -12,15 +12,11 @@ class Github
 {
     public function __construct(
         protected GithubConnectorInterface $connector,
-    )
-    {
-    }
+    ) {}
 
     /**
-     * @param ...$args
      * @throws FatalRequestException
      * @throws RequestException
-     * @return Response
      */
     public function repos(...$args): Response
     {

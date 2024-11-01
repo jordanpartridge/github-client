@@ -16,7 +16,7 @@ class RepoResource extends BaseResource
      */
     public function all(): \Saloon\Http\Response
     {
-       return $this->connector->send(new Repos());
+        return $this->connector->send(new Repos);
     }
 
     /**
@@ -28,5 +28,4 @@ class RepoResource extends BaseResource
         return $this->connector->send(new Repo($repo_name));
 
     }
-
 }

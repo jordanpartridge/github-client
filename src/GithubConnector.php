@@ -19,7 +19,6 @@ class GithubConnector extends Connector implements GithubConnectorInterface
      * Token can be passed in the constructor, this can be generated from the Github Developer Settings.
      *
      * @see https://github.com/settings/tokens
-     * @param string $token
      */
     public function __construct(string $token)
     {
@@ -45,7 +44,7 @@ class GithubConnector extends Connector implements GithubConnectorInterface
     /**
      * The OAuth2 configuration
      */
-    protected function defaultOauthConfig(): OAuthConfig
+    public function defaultOauthConfig(): OAuthConfig
     {
         return OAuthConfig::make()
             ->setClientId(config('services.github.client_id'))

@@ -18,7 +18,6 @@ arch('extends saloon connector')
     ->expect(GithubConnector::class)
     ->toExtend(Connector::class);
 
-
 it('instantiates GithubConnector with the correct token', function () {
     $token = 'test_token';
 
@@ -43,9 +42,8 @@ it('fetches the authenticated user', function () {
     $connector = new GithubConnector($token);
     $connector->withMockClient($mockClient);
 
-    $response = $connector->send(new User());
+    $response = $connector->send(new User);
 
     expect($response->successful())->toBeTrue()
         ->and($response->json('login'))->toBe('testuser');
 });
-

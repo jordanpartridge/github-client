@@ -11,11 +11,10 @@ class Delete extends Request
 
     public function __construct(
         private readonly string $repo_name,
-    )
-    {}
+    ) {}
 
     public function resolveEndpoint(): string
     {
-        return '/repos/' . $this->repo_name;
+        return '/repos/'.$this->repo_name;
     }
 }
