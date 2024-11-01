@@ -18,8 +18,8 @@ beforeEach(function () {
                 'name' => 'test-repo',
                 'full_name' => 'test/test-repo',
                 'private' => false,
-            ]
-        ], 200)
+            ],
+        ], 200),
     ]);
 
     Github::connector()->withMockClient($mockClient);

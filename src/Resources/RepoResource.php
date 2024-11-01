@@ -6,7 +6,9 @@ use JordanPartridge\GithubClient\Enums\Direction;
 use JordanPartridge\GithubClient\Enums\Sort;
 use JordanPartridge\GithubClient\Enums\Visibility;
 use JordanPartridge\GithubClient\GithubConnector;
-use JordanPartridge\GithubClient\Requests\Repos\{Delete, Repo, Repos};
+use JordanPartridge\GithubClient\Requests\Repos\Delete;
+use JordanPartridge\GithubClient\Requests\Repos\Repo;
+use JordanPartridge\GithubClient\Requests\Repos\Repos;
 use Saloon\Http\Response;
 
 /**
@@ -36,7 +38,7 @@ class RepoResource
     /**
      * Create a new RepoResource instance
      *
-     * @param GithubConnector $connector The authenticated GitHub API connector
+     * @param  GithubConnector  $connector  The authenticated GitHub API connector
      */
     public function __construct(
         private readonly GithubConnector $connector
@@ -49,12 +51,11 @@ class RepoResource
      * to access. This includes owned repositories, collaborated repositories,
      * and organization repositories where the user has appropriate access.
      *
-     * @param int|null $per_page Number of results per page (max 100)
-     * @param int|null $page Page number of the results to fetch
-     * @param Visibility|null $visibility Filter repositories by visibility (public, private, all)
-     * @param Sort|null $sort Sort repositories by field (created, updated, pushed, full_name)
-     * @param Direction|null $direction Sort direction (asc or desc)
-     *
+     * @param  int|null  $per_page  Number of results per page (max 100)
+     * @param  int|null  $page  Page number of the results to fetch
+     * @param  Visibility|null  $visibility  Filter repositories by visibility (public, private, all)
+     * @param  Sort|null  $sort  Sort repositories by field (created, updated, pushed, full_name)
+     * @param  Direction|null  $direction  Sort direction (asc or desc)
      * @return Response Returns a Saloon response containing the repository data
      *
      * @throws \InvalidArgumentException When per_page is less than 1 or greater than 100
@@ -103,8 +104,7 @@ class RepoResource
      * Retrieves detailed information about a specific repository. The repository name
      * should be in the format "owner/repo" (e.g., "octocat/Hello-World").
      *
-     * @param string $full_name The full name of the repository (owner/repo)
-     *
+     * @param  string  $full_name  The full name of the repository (owner/repo)
      * @return Response Returns a Saloon response containing the repository details
      *
      * @throws \InvalidArgumentException When the repository name format is invalid
@@ -129,8 +129,7 @@ class RepoResource
      * to the repository and GitHub Apps must have the `delete_repo` scope to use
      * this endpoint.
      *
-     * @param string $full_name The full name of the repository to delete (owner/repo)
-     *
+     * @param  string  $full_name  The full name of the repository to delete (owner/repo)
      * @return Response Returns a Saloon response indicating the deletion status
      *
      * @throws \InvalidArgumentException When the repository name format is invalid

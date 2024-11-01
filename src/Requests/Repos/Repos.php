@@ -15,11 +15,11 @@ class Repos extends Request
     protected Method $method = Method::GET;
 
     /**
-     * @param int|null $per_page Items per page (max 100)
-     * @param int|null $page Page number
-     * @param Visibility|null $visibility Can be one of: public, private, all
-     * @param Sort|null $sort Can be one of: created, updated, pushed, full_name
-     * @param Direction|null $direction Can be one of: asc, desc
+     * @param  int|null  $per_page  Items per page (max 100)
+     * @param  int|null  $page  Page number
+     * @param  Visibility|null  $visibility  Can be one of: public, private, all
+     * @param  Sort|null  $sort  Can be one of: created, updated, pushed, full_name
+     * @param  Direction|null  $direction  Can be one of: asc, desc
      */
     public function __construct(
         protected ?int $per_page = null,
