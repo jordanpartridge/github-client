@@ -67,7 +67,7 @@ class Repos extends Request
             'visibility' => $this->visibility,
             'sort'       => $this->sort,
             'direction'  => $this->direction,
-        ]);
+        ], fn($value) => $value !== null);
     }
 
     public function createDtoFromResponse(Response $response): mixed
