@@ -3,13 +3,14 @@
 namespace JordanPartridge\GithubClient;
 
 use InvalidArgumentException;
+use JordanPartridge\GithubClient\Contracts\GithubConnectorInterface;
 use Saloon\Helpers\OAuth2\OAuthConfig;
 use Saloon\Http\Auth\TokenAuthenticator;
 use Saloon\Http\Connector;
 use Saloon\Traits\OAuth2\AuthorizationCodeGrant;
 use Saloon\Traits\Plugins\AcceptsJson;
 
-class GithubConnector extends Connector
+class GithubConnector extends Connector implements GithubConnectorInterface
 {
     use AcceptsJson;
     use AuthorizationCodeGrant;
