@@ -8,7 +8,6 @@ enum Visibility
     case PRIVATE;
     case INTERNAL;
 
-
     public function toGithubString(): string
     {
         return match ($this) {
@@ -17,5 +16,4 @@ enum Visibility
             self::INTERNAL => 'internal',
         };
     }
-
 }

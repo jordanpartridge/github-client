@@ -30,18 +30,18 @@ class Repos extends Request
     protected Method $method = Method::GET;
 
     /**
-     * @param  int|null        $per_page   Items per page (max 100)
-     * @param  int|null        $page       Page number
-     * @param  Visibility|null $visibility Can be one of: all, public, private
-     * @param  string|null     $sort       Can be one of: created, updated, pushed, full_name
-     * @param  string|null     $direction  Can be one of: asc, desc
+     * @param  int|null  $per_page  Items per page (max 100)
+     * @param  int|null  $page  Page number
+     * @param  Visibility|null  $visibility  Can be one of: all, public, private
+     * @param  string|null  $sort  Can be one of: created, updated, pushed, full_name
+     * @param  string|null  $direction  Can be one of: asc, desc
      */
     public function __construct(
-        protected ?int        $per_page = null,
-        protected ?int        $page = null,
+        protected ?int $per_page = null,
+        protected ?int $page = null,
         protected ?Visibility $visibility = null,
-        protected ?string     $sort = null,
-        protected ?string     $direction = null,
+        protected ?string $sort = null,
+        protected ?string $direction = null,
     ) {
         if ($this->per_page !== null && ($this->per_page < 1 || $this->per_page > 100)) {
             throw new InvalidArgumentException('Per page must be between 1 and 100');
