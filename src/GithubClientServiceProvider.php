@@ -3,6 +3,7 @@
 namespace JordanPartridge\GithubClient;
 
 use JordanPartridge\GithubClient\Commands\GithubClientCommand;
+use JordanPartridge\GithubClient\Contracts\GithubConnectorInterface;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -21,5 +22,9 @@ class GithubClientServiceProvider extends PackageServiceProvider
             ->hasViews()
             ->hasMigration('create_github_client_table')
             ->hasCommand(GithubClientCommand::class);
+
+        $this->app->singleton(GithubConnectorInterface::class, function () {
+            return new GithubConnector(config('github-client.token'));
+        });
     }
 }

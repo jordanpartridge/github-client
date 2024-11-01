@@ -5,12 +5,12 @@ namespace JordanPartridge\GithubClient\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \JordanPartridge\GithubClient\GithubClient
+ * @see \JordanPartridge\GithubClient\GithubConnector
  */
-class GithubClient extends Facade
+class Github extends Facade
 {
     protected static function getFacadeAccessor(): string
     {
-        return \JordanPartridge\GithubClient\GithubClient::class;
+        return \JordanPartridge\GithubClient\Github::class;
     }
 }
