@@ -3,6 +3,7 @@
 namespace JordanPartridge\GithubClient\Requests\Repos;
 
 use InvalidArgumentException;
+use JordanPartridge\GithubClient\Enums\Visability;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use Saloon\Http\Response;
@@ -29,18 +30,18 @@ class Repos extends Request
     protected Method $method = Method::GET;
 
     /**
-     * @param  int|null  $per_page  Items per page (max 100)
-     * @param  int|null  $page  Page number
-     * @param  string|null  $visibility  Can be one of: all, public, private
-     * @param  string|null  $sort  Can be one of: created, updated, pushed, full_name
-     * @param  string|null  $direction  Can be one of: asc, desc
+     * @param  int|null        $per_page   Items per page (max 100)
+     * @param  int|null        $page       Page number
+     * @param  Visability|null $visibility Can be one of: all, public, private
+     * @param  string|null     $sort       Can be one of: created, updated, pushed, full_name
+     * @param  string|null     $direction  Can be one of: asc, desc
      */
     public function __construct(
-        protected ?int $per_page = null,
-        protected ?int $page = null,
-        protected ?string $visibility = null,
-        protected ?string $sort = null,
-        protected ?string $direction = null,
+        protected ?int        $per_page = null,
+        protected ?int        $page = null,
+        protected ?Visability $visibility = null,
+        protected ?string     $sort = null,
+        protected ?string     $direction = null,
     ) {
         if ($this->per_page !== null && ($this->per_page < 1 || $this->per_page > 100)) {
             throw new InvalidArgumentException('Per page must be between 1 and 100');
