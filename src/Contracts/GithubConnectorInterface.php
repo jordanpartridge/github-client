@@ -12,7 +12,5 @@ interface GithubConnectorInterface
 
     public function resolveBaseUrl(): string;
 
-    public function defaultOauthConfig(): OAuthConfig;
-
     public function send(Request $request): Response;
 }

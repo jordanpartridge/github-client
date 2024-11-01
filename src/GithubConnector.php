@@ -31,7 +31,7 @@ class GithubConnector extends Connector implements GithubConnectorInterface
      */
     public function resolveBaseUrl(): string
     {
-        return 'https://api.github.com';
+        return config('github-client.base_url');
     }
 
     private function validateToken(string $token): void
@@ -41,20 +41,7 @@ class GithubConnector extends Connector implements GithubConnectorInterface
         }
     }
 
-    /**
-     * The OAuth2 configuration
-     */
-    public function defaultOauthConfig(): OAuthConfig
-    {
-        return OAuthConfig::make()
-            ->setClientId(config('services.github.client_id'))
-            ->setClientSecret(config('services.github.client_secret'))
-            ->setRedirectUri(config('services.github.redirect'))
-            ->setDefaultScopes(['repo', 'user'])
-            ->setAuthorizeEndpoint('https://github.com/login/oauth/authorize')
-            ->setTokenEndpoint('https://github.com/login/oauth/access_token')
-            ->setUserEndpoint('https://api.github.com/user');
-    }
+
 
     /**
      * Default headers for every request.

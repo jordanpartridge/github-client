@@ -4,6 +4,7 @@ namespace JordanPartridge\GithubClient;
 
 use JordanPartridge\GithubClient\Contracts\GithubConnectorInterface;
 use JordanPartridge\GithubClient\Requests\Repos\Repos;
+use JordanPartridge\GithubClient\Resources\RepoResource;
 use Saloon\Exceptions\Request\FatalRequestException;
 use Saloon\Exceptions\Request\RequestException;
 use Saloon\Http\Response;
@@ -14,12 +15,9 @@ class Github
         protected GithubConnectorInterface $connector,
     ) {}
 
-    /**
-     * @throws FatalRequestException
-     * @throws RequestException
-     */
-    public function repos(...$args): Response
+
+    public function repos(): RepoResource
     {
-        return $this->connector->send(request: new Repos(...$args));
+        return new RepoResource($this->connector);
     }
 }

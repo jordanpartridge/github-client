@@ -2,6 +2,7 @@
 
 namespace JordanPartridge\GithubClient\Requests\Repos;
 
+use Illuminate\Support\Collection;
 use InvalidArgumentException;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
@@ -65,6 +66,11 @@ class Repos extends Request
             'sort' => $this->sort,
             'direction' => $this->direction,
         ];
+    }
+
+    public function createDtoFromResponse(array $response): Collection
+    {
+        return $response;
     }
 
     /**
