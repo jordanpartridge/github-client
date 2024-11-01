@@ -6,6 +6,7 @@ use Illuminate\Support\Collection;
 use InvalidArgumentException;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
+use Saloon\Http\Response;
 
 class Repos extends Request
 {
@@ -29,48 +30,51 @@ class Repos extends Request
     protected Method $method = Method::GET;
 
     /**
-     * @param  int|null  $page  Page number
-     * @param  string|null  $visibility  Can be one of: all, public, private
-     * @param  string|null  $sort  Can be one of: created, updated, pushed, full_name
-     * @param  string|null  $direction  Can be one of: asc, desc
+     * @parm  int|null    $per_page  N Items per page (max 100)
+     * @param int|null    $page       Page number
+     * @param string|null $visibility Can be one of: all, public, private
+     * @param string|null $sort       Can be one of: created, updated, pushed, full_name
+     * @param string|null $direction  Can be one of: asc, desc
      */
     public function __construct(
-        protected ?string $per_page = null,
-        protected ?int $page = null,
+        protected ?int    $per_page = null,
+        protected ?int    $page = null,
         protected ?string $visibility = null,
         protected ?string $sort = null,
         protected ?string $direction = null,
-    ) {
+    )
+    {
         if ($this->per_page !== null && ($this->per_page < 1 || $this->per_page > 100)) {
             throw new InvalidArgumentException('Per page must be between 1 and 100');
         }
-        if ($this->visibility !== null && ! in_array($this->visibility, ['all', 'public', 'private'])) {
+        if ($this->visibility !== null && !in_array($this->visibility, ['all', 'public', 'private'])) {
             throw new InvalidArgumentException('Visibility must be one of: all, public, private');
         }
 
-        if ($this->sort !== null && ! in_array($this->sort, ['created', 'updated', 'pushed', 'full_name'])) {
+        if ($this->sort !== null && !in_array($this->sort, ['created', 'updated', 'pushed', 'full_name'])) {
             throw new InvalidArgumentException('Sort must be one of: created, updated, pushed, full_name');
         }
 
-        if ($this->direction !== null && ! in_array($this->direction, ['asc', 'desc'])) {
+        if ($this->direction !== null && !in_array($this->direction, ['asc', 'desc'])) {
             throw new InvalidArgumentException('Direction must be one of: asc, desc');
         }
     }
 
     protected function defaultQuery(): array
     {
-        return [
-            'per_page' => $this->per_page,
-            'page' => $this->page,
+        return array_filter([
+            'per_page'   => $this->per_page,
+            'page'       => $this->page,
             'visibility' => $this->visibility,
-            'sort' => $this->sort,
-            'direction' => $this->direction,
-        ];
+            'sort'       => $this->sort,
+            'direction'  => $this->direction,
+        ]);
     }
 
-    public function createDtoFromResponse(array $response): Collection
+    public function createDtoFromResponse(Response $response): mixed
     {
-        return $response;
+        return array_map(fn($repo) => new \JordanPartridge\GithubClient\Data\Repo(...$repo->json()), $response->json());
+
     }
 
     /**
