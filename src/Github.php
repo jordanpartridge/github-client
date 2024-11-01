@@ -7,9 +7,15 @@ use JordanPartridge\GithubClient\Resources\RepoResource;
 
 class Github
 {
-    public function __construct(
-        protected GithubConnectorInterface $connector,
-    ) {}
+    /**
+     * @var GithubConnector
+     */
+    private GithubConnector $connector;
+
+    public function __construct(GithubConnector $connector,
+    ) {
+        $this->connector = $connector;
+    }
 
     public function repos(): RepoResource
     {

@@ -23,7 +23,7 @@ class GithubClientServiceProvider extends PackageServiceProvider
             ->hasMigration('create_github_client_table')
             ->hasCommand(GithubClientCommand::class);
 
-        $this->app->singleton(GithubConnectorInterface::class, function () {
+        $this->app->singleton(GithubConnector::class, function () {
             return new GithubConnector(config('github-client.token'));
         });
     }
