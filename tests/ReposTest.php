@@ -23,6 +23,6 @@ it('throws validation errors for invalid direction', function () {
 
 it('throws validation errors for invalid per page', function () {
     config(['github-client.token' => 'test']);
-    expect(fn() => Github::repos(101, 2, 'public', 'stars', 'desc'))
+    expect(fn () => Github::repos(101, 2, 'public', 'stars', 'desc'))
         ->toThrow(InvalidArgumentException::class);
 });
