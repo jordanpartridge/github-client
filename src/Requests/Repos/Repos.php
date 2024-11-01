@@ -40,6 +40,9 @@ class Repos extends Request
         protected ?string $sort = null,
         protected ?string $direction = null,
     ) {
+        if ($this->per_page !== null && ($this->per_page < 1 || $this->per_page > 100)) {
+                      throw new InvalidArgumentException('Per page must be between 1 and 100');
+        }
         if ($this->visibility !== null && ! in_array($this->visibility, ['all', 'public', 'private'])) {
             throw new InvalidArgumentException('Visibility must be one of: all, public, private');
         }
