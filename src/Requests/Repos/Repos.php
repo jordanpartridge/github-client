@@ -3,7 +3,7 @@
 namespace JordanPartridge\GithubClient\Requests\Repos;
 
 use InvalidArgumentException;
-use JordanPartridge\GithubClient\Enums\Visability;
+use JordanPartridge\GithubClient\Enums\Visibility;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use Saloon\Http\Response;
@@ -32,14 +32,14 @@ class Repos extends Request
     /**
      * @param  int|null        $per_page   Items per page (max 100)
      * @param  int|null        $page       Page number
-     * @param  Visability|null $visibility Can be one of: all, public, private
+     * @param  Visibility|null $visibility Can be one of: all, public, private
      * @param  string|null     $sort       Can be one of: created, updated, pushed, full_name
      * @param  string|null     $direction  Can be one of: asc, desc
      */
     public function __construct(
         protected ?int        $per_page = null,
         protected ?int        $page = null,
-        protected ?Visability $visibility = null,
+        protected ?Visibility $visibility = null,
         protected ?string     $sort = null,
         protected ?string     $direction = null,
     ) {

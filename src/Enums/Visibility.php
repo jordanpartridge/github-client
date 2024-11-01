@@ -2,7 +2,7 @@
 
 namespace JordanPartridge\GithubClient\Enums;
 
-enum Visability
+enum Visibility
 {
     case PUBLIC;
     case PRIVATE;
