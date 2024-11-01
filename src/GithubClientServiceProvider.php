@@ -3,7 +3,6 @@
 namespace JordanPartridge\GithubClient;
 
 use JordanPartridge\GithubClient\Commands\GithubClientCommand;
-use JordanPartridge\GithubClient\Contracts\GithubConnectorInterface;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 

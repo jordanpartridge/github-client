@@ -90,8 +90,7 @@ class Repo
     /**
      * Create a Repo instance from an array of repository data
      *
-     * @param array<string, mixed> $data
-     * @return self
+     * @param  array<string, mixed>  $data
      */
     public static function fromArray(array $data): self
     {
@@ -266,7 +265,7 @@ class Repo
             'open_issues' => $this->open_issues,
             'watchers' => $this->watchers,
             'default_branch' => $this->default_branch,
-            'permissions' => $this->permissions
+            'permissions' => $this->permissions,
         ];
     }
 }
