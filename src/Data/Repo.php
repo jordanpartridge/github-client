@@ -2,6 +2,8 @@
 
 namespace JordanPartridge\GithubClient\Data;
 
+use JordanPartridge\GithubClient\Enums\Visibility;
+
 class Repo
 {
     public function __construct(
@@ -79,7 +81,7 @@ class Repo
         public readonly bool $is_template,
         public readonly bool $web_commit_signoff_required,
         public readonly array $topics,
-        public readonly string $visibility,
+        public readonly Visibility $visibility,
         public readonly int $forks,
         public readonly int $open_issues,
         public readonly int $watchers,
