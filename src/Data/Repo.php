@@ -28,8 +28,8 @@ class Repo
         public readonly string $open_issues,
         public readonly string $watchers,
         public readonly string $license,
-        public readonly string $archived,
-        public readonly string $disabled,
-        public readonly string $allow_forking
+        public readonly bool $archived,
+        public readonly bool $disabled,
+        public readonly bool $allow_forking
     ) {}
 }
