@@ -2,7 +2,6 @@
 
 namespace JordanPartridge\GithubClient\Contracts;
 
-use Saloon\Helpers\OAuth2\OAuthConfig;
 use Saloon\Http\Request;
 use Saloon\Http\Response;
 

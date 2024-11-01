@@ -31,6 +31,5 @@ class Repo
         public readonly string $archived,
         public readonly string $disabled,
         public readonly string $allow_forking
-    ){}
-
+    ) {}
 }

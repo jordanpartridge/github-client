@@ -4,7 +4,6 @@ namespace JordanPartridge\GithubClient;
 
 use InvalidArgumentException;
 use JordanPartridge\GithubClient\Contracts\GithubConnectorInterface;
-use Saloon\Helpers\OAuth2\OAuthConfig;
 use Saloon\Http\Auth\TokenAuthenticator;
 use Saloon\Http\Connector;
 use Saloon\Traits\OAuth2\AuthorizationCodeGrant;
@@ -40,8 +39,6 @@ class GithubConnector extends Connector implements GithubConnectorInterface
             throw new InvalidArgumentException('Token is required');
         }
     }
-
-
 
     /**
      * Default headers for every request.
