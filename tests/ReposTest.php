@@ -4,7 +4,6 @@ use JordanPartridge\GithubClient\Facades\Github;
 
 it('throws validation errors for invalid visibility', function () {
     config(['github-client.token' => 'test']);
-
     expect(fn () => Github::repos()->all(30, 2, 'invalid'))
         ->toThrow(InvalidArgumentException::class);
 });
