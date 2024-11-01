@@ -72,7 +72,7 @@ class Repos extends Request
 
     public function createDtoFromResponse(Response $response): mixed
     {
-        return array_map(fn($repo) => new \JordanPartridge\GithubClient\Data\Repo(...$repo->json()), $response->json());
+        return array_map(fn($repo) => new \JordanPartridge\GithubClient\Data\Repo(...$repo), $response->json());
 
     }
 
