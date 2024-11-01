@@ -30,7 +30,7 @@ class GithubConnector extends Connector implements GithubConnectorInterface
      */
     public function resolveBaseUrl(): string
     {
-        return config('github-client.base_url');
+        return config('github-client.base_url', 'https://api.github.com');
     }
 
     private function validateToken(string $token): void
