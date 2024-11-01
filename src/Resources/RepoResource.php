@@ -15,9 +15,9 @@ class RepoResource extends BaseResource
      * @throws FatalRequestException
      * @throws RequestException
      */
-    public function all(): Response
+    public function all(...$args): Response
     {
-        return $this->connector->send(new Repos);
+        return $this->connector->send(new Repos(...$args));
     }
 
     /**

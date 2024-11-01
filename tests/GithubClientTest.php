@@ -14,9 +14,14 @@ it('has the correct base url', function () {
         ->toBe('https://api.github.com');
 });
 
-arch('extends saloon connector')
+arch('follows constraints')
     ->expect(GithubConnector::class)
-    ->toExtend(Connector::class);
+    ->toExtend(Connector::class)
+    ->not->toBeFinal()
+    ->toHaveConstructor()
+    ->toHaveMethod('resolveBaseUrl')
+    ->toHaveMethod('send')
+    ->toHaveMethod('authenticate');
 
 it('instantiates GithubConnector with the correct token', function () {
     $token = 'test_token';

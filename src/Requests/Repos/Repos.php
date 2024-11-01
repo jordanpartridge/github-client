@@ -2,7 +2,6 @@
 
 namespace JordanPartridge\GithubClient\Requests\Repos;
 
-use Illuminate\Support\Collection;
 use InvalidArgumentException;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
