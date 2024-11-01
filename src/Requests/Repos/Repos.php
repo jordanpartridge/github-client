@@ -29,7 +29,7 @@ class Repos extends Request
     protected Method $method = Method::GET;
 
     /**
-     * @parm  int|null    $per_page  N Items per page (max 100)
+     * @param  int|null   $per_page  Items per page (max 100)
      * @param int|null    $page       Page number
      * @param string|null $visibility Can be one of: all, public, private
      * @param string|null $sort       Can be one of: created, updated, pushed, full_name
