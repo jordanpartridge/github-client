@@ -36,7 +36,7 @@ class GithubConnector extends Connector implements GithubConnectorInterface
 
     private function validateToken(string $token): void
     {
-        if (empty($token)) {
+        if (empty(trim($token))) {
             throw new InvalidArgumentException('Token is required');
         }
     }
