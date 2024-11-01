@@ -2,18 +2,9 @@
 
 namespace JordanPartridge\GithubClient\Enums;
 
-enum Visibility
+enum Visibility: string
 {
-    case PUBLIC;
-    case PRIVATE;
-    case INTERNAL;
-
-    public function toGithubString(): string
-    {
-        return match ($this) {
-            self::PUBLIC => 'public',
-            self::PRIVATE => 'private',
-            self::INTERNAL => 'internal',
-        };
-    }
+    case PUBLIC = 'public';
+    case PRIVATE  = 'private';
+    case INTERNAL = 'internal';
 }
