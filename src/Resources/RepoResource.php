@@ -3,12 +3,12 @@
 namespace JordanPartridge\GithubClient\Resources;
 
 use JordanPartridge\GithubClient\Enums\Direction;
+use JordanPartridge\GithubClient\Enums\RepoType;
 use JordanPartridge\GithubClient\Enums\Sort;
 use JordanPartridge\GithubClient\Enums\Visibility;
-use JordanPartridge\GithubClient\GithubConnector;
 use JordanPartridge\GithubClient\Requests\Repos\Delete;
-use JordanPartridge\GithubClient\Requests\Repos\Repo;
-use JordanPartridge\GithubClient\Requests\Repos\Repos;
+use JordanPartridge\GithubClient\Requests\Repos\Get;
+use JordanPartridge\GithubClient\Requests\Repos\Index;
 use Saloon\Http\Response;
 
 /**
@@ -33,17 +33,8 @@ use Saloon\Http\Response;
  * );
  * ```
  */
-class RepoResource
+readonly class RepoResource extends BaseResource
 {
-    /**
-     * Create a new RepoResource instance
-     *
-     * @param  GithubConnector  $connector  The authenticated GitHub API connector
-     */
-    public function __construct(
-        private readonly GithubConnector $connector
-    ) {}
-
     /**
      * List repositories for the authenticated user
      *
@@ -57,9 +48,6 @@ class RepoResource
      * @param  Sort|null  $sort  Sort repositories by field (created, updated, pushed, full_name)
      * @param  Direction|null  $direction  Sort direction (asc or desc)
      * @return Response Returns a Saloon response containing the repository data
-     *
-     * @throws \InvalidArgumentException When per_page is less than 1 or greater than 100
-     * @throws \TypeError When invalid enum values are provided
      *
      * @link https://docs.github.com/en/rest/repos/repos#list-repositories-for-the-authenticated-user
      *
@@ -88,13 +76,15 @@ class RepoResource
         ?Visibility $visibility = null,
         ?Sort $sort = null,
         ?Direction $direction = null,
+        ?RepoType $type = null,
     ): Response {
-        return $this->connector->send(new Repos(
+        return $this->connector()->send(new Index(
             per_page: $per_page,
             page: $page,
             visibility: $visibility,
             sort: $sort,
             direction: $direction,
+            type: $type,
         ));
     }
 
@@ -107,8 +97,6 @@ class RepoResource
      * @param  string  $full_name  The full name of the repository (owner/repo)
      * @return Response Returns a Saloon response containing the repository details
      *
-     * @throws \InvalidArgumentException When the repository name format is invalid
-     *
      * @link https://docs.github.com/en/rest/repos/repos#get-a-repository
      *
      * Example Usage:
@@ -119,33 +107,11 @@ class RepoResource
      */
     public function get(string $full_name): Response
     {
-        return $this->connector->send(new Repo($full_name));
+        return $this->connector()->send(new Get($full_name));
     }
 
-    /**
-     * Delete a repository
-     *
-     * Permanently deletes a repository. The authenticated user must have admin access
-     * to the repository and GitHub Apps must have the `delete_repo` scope to use
-     * this endpoint.
-     *
-     * @param  string  $full_name  The full name of the repository to delete (owner/repo)
-     * @return Response Returns a Saloon response indicating the deletion status
-     *
-     * @throws \InvalidArgumentException When the repository name format is invalid
-     *
-     * @link https://docs.github.com/en/rest/repos/repos#delete-a-repository
-     *
-     * Example Usage:
-     * ```php
-     * $response = $repos->delete('jordanpartridge/old-repo');
-     * if ($response->status() === 204) {
-     *     echo "Repository successfully deleted";
-     * }
-     * ```
-     */
     public function delete(string $full_name): Response
     {
-        return $this->connector->send(new Delete($full_name));
+        return $this->connector()->send(new Delete($full_name));
     }
 }

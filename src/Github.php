@@ -3,10 +3,13 @@
 namespace JordanPartridge\GithubClient;
 
 use JordanPartridge\GithubClient\Contracts\GithubConnectorInterface;
+use JordanPartridge\GithubClient\Resources\CommitResource;
 use JordanPartridge\GithubClient\Resources\RepoResource;
 
 class Github
 {
+    use Concerns\ValidatesRepoName;
+
     public function __construct(
         protected GithubConnectorInterface $connector,
     ) {}
@@ -19,5 +22,10 @@ class Github
     public function repos(): RepoResource
     {
         return $this->connector->repos();
+    }
+
+    public function commits(): CommitResource
+    {
+        return $this->connector->commits();
     }
 }

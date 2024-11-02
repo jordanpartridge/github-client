@@ -3,14 +3,16 @@
 namespace JordanPartridge\GithubClient\Requests\Repos;
 
 use InvalidArgumentException;
+use JordanPartridge\GithubClient\Data\Repo;
 use JordanPartridge\GithubClient\Enums\Direction;
+use JordanPartridge\GithubClient\Enums\RepoType;
 use JordanPartridge\GithubClient\Enums\Sort;
 use JordanPartridge\GithubClient\Enums\Visibility;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use Saloon\Http\Response;
 
-class Repos extends Request
+class Index extends Request
 {
     protected Method $method = Method::GET;
 
@@ -27,6 +29,7 @@ class Repos extends Request
         protected ?Visibility $visibility = null,
         protected ?Sort $sort = null,
         protected ?Direction $direction = null,
+        protected ?RepoType $type = null,
     ) {
         if ($this->per_page !== null && ($this->per_page < 1 || $this->per_page > 100)) {
             throw new InvalidArgumentException('Per page must be between 1 and 100');
@@ -41,12 +44,13 @@ class Repos extends Request
             'visibility' => $this->visibility?->value,
             'sort' => $this->sort?->value,
             'direction' => $this->direction?->value,
+            'type' => $this->type?->value,
         ], fn ($value) => $value !== null);
     }
 
     public function createDtoFromResponse(Response $response): mixed
     {
-        return array_map(fn ($repo) => new \JordanPartridge\GithubClient\Data\Repo(...$repo), $response->json());
+        return array_map(fn ($repo) => Repo::fromArray($repo), $response->json());
     }
 
     public function resolveEndpoint(): string
