@@ -3,15 +3,17 @@
 namespace JordanPartridge\GithubClient\Resources;
 
 use JordanPartridge\GithubClient\Concerns\ValidatesRepoName;
-use JordanPartridge\GithubClient\Requests\Repos\Index;
+use JordanPartridge\GithubClient\Requests\Commits\Index;
+use Saloon\Http\Response;
 
 readonly class CommitResource extends BaseResource
 {
     use ValidatesRepoName;
 
-    public function all(string $repo_name): array
+    public function all(string $repo_name): Response
     {
         $this->validateRepoName($repo_name);
-        $this->connector()->send(new Index($this->repo));
+
+        return $this->connector()->send(new Index($repo_name));
     }
 }

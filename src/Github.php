@@ -24,10 +24,8 @@ class Github
         return $this->connector->repos();
     }
 
-    public function commits(string $repo_name): CommitResource
+    public function commits(): CommitResource
     {
-        $this->validateRepoName($repo_name);
-
-        return $this->connector->commits($repo_name);
+        return $this->connector->commits();
     }
 }
