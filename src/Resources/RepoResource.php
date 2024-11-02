@@ -98,6 +98,7 @@ readonly class RepoResource
             visibility: $visibility,
             sort: $sort,
             direction: $direction,
+            type: $type,
         ));
     }
 
