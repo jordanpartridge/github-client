@@ -3,6 +3,7 @@
 namespace JordanPartridge\GithubClient\Resources;
 
 use JordanPartridge\GithubClient\Enums\Direction;
+use JordanPartridge\GithubClient\Enums\RepoType;
 use JordanPartridge\GithubClient\Enums\Sort;
 use JordanPartridge\GithubClient\Enums\Visibility;
 use JordanPartridge\GithubClient\GithubConnector;
@@ -90,7 +91,7 @@ readonly class RepoResource
         ?Visibility $visibility = null,
         ?Sort $sort = null,
         ?Direction $direction = null,
-        ?string $type = null,
+        ?RepoType $type = null,
     ): Response {
         return $this->connector->send(new Index(
             per_page: $per_page,
