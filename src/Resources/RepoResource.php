@@ -9,7 +9,6 @@ use JordanPartridge\GithubClient\GithubConnector;
 use JordanPartridge\GithubClient\Requests\Repos\Delete;
 use JordanPartridge\GithubClient\Requests\Repos\Get;
 use JordanPartridge\GithubClient\Requests\Repos\Index;
-use JordanPartridge\GithubClient\Requests\Repos\Repos;
 use Saloon\Exceptions\Request\FatalRequestException;
 use Saloon\Exceptions\Request\RequestException;
 use Saloon\Http\Response;
@@ -130,28 +129,12 @@ readonly class RepoResource
     }
 
     /**
-     * Delete a repository
-     *
-     * Permanently deletes a repository. The authenticated user must have admin access
-     * to the repository and GitHub Apps must have the `delete_repo` scope to use
-     * this endpoint.
-     *
-     * @param string $full_name The full name of the repository to delete (owner/repo)
-     * @throws \InvalidArgumentException When the repository name format is invalid
-     *
-     * @return Response Returns a Saloon response indicating the deletion status
-     *
-     * @link https://docs.github.com/en/rest/repos/repos#delete-a-repository
-     *
-     * Example Usage:
-     * ```php
-     * $response = $repos->delete('jordanpartridge/old-repo');
-     * if ($response->status() === 204) {
-     *     echo "Repository successfully deleted";
-     * }
-     * ```
+     * @param string $full_name
+     * @throws FatalRequestException
+     * @throws RequestException
+     * @return Response
      */
-    public function get(string $repo_name): Response
+    public function delete(string $full_name): Response
     {
         return $this->connector->send(new Delete($full_name));
     }
