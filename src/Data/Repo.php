@@ -262,7 +262,7 @@ class Repo
             'is_template' => $this->is_template,
             'web_commit_signoff_required' => $this->web_commit_signoff_required,
             'topics' => $this->topics,
-            'visibility' => $this->visibility,
+            'visibility' => $this->visibility->value,
             'forks' => $this->forks,
             'open_issues' => $this->open_issues,
             'watchers' => $this->watchers,
