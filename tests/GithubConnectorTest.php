@@ -7,7 +7,7 @@ use Saloon\Http\Connector;
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
 
-it('has the correct base url', function () {
+it('has the correct `base url`', function () {
     expect(new GithubConnector('token'))
         ->toBeInstanceOf(GithubConnector::class)
         ->resolveBaseUrl()
@@ -51,4 +51,11 @@ it('fetches the authenticated user', function () {
 
     expect($response->successful())->toBeTrue()
         ->and($response->json('login'))->toBe('testuser');
+});
+
+it('has proper `Accept` header', function () {
+    $token     = 'test_token';
+    $connector = new GithubConnector($token);
+    $headers   = $connector->headers()->all();
+    expect($headers)->toHaveKey('Accept', 'application/vnd.github.v3+json');
 });
