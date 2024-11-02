@@ -145,7 +145,6 @@ describe('per_page parameter validation', function () {
         ))->toThrow(InvalidArgumentException::class, 'Per page must be between 1 and 100');
     });
 
-
     it('accepts valid per_page value', function () {
         $response = Github::repos()->all(
             per_page: 100,
