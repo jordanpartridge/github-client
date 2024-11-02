@@ -4,6 +4,7 @@ namespace JordanPartridge\GithubClient;
 
 use InvalidArgumentException;
 use JordanPartridge\GithubClient\Contracts\GithubConnectorInterface;
+use JordanPartridge\GithubClient\Resources\CommitResource;
 use JordanPartridge\GithubClient\Resources\RepoResource;
 use Saloon\Http\Auth\TokenAuthenticator;
 use Saloon\Http\Connector;
@@ -44,6 +45,11 @@ class GithubConnector extends Connector implements GithubConnectorInterface
     public function repos(): RepoResource
     {
         return new RepoResource($this);
+    }
+
+    public function commits(): CommitResource
+    {
+        return new CommitResource($this);
     }
 
     /**
