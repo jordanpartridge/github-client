@@ -40,13 +40,11 @@ readonly class RepoResource
     /**
      * Create a new RepoResource instance
      *
-     * @param GithubConnector $connector The authenticated GitHub API connector
+     * @param  GithubConnector  $connector  The authenticated GitHub API connector
      */
     public function __construct(
         private GithubConnector $connector,
-    )
-    {
-    }
+    ) {}
 
     /**
      * List repositories for the authenticated user
@@ -55,15 +53,15 @@ readonly class RepoResource
      * to access. This includes owned repositories, collaborated repositories,
      * and organization repositories where the user has appropriate access.
      *
-     * @param int|null        $per_page   Number of results per page (max 100)
-     * @param int|null        $page       Page number of the results to fetch
-     * @param Visibility|null $visibility Filter repositories by visibility (public, private, all)
-     * @param Sort|null       $sort       Sort repositories by field (created, updated, pushed, full_name)
-     * @param Direction|null  $direction  Sort direction (asc or desc)
-     * @param string|null     $type
+     * @param  int|null  $per_page  Number of results per page (max 100)
+     * @param  int|null  $page  Page number of the results to fetch
+     * @param  Visibility|null  $visibility  Filter repositories by visibility (public, private, all)
+     * @param  Sort|null  $sort  Sort repositories by field (created, updated, pushed, full_name)
+     * @param  Direction|null  $direction  Sort direction (asc or desc)
+     * @return Response Returns a Saloon response containing the repository data
+     *
      * @throws FatalRequestException
      * @throws RequestException
-     * @return Response Returns a Saloon response containing the repository data
      *
      * @link https://docs.github.com/en/rest/repos/repos#list-repositories-for-the-authenticated-user
      *
@@ -87,14 +85,13 @@ readonly class RepoResource
      * ```
      */
     public function all(
-        ?int        $per_page = null,
-        ?int        $page = null,
+        ?int $per_page = null,
+        ?int $page = null,
         ?Visibility $visibility = null,
-        ?Sort       $sort = null,
-        ?Direction  $direction = null,
-        ?string     $type = null,
-    ): Response
-    {
+        ?Sort $sort = null,
+        ?Direction $direction = null,
+        ?string $type = null,
+    ): Response {
         return $this->connector->send(new Index(
             per_page: $per_page,
             page: $page,
@@ -110,10 +107,11 @@ readonly class RepoResource
      * Retrieves detailed information about a specific repository. The repository name
      * should be in the format "owner/repo" (e.g., "octocat/Hello-World").
      *
-     * @param string $full_name The full name of the repository (owner/repo)
+     * @param  string  $full_name  The full name of the repository (owner/repo)
+     * @return Response Returns a Saloon response containing the repository details
+     *
      * @throws FatalRequestException
      * @throws RequestException
-     * @return Response Returns a Saloon response containing the repository details
      *
      * @link https://docs.github.com/en/rest/repos/repos#get-a-repository
      *
@@ -129,10 +127,8 @@ readonly class RepoResource
     }
 
     /**
-     * @param string $full_name
      * @throws FatalRequestException
      * @throws RequestException
-     * @return Response
      */
     public function delete(string $full_name): Response
     {
