@@ -11,6 +11,11 @@ class Github
         protected GithubConnectorInterface $connector,
     ) {}
 
+    public function connector(): GithubConnectorInterface
+    {
+        return $this->connector;
+    }
+
     public function repos(): RepoResource
     {
         return $this->connector->repos();
