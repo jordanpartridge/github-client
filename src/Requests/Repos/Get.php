@@ -5,7 +5,7 @@ namespace JordanPartridge\GithubClient\Requests\Repos;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
-class Repo extends Request
+class Get extends Request
 {
     protected Method $method = Method::GET;
 
