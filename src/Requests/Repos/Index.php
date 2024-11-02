@@ -44,7 +44,7 @@ class Index extends Request
             'visibility' => $this->visibility?->value,
             'sort' => $this->sort?->value,
             'direction' => $this->direction?->value,
-            'type' => $this->type->value,
+            'type' => $this->type?->value,
         ], fn ($value) => $value !== null);
     }
 

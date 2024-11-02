@@ -6,12 +6,9 @@ use JordanPartridge\GithubClient\Enums\Direction;
 use JordanPartridge\GithubClient\Enums\RepoType;
 use JordanPartridge\GithubClient\Enums\Sort;
 use JordanPartridge\GithubClient\Enums\Visibility;
-use JordanPartridge\GithubClient\GithubConnector;
 use JordanPartridge\GithubClient\Requests\Repos\Delete;
 use JordanPartridge\GithubClient\Requests\Repos\Get;
 use JordanPartridge\GithubClient\Requests\Repos\Index;
-use Saloon\Exceptions\Request\FatalRequestException;
-use Saloon\Exceptions\Request\RequestException;
 use Saloon\Http\Response;
 
 /**
@@ -36,16 +33,8 @@ use Saloon\Http\Response;
  * );
  * ```
  */
-readonly class RepoResource
+ readonly class RepoResource extends BaseResource
 {
-    /**
-     * Create a new RepoResource instance
-     *
-     * @param  GithubConnector  $connector  The authenticated GitHub API connector
-     */
-    public function __construct(
-        private GithubConnector $connector,
-    ) {}
 
     /**
      * List repositories for the authenticated user
@@ -61,8 +50,6 @@ readonly class RepoResource
      * @param  Direction|null  $direction  Sort direction (asc or desc)
      * @return Response Returns a Saloon response containing the repository data
      *
-     * @throws FatalRequestException
-     * @throws RequestException
      *
      * @link https://docs.github.com/en/rest/repos/repos#list-repositories-for-the-authenticated-user
      *
@@ -93,7 +80,7 @@ readonly class RepoResource
         ?Direction $direction = null,
         ?RepoType $type = null,
     ): Response {
-        return $this->connector->send(new Index(
+        return $this->connector()->send(new Index(
             per_page: $per_page,
             page: $page,
             visibility: $visibility,
@@ -112,8 +99,6 @@ readonly class RepoResource
      * @param  string  $full_name  The full name of the repository (owner/repo)
      * @return Response Returns a Saloon response containing the repository details
      *
-     * @throws FatalRequestException
-     * @throws RequestException
      *
      * @link https://docs.github.com/en/rest/repos/repos#get-a-repository
      *
@@ -125,15 +110,13 @@ readonly class RepoResource
      */
     public function get(string $full_name): Response
     {
-        return $this->connector->send(new Get($full_name));
+        return $this->connector()->send(new Get($full_name));
     }
 
     /**
-     * @throws FatalRequestException
-     * @throws RequestException
      */
     public function delete(string $full_name): Response
     {
-        return $this->connector->send(new Delete($full_name));
+        return $this->connector()->send(new Delete($full_name));
     }
 }
