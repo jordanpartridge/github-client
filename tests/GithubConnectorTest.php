@@ -54,8 +54,8 @@ it('fetches the authenticated user', function () {
 });
 
 it('has proper `Accept` header', function () {
-    $token     = 'test_token';
+    $token = 'test_token';
     $connector = new GithubConnector($token);
-    $headers   = $connector->headers()->all();
+    $headers = $connector->headers()->all();
     expect($headers)->toHaveKey('Accept', 'application/vnd.github.v3+json');
 });
