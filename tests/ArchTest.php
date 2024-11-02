@@ -18,4 +18,3 @@ describe('Requests', function () {
         expect('JordanPartridge\GithubClient\Requests')->toExtend(\Saloon\Http\Request::class);
     });
 });
-
