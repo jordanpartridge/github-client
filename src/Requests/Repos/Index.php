@@ -14,7 +14,6 @@ use Saloon\Http\Response;
 
 class Index extends Request
 {
-
     protected Method $method = Method::GET;
 
     /**

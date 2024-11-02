@@ -19,8 +19,6 @@ abstract readonly class BaseResource implements ResourceInterface
 
     /**
      * Allows access to the GithubConnector instance
-     *
-     * @return GithubConnectorInterface
      */
     public function connector(): GithubConnectorInterface
     {

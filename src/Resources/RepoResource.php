@@ -33,9 +33,8 @@ use Saloon\Http\Response;
  * );
  * ```
  */
- readonly class RepoResource extends BaseResource
+readonly class RepoResource extends BaseResource
 {
-
     /**
      * List repositories for the authenticated user
      *
@@ -49,7 +48,6 @@ use Saloon\Http\Response;
      * @param  Sort|null  $sort  Sort repositories by field (created, updated, pushed, full_name)
      * @param  Direction|null  $direction  Sort direction (asc or desc)
      * @return Response Returns a Saloon response containing the repository data
-     *
      *
      * @link https://docs.github.com/en/rest/repos/repos#list-repositories-for-the-authenticated-user
      *
@@ -99,7 +97,6 @@ use Saloon\Http\Response;
      * @param  string  $full_name  The full name of the repository (owner/repo)
      * @return Response Returns a Saloon response containing the repository details
      *
-     *
      * @link https://docs.github.com/en/rest/repos/repos#get-a-repository
      *
      * Example Usage:
@@ -113,8 +110,6 @@ use Saloon\Http\Response;
         return $this->connector()->send(new Get($full_name));
     }
 
-    /**
-     */
     public function delete(string $full_name): Response
     {
         return $this->connector()->send(new Delete($full_name));

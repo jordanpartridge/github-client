@@ -4,5 +4,5 @@ namespace JordanPartridge\GithubClient\Contracts;
 
 interface ResourceInterface
 {
-   public function __construct(GithubConnectorInterface $connector);
+    public function __construct(GithubConnectorInterface $connector);
 }
