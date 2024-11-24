@@ -20,9 +20,9 @@ class Get extends Request
         $this->validateRepoName($repo_name);
     }
 
-    public function createDtoFromResponse (Response $response): Repo
+    public function createDtoFromResponse(Response $response): Repo
     {
-       return  Repo::fromArray($response->json());
+        return Repo::fromArray($response->json());
     }
 
     public function resolveEndpoint(): string
