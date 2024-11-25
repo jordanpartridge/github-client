@@ -10,4 +10,5 @@ enum RepoType: string
     case Forks = 'forks';
     case Sources = 'sources';
     case Member = 'member';
+    case Owner = 'owner';
 }
