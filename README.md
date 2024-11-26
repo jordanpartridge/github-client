@@ -1,48 +1,76 @@
-# github-client 🚀
+# GitHub Client for Laravel
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/jordanpartridge/github-client.svg?style=flat-square)](https://packagist.org/packages/jordanpartridge/github-client)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/jordanpartridge/github-client/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/jordanpartridge/github-client/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/jordanpartridge/github-client/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/jordanpartridge/github-client/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/jordanpartridge/github-client.svg?style=flat-square)](https://packagist.org/packages/jordanpartridge/github-client)
 
-Time to `git push` your GitHub API game to the next level! A Laravel-first GitHub client built on Saloon that makes working with GitHub's API a breeze. Let's `git 'er done`!
+A powerful, Laravel-first GitHub API client built on Saloon that makes integrating with GitHub's API simple and intuitive.
 
-## 🔥 Features
+## Features
 
-- Built on Saloon - the coolest way to handle APIs in Laravel
-- Fully typed responses - no more guessing what you'll `git` back
-- Ready to roll with Laravel's config & auth systems
-- Test coverage that would make your CI/CD pipeline jealous
-- Facades, dependency injection, or however you roll
-- Modern PHP 8.1+ (because we're not living in the `dark ages` branch)
+- Built on Saloon for reliable API handling in Laravel
+- Full type-hinting support with typed responses
+- Seamless integration with Laravel's configuration and authentication
+- Comprehensive test coverage
+- Support for facades and dependency injection
+- Modern PHP 8.1+ codebase
+- Laravel-style resource pattern
 
-## 🚀 Quick Start
+## Installation
+
+Install the package via Composer:
 
 ```bash
 composer require jordanpartridge/github-client
 ```
 
-First grab your GitHub token from [GitHub Settings](https://github.com/settings/tokens), then drop it in your `.env`:
+## Configuration
+
+1. Generate a GitHub token in your [GitHub Settings](https://github.com/settings/tokens)
+2. Add the token to your `.env` file:
+
 ```
 GITHUB_TOKEN=your-token-here
 ```
 
-Now you're ready to rock:
+## Usage
+
+### Laravel-Style Resource Pattern
+
+This package follows a Laravel-inspired resource pattern for intuitive API interaction:
+
 ```php
 use JordanPartridge\GithubClient\Facades\GitHub;
 
-// Fetch repos faster than you can say "git clone"
-$repo = GitHub::repository('jordanpartridge/github-client');
-echo $repo->name; // 'github-client'
+// Working with Repositories
+$repos = GitHub::repos(); // Get the repository resource
+$allRepos = $repos->all(); // Get all repositories
+$specificRepo = $repos->get('jordanpartridge/github-client'); // Get specific repository
 
-// Create issues without the issues
-$issue = GitHub::issues()->create('jordanpartridge/github-client', [
-    'title' => 'This is awesome',
-    'body'  => 'But could be more awesome 🚀'
-]);
+// Working with Commits
+$commits = GitHub::commits()->all('jordanpartridge/github-client'); // Get all commits for a repository
+$specificCommit = GitHub::commits()->get('abc123...'); // Get a specific commit by SHA
 ```
 
-Want dependency injection? We've got you:
+Each resource follows a consistent pattern similar to Laravel's basic resource operations:
+- `all()` - Retrieve all resources
+- `get()` - Retrieve a specific resource
+
+### Available Resources
+
+```php
+// Repositories
+GitHub::repos()->all(); // List all repositories
+GitHub::repos()->get('owner/repo'); // Get a specific repository
+
+// Commits
+GitHub::commits()->all('owner/repo'); // List all commits for a repository
+GitHub::commits()->get('sha'); // Get a specific commit by SHA
+```
+
+### Using Dependency Injection
+
 ```php
 use JordanPartridge\GithubClient\Contracts\GitHub;
 
@@ -51,43 +79,41 @@ public function __construct(
 ) {}
 ```
 
-## ⚙️ Configuration
+### Custom Configuration
 
-Need to tweak something? Publish the config:
+Publish the configuration file:
+
 ```bash
 php artisan vendor:publish --tag="github-client-config"
 ```
 
-## 📖 Documentation
+## Documentation
 
-Head over to [the docs](https://github.com/jordanpartridge/github-client#documentation) - they don't byte!
+For detailed documentation, please visit our [documentation page](https://github.com/jordanpartridge/github-client#documentation).
 
-## 🧪 Testing
+## Testing
+
+Run the test suite:
 
 ```bash
 composer test
 ```
 
-Because untested code is like an empty commit message - nobody wants that.
+## Contributing
 
-## 🤝 Contributing
+Contributions are welcome! Please:
 
-Found a bug? `git commit` to fixing it with a PR!
-Want a feature? `git checkout` our issues page!
+1. Add tests for new functionality
+2. Follow PSR-12 coding standards
+3. Submit a Pull Request with a clear description of changes
 
-Just remember to:
-1. Add tests (we're not animals)
-2. Follow PSR-12 (keep it clean)
-3. Be awesome (you already are)
+## License
 
-## 📝 License
+This package is open-source software licensed under the MIT license.
 
-MIT. `git checkout` whatever you need!
+## Credits
 
-## 💖 Credits
-
-`git blame` these awesome folks:
 - [Jordan Partridge](https://github.com/jordanpartridge)
 - [All Contributors](../../contributors)
 
-Built with Saloon, Laravel love, and probably too much coffee ☕️
+Built with Saloon and Laravel
