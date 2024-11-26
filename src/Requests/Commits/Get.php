@@ -4,9 +4,11 @@ namespace JordanPartridge\GithubClient\Requests\Commits;
 
 use InvalidArgumentException;
 use JordanPartridge\GithubClient\Concerns\ValidatesRepoName;
+use JordanPartridge\GithubClient\Data\CommitDTO;
 use JordanPartridge\GithubClient\ValueObjects\Repo;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
+use Saloon\Http\Response;
 
 class Get extends Request
 {
@@ -40,4 +42,10 @@ class Get extends Request
             throw new InvalidArgumentException('Invalid commit SHA format');
         }
     }
+
+    public function createDtoFromResponse(Response $response): mixed
+    {
+        return CommitDTO::fromArray(data: $response->json());
+    }
+
 }
