@@ -2,6 +2,7 @@
 
 namespace JordanPartridge\GithubClient\Resources;
 
+use JordanPartridge\GithubClient\Data\Repo;
 use JordanPartridge\GithubClient\Enums\Direction;
 use JordanPartridge\GithubClient\Enums\RepoType;
 use JordanPartridge\GithubClient\Enums\Sort;
@@ -105,9 +106,9 @@ readonly class RepoResource extends BaseResource
      * $details = $repo->json();
      * ```
      */
-    public function get(string $full_name): Response
+    public function get(string $full_name): Repo
     {
-        return $this->connector()->send(new Get($full_name));
+        return $this->connector()->send(new Get($full_name))->dto();
     }
 
     public function delete(string $full_name): Response
