@@ -44,9 +44,9 @@ class GithubConnector extends Connector implements GithubConnectorInterface
     }
 
 
-    public function repo(string $repo_name): Repo
+    public function repo(string $owner, string $repo_name): Repo
     {
-        return (new RepoResource($this))->get($repo_name);
+        return (new RepoResource($this))->get(new Repo($owner, $repo_name));
     }
 
     public function commits(): CommitResource

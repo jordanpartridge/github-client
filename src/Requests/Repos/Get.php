@@ -2,22 +2,21 @@
 
 namespace JordanPartridge\GithubClient\Requests\Repos;
 
-use JordanPartridge\GithubClient\Concerns\ValidatesRepoName;
 use JordanPartridge\GithubClient\Data\Repo;
+use JordanPartridge\GithubClient\ValueObjects\Repo as RepoValue;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use Saloon\Http\Response;
 
 class Get extends Request
 {
-    use ValidatesRepoName;
 
     protected Method $method = Method::GET;
 
     public function __construct(
-        private readonly string $repo_name,
-    ) {
-        $this->validateRepoName($repo_name);
+        private readonly RepoValue $repo,
+    )
+    {
     }
 
     public function createDtoFromResponse(Response $response): Repo
@@ -27,6 +26,6 @@ class Get extends Request
 
     public function resolveEndpoint(): string
     {
-        return '/repos/'.$this->repo_name;
+        return '/repos/' . $this->repo->fullName();
     }
 }
