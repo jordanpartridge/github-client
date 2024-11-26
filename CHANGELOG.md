@@ -2,6 +2,45 @@
 
 All notable changes to `github-client` will be documented in this file.
 
+## v0.2.1 - Commit by Sha added - 2024-11-26
+
+### Release v0.2.1: Individual Commit Access
+
+#### New Features
+
+* Added support for retrieving individual commits by SHA
+
+```php
+GitHub::commits()->get('sha-hash');
+
+```
+#### Details
+
+The new commit endpoint provides authenticated access to detailed commit information including:
+
+- Commit metadata (author, committer, dates)
+- Full commit message
+- File changes and patches
+- Verification information
+- Associated repository data
+- Parent commit references
+
+#### Usage Example
+
+```php
+$commit = GitHub::commits()->get('abc123def456...');
+// Access commit data
+$author = $commit->author;
+$message = $commit->message;
+$changes = $commit->files;
+
+```
+#### Pull Requests
+
+* [#10](https://github.com/jordanpartridge/github-client/pull/10) - Add individual commit retrieval by @jordanpartridge
+
+**Full Changelog**: https://github.com/jordanpartridge/github-client/compare/v0.2...v0.2.1
+
 ## v0.2 Repo Dto - 2024-11-25
 
 ### What's Changed
