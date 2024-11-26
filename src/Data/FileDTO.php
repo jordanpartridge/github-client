@@ -25,14 +25,39 @@ class FileDTO
         return $this->sha;
     }
 
+    public function getAdditions(): int
+    {
+        return $this->additions;
+    }
+
+    public function getChanges(): int
+    {
+        return $this->changes;
+    }
+
+    public function getDeletions(): int
+    {
+        return $this->deletions;
+    }
+
     public function getFilename(): string
     {
         return $this->filename;
     }
 
+    public function getSize(): int
+    {
+        return $this->size;
+    }
+
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
     public static function fromArray(array $data): array
     {
-        return array_map(function(array $item) {
+        return array_map(function (array $item) {
             // Ensure all required fields are present with defaults
             return new FileDTO(
                 sha: $item['sha'] ?? '',
