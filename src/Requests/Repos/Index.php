@@ -50,7 +50,7 @@ class Index extends Request
 
     public function createDtoFromResponse(Response $response): mixed
     {
-        return array_map(fn ($repo) => RepoDTO::fromArray($repo), $response->json());
+        return array_map(fn ($repo) => RepoDTO::from($repo), $response->json());
     }
 
     public function resolveEndpoint(): string

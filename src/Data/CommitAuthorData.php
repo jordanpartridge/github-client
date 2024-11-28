@@ -1,11 +1,17 @@
 <?php
 
 namespace JordanPartridge\GithubClient\Data;
-readonly class CommitAuthorDTO
+
+use Carbon\Carbon;
+use Spatie\LaravelData\Data;
+
+class CommitAuthorData extends Data
 {
     public function __construct(
         public string $name,
         public string $email,
-        public string $date,
-    ) {}
+        public Carbon $date,
+    )
+    {
+    }
 }

@@ -3,7 +3,7 @@
 namespace JordanPartridge\GithubClient\Resources;
 
 use JordanPartridge\GithubClient\Concerns\ValidatesRepoName;
-use JordanPartridge\GithubClient\Data\CommitDTO;
+use JordanPartridge\GithubClient\Data\CommitData;
 use JordanPartridge\GithubClient\Requests\Commits\Get;
 use JordanPartridge\GithubClient\Requests\Commits\Index;
 use JordanPartridge\GithubClient\ValueObjects\Repo;
@@ -13,17 +13,18 @@ readonly class CommitResource extends BaseResource
 {
     use ValidatesRepoName;
 
-    public function all(string $repo_name): Response
+    public function all(string $repo_name): array
     {
         return $this->validateRepo($repo_name)
             ->connector()
-            ->send(new Index($repo_name));
+            ->send(new Index($repo_name))->dto();
     }
 
-    public function get(string $repo_name, string $commit_sha): CommitDTO
+    public function get(string $repo_name, string $commit_sha): CommitData
     {
         $this->validateRepoName($repo_name);
         $repo = $this->dataObjectFromFullName($repo_name);
+
         return $this->connector()->send(new Get($repo, $commit_sha))->dto();
     }
 

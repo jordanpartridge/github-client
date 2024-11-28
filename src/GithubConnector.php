@@ -4,9 +4,9 @@ namespace JordanPartridge\GithubClient;
 
 use InvalidArgumentException;
 use JordanPartridge\GithubClient\Contracts\GithubConnectorInterface;
-use JordanPartridge\GithubClient\ValueObjects\Repo;
 use JordanPartridge\GithubClient\Resources\CommitResource;
 use JordanPartridge\GithubClient\Resources\RepoResource;
+use JordanPartridge\GithubClient\ValueObjects\Repo;
 use Saloon\Http\Auth\TokenAuthenticator;
 use Saloon\Http\Connector;
 use Saloon\Http\Response;
@@ -44,9 +44,7 @@ class GithubConnector extends Connector implements GithubConnectorInterface
         }
     }
 
-
     /**
-     * @param string $full_name
      * @return Data\RepoDTO|Response
      */
     public function repo(string $full_name): Repo|Response
@@ -71,9 +69,6 @@ class GithubConnector extends Connector implements GithubConnectorInterface
         ];
     }
 
-    /**
-     * @return RepoResource
-     */
     public function repos(): RepoResource
     {
         return new RepoResource($this);

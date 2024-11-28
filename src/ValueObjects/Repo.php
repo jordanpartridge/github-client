@@ -8,6 +8,7 @@ use JordanPartridge\GithubClient\Concerns\ValidatesRepoName;
 readonly class Repo
 {
     use ValidatesRepoName;
+
     private function __construct(
         private string $owner,
         private string $name
