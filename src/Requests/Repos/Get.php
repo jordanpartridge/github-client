@@ -2,7 +2,7 @@
 
 namespace JordanPartridge\GithubClient\Requests\Repos;
 
-use JordanPartridge\GithubClient\Data\RepoDTO;
+use JordanPartridge\GithubClient\Data\RepoData;
 use JordanPartridge\GithubClient\ValueObjects\Repo as RepoValue;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
@@ -16,9 +16,9 @@ class Get extends Request
         private readonly RepoValue $repo,
     ) {}
 
-    public function createDtoFromResponse(Response $response): RepoDTO
+    public function createDtoFromResponse(Response $response): RepoData
     {
-        return RepoDTO::from($response->json());
+        return RepoData::from($response->json());
     }
 
     public function resolveEndpoint(): string

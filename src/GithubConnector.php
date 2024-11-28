@@ -45,7 +45,7 @@ class GithubConnector extends Connector implements GithubConnectorInterface
     }
 
     /**
-     * @return Data\RepoDTO|Response
+     * @return Data\RepoData|Response
      */
     public function repo(string $full_name): Repo|Response
     {
