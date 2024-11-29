@@ -14,8 +14,8 @@ class CommitData extends Data
         public string $url,
         public string $html_url,
         public string $comments_url,
-        public GitUserData $author,
-        public GitUserData $committer,
+        public ?GitUserData $author,
+        public ?GitUserData $committer,
         public array $parents,
     ) {}
 }
