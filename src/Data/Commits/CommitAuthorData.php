@@ -11,7 +11,5 @@ class CommitAuthorData extends Data
         public string $name,
         public string $email,
         public Carbon $date,
-    )
-    {
-    }
+    ) {}
 }
