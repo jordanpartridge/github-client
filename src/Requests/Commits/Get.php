@@ -3,14 +3,21 @@
 namespace JordanPartridge\GithubClient\Requests\Commits;
 
 use InvalidArgumentException;
+use JordanPartridge\GithubClient\Concerns\ValidatesRepoName;
+use JordanPartridge\GithubClient\Data\Commits\CommitData;
+use JordanPartridge\GithubClient\ValueObjects\Repo;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
+use Saloon\Http\Response;
 
 class Get extends Request
 {
+    use ValidatesRepoName;
+
     protected Method $method = Method::GET;
 
     public function __construct(
+        private readonly Repo $repo,
         private readonly string $commit_sha,
     ) {
         $this->validateSHA($commit_sha);
@@ -18,7 +25,7 @@ class Get extends Request
 
     public function resolveEndpoint(): string
     {
-        return '/commits/'.$this->commit_sha;
+        return '/repos/'.$this->repo->fullName().'/commits/'.$this->commit_sha;
     }
 
     private function validateSHA(string $commit_sha): void
@@ -26,5 +33,10 @@ class Get extends Request
         if (! preg_match('/^[0-9a-f]{40}$/i', $commit_sha)) {
             throw new InvalidArgumentException('Invalid commit SHA format');
         }
+    }
+
+    public function createDtoFromResponse(Response $response): mixed
+    {
+        return CommitData::from(data: $response->json());
     }
 }

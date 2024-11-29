@@ -3,7 +3,7 @@
 namespace JordanPartridge\GithubClient\Requests\Repos;
 
 use InvalidArgumentException;
-use JordanPartridge\GithubClient\Data\Repo;
+use JordanPartridge\GithubClient\Data\Repos\RepoData;
 use JordanPartridge\GithubClient\Enums\Direction;
 use JordanPartridge\GithubClient\Enums\RepoType;
 use JordanPartridge\GithubClient\Enums\Sort;
@@ -50,7 +50,7 @@ class Index extends Request
 
     public function createDtoFromResponse(Response $response): mixed
     {
-        return array_map(fn ($repo) => Repo::fromArray($repo), $response->json());
+        return array_map(fn ($repo) => RepoData::from($repo), $response->json());
     }
 
     public function resolveEndpoint(): string

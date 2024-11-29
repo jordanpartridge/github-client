@@ -2,8 +2,10 @@
 
 namespace JordanPartridge\GithubClient\Requests\Commits;
 
+use JordanPartridge\GithubClient\Data\Commits\CommitData;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
+use Saloon\Http\Response;
 
 class Index extends Request
 {
@@ -13,11 +15,15 @@ class Index extends Request
         protected string $repo_name,
     ) {}
 
-    /**
-     * {@inheritDoc}
-     */
     public function resolveEndpoint(): string
     {
         return '/repos/'.$this->repo_name.'/commits';
+    }
+
+    public function createDtoFromResponse(Response $response): array
+    {
+        return $response->collect()->map(function (array $commit) {
+            return CommitData::from($commit);
+        })->all();
     }
 }

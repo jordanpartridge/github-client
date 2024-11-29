@@ -30,7 +30,7 @@ composer require jordanpartridge/github-client
 1. Generate a GitHub token in your [GitHub Settings](https://github.com/settings/tokens)
 2. Add the token to your `.env` file:
 
-```
+```dotenv
 GITHUB_TOKEN=your-token-here
 ```
 

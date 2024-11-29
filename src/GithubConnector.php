@@ -6,8 +6,10 @@ use InvalidArgumentException;
 use JordanPartridge\GithubClient\Contracts\GithubConnectorInterface;
 use JordanPartridge\GithubClient\Resources\CommitResource;
 use JordanPartridge\GithubClient\Resources\RepoResource;
+use JordanPartridge\GithubClient\ValueObjects\Repo;
 use Saloon\Http\Auth\TokenAuthenticator;
 use Saloon\Http\Connector;
+use Saloon\Http\Response;
 use Saloon\Traits\OAuth2\AuthorizationCodeGrant;
 use Saloon\Traits\Plugins\AcceptsJson;
 
@@ -42,9 +44,12 @@ class GithubConnector extends Connector implements GithubConnectorInterface
         }
     }
 
-    public function repos(): RepoResource
+    /**
+     * @return \JordanPartridge\GithubClient\Data\Repos\RepoData|Response
+     */
+    public function repo(string $full_name): Repo|Response
     {
-        return new RepoResource($this);
+        return (new RepoResource($this))->get(Repo::fromFullName($full_name));
     }
 
     public function commits(): CommitResource
@@ -62,5 +67,10 @@ class GithubConnector extends Connector implements GithubConnectorInterface
         return [
             'Accept' => 'application/vnd.github.v3+json',
         ];
+    }
+
+    public function repos(): RepoResource
+    {
+        return new RepoResource($this);
     }
 }
