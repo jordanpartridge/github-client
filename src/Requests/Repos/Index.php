@@ -3,7 +3,7 @@
 namespace JordanPartridge\GithubClient\Requests\Repos;
 
 use InvalidArgumentException;
-use JordanPartridge\GithubClient\Data\RepoData;
+use JordanPartridge\GithubClient\Data\Repos\RepoData;
 use JordanPartridge\GithubClient\Enums\Direction;
 use JordanPartridge\GithubClient\Enums\RepoType;
 use JordanPartridge\GithubClient\Enums\Sort;

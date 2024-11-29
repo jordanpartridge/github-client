@@ -4,7 +4,7 @@ namespace JordanPartridge\GithubClient\Requests\Commits;
 
 use InvalidArgumentException;
 use JordanPartridge\GithubClient\Concerns\ValidatesRepoName;
-use JordanPartridge\GithubClient\Data\CommitData;
+use JordanPartridge\GithubClient\Data\Commits\CommitData;
 use JordanPartridge\GithubClient\ValueObjects\Repo;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;

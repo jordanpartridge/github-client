@@ -3,11 +3,10 @@
 namespace JordanPartridge\GithubClient\Resources;
 
 use JordanPartridge\GithubClient\Concerns\ValidatesRepoName;
-use JordanPartridge\GithubClient\Data\CommitData;
+use JordanPartridge\GithubClient\Data\Commits\CommitData;
 use JordanPartridge\GithubClient\Requests\Commits\Get;
 use JordanPartridge\GithubClient\Requests\Commits\Index;
 use JordanPartridge\GithubClient\ValueObjects\Repo;
-use Saloon\Http\Response;
 
 readonly class CommitResource extends BaseResource
 {

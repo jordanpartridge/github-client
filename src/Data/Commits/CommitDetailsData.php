@@ -1,7 +1,9 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Data;
+namespace JordanPartridge\GithubClient\Data\Commits;
 
+use JordanPartridge\GithubClient\Data\TreeData;
+use JordanPartridge\GithubClient\Data\VerificationData;
 use Spatie\LaravelData\Data;
 
 class CommitDetailsData extends Data

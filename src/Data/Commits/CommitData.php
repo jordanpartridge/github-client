@@ -1,8 +1,8 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Data;
+namespace JordanPartridge\GithubClient\Data\Commits;
 
-use Carbon\Carbon;
+use JordanPartridge\GithubClient\Data\GitUserData;
 use Spatie\LaravelData\Data;
 
 class CommitData extends Data

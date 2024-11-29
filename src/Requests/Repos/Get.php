@@ -2,7 +2,7 @@
 
 namespace JordanPartridge\GithubClient\Requests\Repos;
 
-use JordanPartridge\GithubClient\Data\RepoData;
+use JordanPartridge\GithubClient\Data\Repos\RepoData;
 use JordanPartridge\GithubClient\ValueObjects\Repo as RepoValue;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;

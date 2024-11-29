@@ -1,9 +1,9 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Data;
+namespace JordanPartridge\GithubClient\Data\Repos;
 
 use Carbon\Carbon;
-use DateTimeInterface;
+use JordanPartridge\GithubClient\Data\GitUserData;
 use JordanPartridge\GithubClient\Enums\Visibility;
 use Spatie\LaravelData\Attributes\WithCast;
 use Spatie\LaravelData\Casts\DateTimeInterfaceCast;

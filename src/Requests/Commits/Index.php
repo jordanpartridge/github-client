@@ -2,8 +2,7 @@
 
 namespace JordanPartridge\GithubClient\Requests\Commits;
 
-use Illuminate\Support\Collection;
-use JordanPartridge\GithubClient\Data\CommitData;
+use JordanPartridge\GithubClient\Data\Commits\CommitData;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use Saloon\Http\Response;

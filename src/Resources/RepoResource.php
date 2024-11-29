@@ -2,7 +2,7 @@
 
 namespace JordanPartridge\GithubClient\Resources;
 
-use JordanPartridge\GithubClient\Data\RepoData;
+use JordanPartridge\GithubClient\Data\Repos\RepoData;
 use JordanPartridge\GithubClient\Enums\Direction;
 use JordanPartridge\GithubClient\Enums\RepoType;
 use JordanPartridge\GithubClient\Enums\Sort;
