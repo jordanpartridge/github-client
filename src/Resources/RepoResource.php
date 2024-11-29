@@ -93,7 +93,7 @@ readonly class RepoResource extends BaseResource
     /**
      * Get a specific repository by full name
      *
-     * @param Repo $repo -- the repo value object, which handles the validation
+     * @param  Repo  $repo  -- the repo value object, which handles the validation
      * @return RepoData Returns a Saloon response containing the repository details
      *
      * @link https://docs.github.com/en/rest/repos/repos#get-a-repository
