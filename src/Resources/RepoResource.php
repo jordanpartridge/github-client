@@ -10,6 +10,7 @@ use JordanPartridge\GithubClient\Enums\Visibility;
 use JordanPartridge\GithubClient\Requests\Repos\Delete;
 use JordanPartridge\GithubClient\Requests\Repos\Get;
 use JordanPartridge\GithubClient\Requests\Repos\Index;
+use JordanPartridge\GithubClient\ValueObjects\Repo;
 use Saloon\Http\Response;
 
 /**
@@ -92,11 +93,8 @@ readonly class RepoResource extends BaseResource
     /**
      * Get a specific repository by full name
      *
-     * Retrieves detailed information about a specific repository. The repository name
-     * should be in the format "owner/repo" (e.g., "octocat/Hello-World").
-     *
-     * @param  string  $full_name  The full name of the repository (owner/repo)
-     * @return Response Returns a Saloon response containing the repository details
+     * @param Repo $repo -- the repo value object, which handles the validation
+     * @return RepoData Returns a Saloon response containing the repository details
      *
      * @link https://docs.github.com/en/rest/repos/repos#get-a-repository
      *
@@ -106,7 +104,7 @@ readonly class RepoResource extends BaseResource
      * $details = $repo->json();
      * ```
      */
-    public function get(\JordanPartridge\GithubClient\ValueObjects\Repo $repo): RepoData
+    public function get(Repo $repo): RepoData
     {
         return $this->connector()->send(new Get($repo))->dto();
     }

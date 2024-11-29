@@ -4,6 +4,7 @@ namespace JordanPartridge\GithubClient;
 
 use InvalidArgumentException;
 use JordanPartridge\GithubClient\Contracts\GithubConnectorInterface;
+use JordanPartridge\GithubClient\Data\Repos\RepoData;
 use JordanPartridge\GithubClient\Resources\CommitResource;
 use JordanPartridge\GithubClient\Resources\RepoResource;
 use JordanPartridge\GithubClient\ValueObjects\Repo;
@@ -45,9 +46,10 @@ class GithubConnector extends Connector implements GithubConnectorInterface
     }
 
     /**
-     * @return \JordanPartridge\GithubClient\Data\Repos\RepoData|Response
+     * @param string $full_name
+     * @return RepoData
      */
-    public function repo(string $full_name): Repo|Response
+    public function repo(string $full_name): RepoData
     {
         return (new RepoResource($this))->get(Repo::fromFullName($full_name));
     }
