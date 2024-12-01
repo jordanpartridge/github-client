@@ -11,8 +11,9 @@ readonly class Repo
 
     private function __construct(
         private string $owner,
-        private string $name
-    ) {
+        private string $name,
+    )
+    {
         $this->validateRepoName($this->fullName());
     }
 

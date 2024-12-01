@@ -22,7 +22,7 @@ readonly class CommitResource extends BaseResource
             ->send(new Index(repo_name: $repo_name, per_page: $per_page, page: $page))->dto();
     }
 
-    public function get(string $repo_name, string $commit_sha): CommitData
+    public function get(string $repo_name, string $commit_sha)
     {
         $this->validateRepoName($repo_name);
         $repo = $this->dataObjectFromFullName($repo_name);
