@@ -12,11 +12,14 @@ readonly class CommitResource extends BaseResource
 {
     use ValidatesRepoName;
 
-    public function all(string $repo_name , $per_age = 100, $page = 1): array
+    public function all(
+        string $repo_name,
+        ?int $per_page = 100,
+        ?int $page = 1): array
     {
         return $this->validateRepo($repo_name)
             ->connector()
-            ->send(new Index(repo_name: $repo_name, per_page: $per_age, page: $page))->dto();
+            ->send(new Index(repo_name: $repo_name, per_page: $per_page, page: $page))->dto();
     }
 
     public function get(string $repo_name, string $commit_sha): CommitData
