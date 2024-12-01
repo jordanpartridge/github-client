@@ -17,8 +17,15 @@ class Index extends Request
 {
     use ValidatesRepoName;
 
+    /**
+     * @var Method The HTTP method for this request
+     */
     protected Method $method = Method::GET;
 
+    /**
+     * @param $repo_name - full repo name
+     * @param $commit_sha - sha for commit
+     */
     public function __construct(private $repo_name, private $commit_sha)
     {
         Repo::fromFullName($this->repo_name);
