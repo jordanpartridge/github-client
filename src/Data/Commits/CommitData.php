@@ -3,7 +3,9 @@
 namespace JordanPartridge\GithubClient\Data\Commits;
 
 use JordanPartridge\GithubClient\Data\GitUserData;
+use Spatie\LaravelData\Attributes\DataCollectionOf;
 use Spatie\LaravelData\Data;
+use Spatie\LaravelData\DataCollection;
 
 class CommitData extends Data
 {
@@ -17,5 +19,8 @@ class CommitData extends Data
         public ?GitUserData $author,
         public ?GitUserData $committer,
         public array $parents,
+        public ?CommitStatsData $stats = null,
+        #[DataCollectionOf(CommitFileData::class)]
+        public ?DataCollection $files = null,
     ) {}
 }
