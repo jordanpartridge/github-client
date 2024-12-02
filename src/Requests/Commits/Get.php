@@ -13,6 +13,7 @@ use JordanPartridge\GithubClient\Data\GitUserData;
 use JordanPartridge\GithubClient\Data\TreeData;
 use JordanPartridge\GithubClient\Data\VerificationData;
 use JordanPartridge\GithubClient\ValueObjects\Repo;
+use JsonException;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use Saloon\Http\Response;
@@ -44,54 +45,11 @@ class Get extends Request
         }
     }
 
-    public function createDtoFromResponse(Response $response): mixed
+    /**
+     * @throws JsonException
+     */
+    public function createDtoFromResponse(Response $response): CommitData
     {
-        $data = $response->json();
-
-        return new CommitData(
-            sha: $data['sha'],
-            node_id: $data['node_id'],
-            commit: new CommitDetailsData(
-                author: new CommitAuthorData(
-                    name: $data['commit']['author']['name'],
-                    email: $data['commit']['author']['email'],
-                    date: Carbon::parse($data['commit']['author']['date'])
-                ),
-                committer: new CommitAuthorData(
-                    name: $data['commit']['committer']['name'],
-                    email: $data['commit']['committer']['email'],
-                    date: Carbon::parse($data['commit']['committer']['date'])
-                ),
-                message: $data['commit']['message'],
-                tree: new TreeData(...$data['commit']['tree']),
-                url: $data['commit']['url'],
-                comment_count: $data['commit']['comment_count'],
-                verification: new VerificationData(...$data['commit']['verification']),
-                files: isset($data['files']) ? new DataCollection(
-                    FileDTO::class,
-                    array_map(function ($file) {
-                        return new FileDTO(
-                            sha: $file['sha'],
-                            filename: $file['filename'],
-                            status: $file['status'],
-                            additions: $file['additions'],
-                            deletions: $file['deletions'],
-                            changes: $file['changes'],
-                            raw_url: $file['raw_url'],
-                            contents_url: $file['contents_url'],
-                            blob_url: $file['blob_url'],
-                            patch: $file['patch'] ?? null,
-                            size: $file['size'] ?? null
-                        );
-                    }, $data['files'])
-                ) : null
-            ),
-            url: $data['url'],
-            html_url: $data['html_url'],
-            comments_url: $data['comments_url'],
-            author: $data['author'] ? new GitUserData(...$data['author']) : null,
-            committer: $data['committer'] ? new GitUserData(...$data['committer']) : null,
-            parents: $data['parents']
-        );
+        return CommitData::from($response->json());
     }
 }

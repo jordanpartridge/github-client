@@ -7,7 +7,6 @@ use Spatie\LaravelData\Data;
 class CommitFileData extends Data
 {
     public function __construct(
-        public string $sha,
         public string $filename,
         public string $status,
         public int $additions,
@@ -16,7 +15,8 @@ class CommitFileData extends Data
         public string $blob_url,
         public string $raw_url,
         public string $contents_url,
-        public string $patch,
+        public ?string $patch = null,
+        public ?string $sha = null,
     ) {}
 }
 
