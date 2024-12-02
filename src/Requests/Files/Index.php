@@ -23,19 +23,19 @@ class Index extends Request
     protected Method $method = Method::GET;
 
     /**
-     * @param $repo_name - full repo name
-     * @param $commit_sha - sha for commit
+     * @param  $repo_name  - full repo name
+     * @param  $commit_sha  - sha for commit
      */
     public function __construct(private $repo_name, private $commit_sha)
     {
         Repo::fromFullName($this->repo_name);
-        if (!preg_match('/^[0-9a-f]{40}$/i', $commit_sha)) {
+        if (! preg_match('/^[0-9a-f]{40}$/i', $commit_sha)) {
             throw new InvalidArgumentException('Invalid commit SHA format');
         }
     }
 
     public function resolveEndpoint(): string
     {
-        return 'repos/' . $this->repo_name . '/commits/' . $this->commit_sha . '/files';
+        return 'repos/'.$this->repo_name.'/commits/'.$this->commit_sha.'/files';
     }
 }

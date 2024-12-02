@@ -53,6 +53,7 @@ class Index extends Request
              */
             return [];
         }
+
         return $response->collect()->map(function (array $commit) {
             return CommitData::from($commit);
         })->all();

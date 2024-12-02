@@ -19,4 +19,3 @@ class CommitFileData extends Data
         public ?string $sha = null,
     ) {}
 }
-

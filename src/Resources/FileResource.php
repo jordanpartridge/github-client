@@ -13,10 +13,10 @@ readonly class FileResource extends BaseResource
     {
         $repo = Repo::fromFullName($repo_name);
 
-        if (!preg_match('/^[0-9a-f]{40}$/i', $commit_sha)) {
+        if (! preg_match('/^[0-9a-f]{40}$/i', $commit_sha)) {
             throw new InvalidArgumentException('Invalid commit SHA format');
         }
+
         return $this->connector()->send(new Index($repo->fullName(), $commit_sha));
     }
-
 }
