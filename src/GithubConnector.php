@@ -24,10 +24,12 @@ class GithubConnector extends Connector implements GithubConnectorInterface
      *
      * @see https://github.com/settings/tokens
      */
-    public function __construct(string $token)
+    public function __construct(?string $token = null)
     {
-        $this->validateToken($token);
-        $this->authenticate(new TokenAuthenticator($token));
+        if ($token) {
+            $this->validateToken($token);
+            $this->authenticate(new TokenAuthenticator($token));
+        }
     }
 
     /**
