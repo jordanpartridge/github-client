@@ -16,7 +16,7 @@ class FileDTO extends Data
         public string $raw_url = '',
         public string $contents_url = '',
         public string $blob_url = '',
-        public string $patch = '',
-        public int $size = 0,
+        public ?string $patch = null,
+        public ?int $size = null,
     ) {}
 }

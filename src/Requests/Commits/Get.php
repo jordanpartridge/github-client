@@ -6,6 +6,7 @@ use InvalidArgumentException;
 use JordanPartridge\GithubClient\Concerns\ValidatesRepoName;
 use JordanPartridge\GithubClient\Data\Commits\CommitData;
 use JordanPartridge\GithubClient\ValueObjects\Repo;
+use JsonException;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use Saloon\Http\Response;
@@ -35,8 +36,11 @@ class Get extends Request
         }
     }
 
-    public function createDtoFromResponse(Response $response): mixed
+    /**
+     * @throws JsonException
+     */
+    public function createDtoFromResponse(Response $response): CommitData
     {
-        return CommitData::from(data: $response->json());
+        return CommitData::from($response->json());
     }
 }

@@ -4,6 +4,7 @@ namespace JordanPartridge\GithubClient;
 
 use JordanPartridge\GithubClient\Contracts\GithubConnectorInterface;
 use JordanPartridge\GithubClient\Resources\CommitResource;
+use JordanPartridge\GithubClient\Resources\FileResource;
 use JordanPartridge\GithubClient\Resources\RepoResource;
 
 class Github
@@ -27,5 +28,10 @@ class Github
     public function commits(): CommitResource
     {
         return $this->connector->commits();
+    }
+
+    public function files(): FileResource
+    {
+        return $this->connector->files();
     }
 }

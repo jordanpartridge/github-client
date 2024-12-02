@@ -6,6 +6,7 @@ use InvalidArgumentException;
 use JordanPartridge\GithubClient\Contracts\GithubConnectorInterface;
 use JordanPartridge\GithubClient\Data\Repos\RepoData;
 use JordanPartridge\GithubClient\Resources\CommitResource;
+use JordanPartridge\GithubClient\Resources\FileResource;
 use JordanPartridge\GithubClient\Resources\RepoResource;
 use JordanPartridge\GithubClient\ValueObjects\Repo;
 use Saloon\Http\Auth\TokenAuthenticator;
@@ -52,6 +53,11 @@ class GithubConnector extends Connector implements GithubConnectorInterface
     public function commits(): CommitResource
     {
         return new CommitResource($this);
+    }
+
+    public function files(): FileResource
+    {
+        return new FileResource($this);
     }
 
     /**
