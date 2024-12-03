@@ -31,12 +31,12 @@ readonly class RepoResource extends BaseResource
      * to access. This includes owned repositories, collaborated repositories,
      * and organization repositories where the user has appropriate access.
      *
-     * @param int|null $per_page Number of results per page (max 100)
-     * @param int|null $page Page number of the results to fetch
-     * @param Visibility|null $visibility Filter repositories by visibility (public, private, all)
-     * @param Sort|null $sort Sort repositories by field (created, updated, pushed, full_name)
-     * @param Direction|null $direction Sort direction (asc or desc)
-     * @param RepoType|null $type Type of repositories to return
+     * @param  int|null  $per_page  Number of results per page (max 100)
+     * @param  int|null  $page  Page number of the results to fetch
+     * @param  Visibility|null  $visibility  Filter repositories by visibility (public, private, all)
+     * @param  Sort|null  $sort  Sort repositories by field (created, updated, pushed, full_name)
+     * @param  Direction|null  $direction  Sort direction (asc or desc)
+     * @param  RepoType|null  $type  Type of repositories to return
      * @return Response Returns a Saloon response containing the repository data
      *
      * @link https://docs.github.com/en/rest/repos/repos#list-repositories-for-the-authenticated-user
@@ -62,7 +62,7 @@ readonly class RepoResource extends BaseResource
     /**
      * Get a specific repository
      *
-     * @param Repo $repo Repository to retrieve
+     * @param  Repo  $repo  Repository to retrieve
      * @return RepoData Returns repository details as a data object
      *
      * @link https://docs.github.com/en/rest/repos/repos#get-a-repository
@@ -81,7 +81,7 @@ readonly class RepoResource extends BaseResource
     /**
      * Delete a repository
      *
-     * @param Repo $repo Repository to delete
+     * @param  Repo  $repo  Repository to delete
      * @return Response Response indicating success/failure
      *
      * @link https://docs.github.com/en/rest/repos/repos#delete-a-repository

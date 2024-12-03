@@ -42,24 +42,24 @@ class Github
     /**
      * Get a repository by its full name
      *
-     * @param string $fullName Repository full name (e.g. "owner/repo")
-     * @return RepoData
+     * @param  string  $fullName  Repository full name (e.g. "owner/repo")
      */
     public function getRepo(string $fullName): RepoData
     {
         $repo = Repo::fromFullName($fullName);
+
         return $this->repos()->get($repo);
     }
 
     /**
      * Delete a repository by its full name
      *
-     * @param string $fullName Repository full name (e.g. "owner/repo")
-     * @return Response
+     * @param  string  $fullName  Repository full name (e.g. "owner/repo")
      */
     public function deleteRepo(string $fullName): Response
     {
         $repo = Repo::fromFullName($fullName);
+
         return $this->repos()->delete($repo);
     }
 }
