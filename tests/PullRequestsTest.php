@@ -1,9 +1,8 @@
 <?php
 
-use JordanPartridge\GithubClient\Data\GitUserData;
+use JordanPartridge\GithubClient\Data\PullRequests\PullRequestCommentDTO;
 use JordanPartridge\GithubClient\Data\PullRequests\PullRequestDTO;
 use JordanPartridge\GithubClient\Data\PullRequests\PullRequestReviewDTO;
-use JordanPartridge\GithubClient\Data\PullRequests\PullRequestCommentDTO;
 use JordanPartridge\GithubClient\Enums\MergeMethod;
 use JordanPartridge\GithubClient\Facades\Github;
 use Saloon\Http\Faking\MockClient;
@@ -54,7 +53,7 @@ beforeEach(function () {
 describe('pull request operations', function () {
     it('can list pull requests', function () {
         $response = Github::pullRequests()->all('test', 'repo');
-        
+
         expect($response)
             ->toBeArray()
             ->and($response[0])
@@ -64,7 +63,7 @@ describe('pull request operations', function () {
 
     it('can get a specific pull request', function () {
         $pullRequest = Github::pullRequests()->get('test', 'repo', 1);
-        
+
         expect($pullRequest)
             ->toBeInstanceOf(PullRequestDTO::class)
             ->and($pullRequest->number)->toBe(1)
@@ -81,7 +80,7 @@ describe('pull request operations', function () {
             'Adding a new feature',
             false
         );
-        
+
         expect($pullRequest)
             ->toBeInstanceOf(PullRequestDTO::class)
             ->and($pullRequest->title)->toBe('Test Pull Request');
@@ -91,7 +90,7 @@ describe('pull request operations', function () {
         $pullRequest = Github::pullRequests()->update('test', 'repo', 1, [
             'title' => 'Updated Title',
         ]);
-        
+
         expect($pullRequest)
             ->toBeInstanceOf(PullRequestDTO::class);
     });
@@ -109,7 +108,7 @@ describe('pull request operations', function () {
             null,
             MergeMethod::Squash
         );
-        
+
         expect($merged)->toBeTrue();
     });
 });
@@ -140,7 +139,7 @@ describe('pull request reviews', function () {
 
     it('can list pull request reviews', function () {
         $reviews = Github::pullRequests()->reviews('test', 'repo', 1);
-        
+
         expect($reviews)
             ->toBeArray()
             ->and($reviews[0])
@@ -156,7 +155,7 @@ describe('pull request reviews', function () {
             'Great work!',
             'APPROVE'
         );
-        
+
         expect($review)
             ->toBeInstanceOf(PullRequestReviewDTO::class)
             ->and($review->state)->toBe('APPROVED');
@@ -193,7 +192,7 @@ describe('pull request comments', function () {
 
     it('can list pull request comments', function () {
         $comments = Github::pullRequests()->comments('test', 'repo', 1);
-        
+
         expect($comments)
             ->toBeArray()
             ->and($comments[0])
@@ -211,7 +210,7 @@ describe('pull request comments', function () {
             'src/test.php',
             5
         );
-        
+
         expect($comment)
             ->toBeInstanceOf(PullRequestCommentDTO::class)
             ->and($comment->body)->toBe('Consider using a different approach here');
