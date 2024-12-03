@@ -2,9 +2,9 @@
 
 namespace JordanPartridge\GithubClient\Resources;
 
-use JordanPartridge\GithubClient\Data\PullRequests\PullRequestCommentDTO;
 use JordanPartridge\GithubClient\Data\PullRequests\PullRequestDTO;
 use JordanPartridge\GithubClient\Data\PullRequests\PullRequestReviewDTO;
+use JordanPartridge\GithubClient\Data\PullRequests\PullRequestCommentDTO;
 use JordanPartridge\GithubClient\Enums\MergeMethod;
 
 class PullRequestResource extends BaseResource
@@ -14,7 +14,7 @@ class PullRequestResource extends BaseResource
         $response = $this->client->get("/repos/{$owner}/{$repo}/pulls", $parameters);
 
         return array_map(
-            fn (array $pullRequest) => PullRequestDTO::fromArray($pullRequest),
+            fn (array $pullRequest) => PullRequestDTO::fromApiResponse($pullRequest),
             $response,
         );
     }
@@ -23,7 +23,7 @@ class PullRequestResource extends BaseResource
     {
         $response = $this->client->get("/repos/{$owner}/{$repo}/pulls/{$number}");
 
-        return PullRequestDTO::fromArray($response);
+        return PullRequestDTO::fromApiResponse($response);
     }
 
     public function create(
@@ -43,7 +43,7 @@ class PullRequestResource extends BaseResource
             'draft' => $draft,
         ]);
 
-        return PullRequestDTO::fromArray($response);
+        return PullRequestDTO::fromApiResponse($response);
     }
 
     public function update(
@@ -54,7 +54,7 @@ class PullRequestResource extends BaseResource
     ): PullRequestDTO {
         $response = $this->client->patch("/repos/{$owner}/{$repo}/pulls/{$number}", $parameters);
 
-        return PullRequestDTO::fromArray($response);
+        return PullRequestDTO::fromApiResponse($response);
     }
 
     public function merge(
@@ -87,7 +87,7 @@ class PullRequestResource extends BaseResource
         $response = $this->client->get("/repos/{$owner}/{$repo}/pulls/{$number}/reviews");
 
         return array_map(
-            fn (array $review) => PullRequestReviewDTO::fromArray($review),
+            fn (array $review) => PullRequestReviewDTO::fromApiResponse($review),
             $response,
         );
     }
@@ -109,7 +109,7 @@ class PullRequestResource extends BaseResource
             ],
         );
 
-        return PullRequestReviewDTO::fromArray($response);
+        return PullRequestReviewDTO::fromApiResponse($response);
     }
 
     public function comments(
@@ -120,7 +120,7 @@ class PullRequestResource extends BaseResource
         $response = $this->client->get("/repos/{$owner}/{$repo}/pulls/{$number}/comments");
 
         return array_map(
-            fn (array $comment) => PullRequestCommentDTO::fromArray($comment),
+            fn (array $comment) => PullRequestCommentDTO::fromApiResponse($comment),
             $response,
         );
     }
@@ -144,6 +144,6 @@ class PullRequestResource extends BaseResource
             ],
         );
 
-        return PullRequestCommentDTO::fromArray($response);
+        return PullRequestCommentDTO::fromApiResponse($response);
     }
 }
