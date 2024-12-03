@@ -3,8 +3,9 @@
 namespace JordanPartridge\GithubClient\Data\PullRequests;
 
 use JordanPartridge\GithubClient\Data\GitUserData;
+use Spatie\LaravelData\Data;
 
-final class PullRequestCommentDTO
+class PullRequestCommentDTO extends Data
 {
     public function __construct(
         public readonly int $id,
@@ -22,7 +23,7 @@ final class PullRequestCommentDTO
         public readonly string $updated_at,
     ) {}
 
-    public static function fromArray(array $data): self
+    public static function fromApiResponse(array $data): self
     {
         return new self(
             id: $data['id'],
@@ -32,7 +33,7 @@ final class PullRequestCommentDTO
             original_position: $data['original_position'] ?? -1,
             commit_id: $data['commit_id'],
             original_commit_id: $data['original_commit_id'],
-            user: GitUserData::fromArray($data['user']),
+            user: GitUserData::from($data['user']),
             body: $data['body'],
             html_url: $data['html_url'],
             pull_request_url: $data['pull_request_url'],
