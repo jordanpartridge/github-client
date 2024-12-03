@@ -53,20 +53,49 @@ $commits = GitHub::commits()->all('jordanpartridge/github-client'); // Get all c
 $specificCommit = GitHub::commits()->get('abc123...'); // Get a specific commit by SHA
 ```
 
-Each resource follows a consistent pattern similar to Laravel's basic resource operations:
-- `all()` - Retrieve all resources
-- `get()` - Retrieve a specific resource
+### Available Resources and Methods
 
-### Available Resources
-
+#### Repository Resource
 ```php
-// Repositories
-GitHub::repos()->all(); // List all repositories
+// List repositories
+GitHub::repos()->all(); // List all accessible repositories
 GitHub::repos()->get('owner/repo'); // Get a specific repository
+GitHub::repos()->create(['name' => 'repo-name', 'private' => true]); // Create a new repository
+GitHub::repos()->update('owner/repo', ['description' => 'New description']); // Update repository
+GitHub::repos()->delete('owner/repo'); // Delete a repository
+GitHub::repos()->branches('owner/repo'); // List repository branches
+GitHub::repos()->tags('owner/repo'); // List repository tags
+GitHub::repos()->contributors('owner/repo'); // List repository contributors
 
-// Commits
-GitHub::commits()->all('owner/repo'); // List all commits for a repository
-GitHub::commits()->get('sha'); // Get a specific commit by SHA
+// Branch Protection
+GitHub::repos()->protectBranch('owner/repo', 'main', [
+    'required_status_checks' => null,
+    'enforce_admins' => true,
+    'required_pull_request_reviews' => null,
+    'restrictions' => null
+]);
+```
+
+#### Commit Resource
+```php
+// Working with commits
+GitHub::commits()->all('owner/repo'); // List all commits
+GitHub::commits()->get('owner/repo', 'commit-sha'); // Get a specific commit
+GitHub::commits()->compare('owner/repo', 'base', 'head'); // Compare two commits
+```
+
+#### File Resource
+```php
+// File operations
+GitHub::files()->get('owner/repo', 'path/to/file.txt'); // Get file content
+GitHub::files()->create('owner/repo', 'path/to/file.txt', [
+    'message' => 'Create file',
+    'content' => base64_encode('file content')
+]); // Create or update file
+GitHub::files()->delete('owner/repo', 'path/to/file.txt', [
+    'message' => 'Delete file',
+    'sha' => 'file-sha'
+]); // Delete file
 ```
 
 ### Using Dependency Injection
@@ -87,9 +116,12 @@ Publish the configuration file:
 php artisan vendor:publish --tag="github-client-config"
 ```
 
-## Documentation
-
-For detailed documentation, please visit our [documentation page](https://github.com/jordanpartridge/github-client#documentation).
+The published configuration file allows you to customize:
+- Base API URL
+- Default authentication token
+- Request timeout
+- Retry settings
+- Rate limit handling
 
 ## Testing
 
