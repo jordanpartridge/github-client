@@ -5,6 +5,7 @@ namespace JordanPartridge\GithubClient;
 use JordanPartridge\GithubClient\Contracts\GithubConnectorInterface;
 use JordanPartridge\GithubClient\Resources\CommitResource;
 use JordanPartridge\GithubClient\Resources\FileResource;
+use JordanPartridge\GithubClient\Resources\PullRequestResource;
 use JordanPartridge\GithubClient\Resources\RepoResource;
 
 class Github
@@ -33,5 +34,10 @@ class Github
     public function files(): FileResource
     {
         return $this->connector->files();
+    }
+
+    public function pullRequests(): PullRequestResource
+    {
+        return $this->connector->pullRequests();
     }
 }
