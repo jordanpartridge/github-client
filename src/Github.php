@@ -3,7 +3,6 @@
 namespace JordanPartridge\GithubClient;
 
 use InvalidArgumentException;
-use RuntimeException;
 use JordanPartridge\GithubClient\Concerns\ValidatesGithubFullName;
 use JordanPartridge\GithubClient\Contracts\GithubConnectorInterface;
 use JordanPartridge\GithubClient\Data\Repos\RepoData;
@@ -11,6 +10,7 @@ use JordanPartridge\GithubClient\Resources\CommitResource;
 use JordanPartridge\GithubClient\Resources\FileResource;
 use JordanPartridge\GithubClient\Resources\RepoResource;
 use JordanPartridge\GithubClient\ValueObjects\Repo;
+use RuntimeException;
 use Saloon\Http\Response;
 
 final class Github
@@ -50,6 +50,7 @@ final class Github
     public function getRepo(string $fullName): RepoData
     {
         $repo = Repo::fromString($fullName);
+
         return $this->repos()->get($repo);
     }
 
@@ -62,6 +63,7 @@ final class Github
     public function deleteRepo(string $fullName): Response
     {
         $repo = Repo::fromString($fullName);
+
         return $this->repos()->delete($repo);
     }
 }
