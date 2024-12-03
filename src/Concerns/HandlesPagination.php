@@ -15,7 +15,7 @@ trait HandlesPagination
         do {
             /** @var PaginatedResponse $response */
             $response = $resource($page);
-            
+
             foreach ($response->json() as $item) {
                 yield $item;
             }

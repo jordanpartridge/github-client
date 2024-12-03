@@ -18,21 +18,23 @@ class PaginatedResponse extends Response
 
     public function getNextPageUrl(): ?string
     {
-        if (!$this->hasNextPage()) {
+        if (! $this->hasNextPage()) {
             return null;
         }
 
         preg_match('/<([^>]*)>;\s*rel="next"/', $this->header('Link'), $matches);
+
         return $matches[1] ?? null;
     }
 
     public function getPreviousPageUrl(): ?string
     {
-        if (!$this->hasPreviousPage()) {
+        if (! $this->hasPreviousPage()) {
             return null;
         }
 
         preg_match('/<([^>]*)>;\s*rel="prev"/', $this->header('Link'), $matches);
+
         return $matches[1] ?? null;
     }
 
@@ -44,11 +46,12 @@ class PaginatedResponse extends Response
     public function getCurrentPage(): int
     {
         $url = $this->request?->getUrl();
-        if (!$url) {
+        if (! $url) {
             return 1;
         }
 
         parse_str(parse_url($url, PHP_URL_QUERY), $query);
+
         return (int) ($query['page'] ?? 1);
     }
 }
