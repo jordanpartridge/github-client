@@ -21,19 +21,6 @@ use Saloon\Http\Response;
  * as well as managing repository settings and metadata.
  *
  * @link https://docs.github.com/en/rest/repos/repos Documentation for GitHub Repository API
- *
- * Usage example:
- * ```php
- * $repos = new RepoResource($connector);
- *
- * // List all public repositories
- * $response = $repos->all(
- *     per_page: 30,
- *     visibility: Visibility::PUBLIC,
- *     sort: Sort::CREATED,
- *     direction: Direction::DESC
- * );
- * ```
  */
 readonly class RepoResource extends BaseResource
 {
@@ -44,33 +31,15 @@ readonly class RepoResource extends BaseResource
      * to access. This includes owned repositories, collaborated repositories,
      * and organization repositories where the user has appropriate access.
      *
-     * @param  int|null  $per_page  Number of results per page (max 100)
-     * @param  int|null  $page  Page number of the results to fetch
-     * @param  Visibility|null  $visibility  Filter repositories by visibility (public, private, all)
-     * @param  Sort|null  $sort  Sort repositories by field (created, updated, pushed, full_name)
-     * @param  Direction|null  $direction  Sort direction (asc or desc)
+     * @param int|null $per_page Number of results per page (max 100)
+     * @param int|null $page Page number of the results to fetch
+     * @param Visibility|null $visibility Filter repositories by visibility (public, private, all)
+     * @param Sort|null $sort Sort repositories by field (created, updated, pushed, full_name)
+     * @param Direction|null $direction Sort direction (asc or desc)
+     * @param RepoType|null $type Type of repositories to return
      * @return Response Returns a Saloon response containing the repository data
      *
      * @link https://docs.github.com/en/rest/repos/repos#list-repositories-for-the-authenticated-user
-     *
-     * Example Response:
-     * ```json
-     * [
-     *   {
-     *     "id": 1296269,
-     *     "node_id": "MDEwOlJlcG9zaXRvcnkxMjk2MjY5",
-     *     "name": "Hello-World",
-     *     "full_name": "octocat/Hello-World",
-     *     "owner": {
-     *       "login": "octocat",
-     *       "id": 1
-     *     },
-     *     "private": false,
-     *     "description": "This your first repo!",
-     *     "visibility": "public"
-     *   }
-     * ]
-     * ```
      */
     public function all(
         ?int $per_page = null,
@@ -91,17 +60,17 @@ readonly class RepoResource extends BaseResource
     }
 
     /**
-     * Get a specific repository by full name
+     * Get a specific repository
      *
-     * @param  Repo  $repo  -- the repo value object, which handles the validation
-     * @return RepoData Returns a Saloon response containing the repository details
+     * @param Repo $repo Repository to retrieve
+     * @return RepoData Returns repository details as a data object
      *
      * @link https://docs.github.com/en/rest/repos/repos#get-a-repository
      *
      * Example Usage:
      * ```php
-     * $repo = $repos->get('jordanpartridge/github-client');
-     * $details = $repo->json();
+     * $repo = Repo::fromFullName('owner/repo');
+     * $details = $repos->get($repo);
      * ```
      */
     public function get(Repo $repo): RepoData
@@ -109,8 +78,22 @@ readonly class RepoResource extends BaseResource
         return $this->connector()->send(new Get($repo))->dto();
     }
 
-    public function delete(string $full_name): Response
+    /**
+     * Delete a repository
+     *
+     * @param Repo $repo Repository to delete
+     * @return Response Response indicating success/failure
+     *
+     * @link https://docs.github.com/en/rest/repos/repos#delete-a-repository
+     *
+     * Example Usage:
+     * ```php
+     * $repo = Repo::fromFullName('owner/repo');
+     * $response = $repos->delete($repo);
+     * ```
+     */
+    public function delete(Repo $repo): Response
     {
-        return $this->connector()->send(new Delete($full_name));
+        return $this->connector()->send(new Delete($repo->getFullName()));
     }
 }
