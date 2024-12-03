@@ -3,8 +3,9 @@
 namespace JordanPartridge\GithubClient\Data\PullRequests;
 
 use JordanPartridge\GithubClient\Data\GitUserData;
+use Spatie\LaravelData\Data;
 
-final class PullRequestReviewDTO
+class PullRequestReviewDTO extends Data
 {
     public function __construct(
         public readonly int $id,
@@ -18,12 +19,12 @@ final class PullRequestReviewDTO
         public readonly string $submitted_at,
     ) {}
 
-    public static function fromArray(array $data): self
+    public static function fromApiResponse(array $data): self
     {
         return new self(
             id: $data['id'],
             node_id: $data['node_id'],
-            user: GitUserData::fromArray($data['user']),
+            user: GitUserData::from($data['user']),
             body: $data['body'] ?? '',
             state: $data['state'],
             html_url: $data['html_url'],

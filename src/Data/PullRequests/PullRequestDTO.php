@@ -3,8 +3,9 @@
 namespace JordanPartridge\GithubClient\Data\PullRequests;
 
 use JordanPartridge\GithubClient\Data\GitUserData;
+use Spatie\LaravelData\Data;
 
-final class PullRequestDTO
+class PullRequestDTO extends Data
 {
     public function __construct(
         public readonly int $id,
@@ -34,7 +35,7 @@ final class PullRequestDTO
         public readonly ?string $closed_at,
     ) {}
 
-    public static function fromArray(array $data): self
+    public static function fromApiResponse(array $data): self
     {
         return new self(
             id: $data['id'],
@@ -57,8 +58,8 @@ final class PullRequestDTO
             additions: $data['additions'],
             deletions: $data['deletions'],
             changed_files: $data['changed_files'],
-            user: GitUserData::fromArray($data['user']),
-            merged_by: isset($data['merged_by']) ? GitUserData::fromArray($data['merged_by']) : null,
+            user: GitUserData::from($data['user']),
+            merged_by: isset($data['merged_by']) ? GitUserData::from($data['merged_by']) : null,
             created_at: $data['created_at'],
             updated_at: $data['updated_at'],
             closed_at: $data['closed_at'],
