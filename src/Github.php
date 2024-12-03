@@ -47,6 +47,7 @@ final class Github
     public function getRepo(string $fullName): RepoData
     {
         $repo = Repo::fromString($fullName);
+
         return $this->repos()->get($repo);
     }
 
@@ -58,6 +59,7 @@ final class Github
     public function deleteRepo(string $fullName): Response
     {
         $repo = Repo::fromString($fullName);
+
         return $this->repos()->delete($repo);
     }
 }
