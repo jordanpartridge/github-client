@@ -2,6 +2,8 @@
 
 namespace JordanPartridge\GithubClient;
 
+use InvalidArgumentException;
+use RuntimeException;
 use JordanPartridge\GithubClient\Concerns\ValidatesGithubFullName;
 use JordanPartridge\GithubClient\Contracts\GithubConnectorInterface;
 use JordanPartridge\GithubClient\Data\Repos\RepoData;
@@ -43,11 +45,11 @@ final class Github
      * Get a repository by its full name (e.g. owner/repo)
      *
      * @throws InvalidArgumentException when the repository name is invalid
+     * @throws RuntimeException if the request fails
      */
     public function getRepo(string $fullName): RepoData
     {
         $repo = Repo::fromString($fullName);
-
         return $this->repos()->get($repo);
     }
 
@@ -55,11 +57,11 @@ final class Github
      * Delete a repository by its full name (e.g. owner/repo)
      *
      * @throws InvalidArgumentException when the repository name is invalid
+     * @throws RuntimeException if the request fails
      */
     public function deleteRepo(string $fullName): Response
     {
         $repo = Repo::fromString($fullName);
-
         return $this->repos()->delete($repo);
     }
 }
