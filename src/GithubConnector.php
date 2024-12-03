@@ -2,13 +2,12 @@
 
 namespace JordanPartridge\GithubClient;
 
+use Illuminate\Support\Facades\Log;
 use InvalidArgumentException;
 use JordanPartridge\GithubClient\Contracts\GithubConnectorInterface;
 use JordanPartridge\GithubClient\Resources\CommitResource;
 use JordanPartridge\GithubClient\Resources\FileResource;
 use JordanPartridge\GithubClient\Resources\RepoResource;
-use JordanPartridge\GithubClient\ValueObjects\Repo;
-use Illuminate\Support\Facades\Log;
 use Saloon\Http\Auth\TokenAuthenticator;
 use Saloon\Http\Connector;
 use Saloon\Traits\OAuth2\AuthorizationCodeGrant;
@@ -37,9 +36,10 @@ class GithubConnector extends Connector implements GithubConnectorInterface
      */
     public function resolveBaseUrl(): string
     {
-        if (!config()->has('github-client.base_url')) {
+        if (! config()->has('github-client.base_url')) {
             Log::info('Using default GitHub API URL as no custom URL configured');
         }
+
         return config('github-client.base_url', 'https://api.github.com');
     }
 
