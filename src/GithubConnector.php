@@ -2,54 +2,47 @@
 
 namespace JordanPartridge\GithubClient;
 
-use InvalidArgumentException;
 use JordanPartridge\GithubClient\Contracts\GithubConnectorInterface;
-use JordanPartridge\GithubClient\Data\Repos\RepoData;
 use JordanPartridge\GithubClient\Resources\CommitResource;
 use JordanPartridge\GithubClient\Resources\FileResource;
+use JordanPartridge\GithubClient\Resources\PullRequestResource;
 use JordanPartridge\GithubClient\Resources\RepoResource;
-use JordanPartridge\GithubClient\ValueObjects\Repo;
 use Saloon\Http\Auth\TokenAuthenticator;
 use Saloon\Http\Connector;
-use Saloon\Traits\OAuth2\AuthorizationCodeGrant;
 use Saloon\Traits\Plugins\AcceptsJson;
 
 class GithubConnector extends Connector implements GithubConnectorInterface
 {
     use AcceptsJson;
-    use AuthorizationCodeGrant;
 
-    /**
-     * Token can be passed in the constructor, this can be generated from the Github Developer Settings.
-     *
-     * @see https://github.com/settings/tokens
-     */
+    protected ?string $token;
+
     public function __construct(?string $token = null)
     {
-        if ($token) {
-            $this->validateToken($token);
-            $this->authenticate(new TokenAuthenticator($token));
-        }
+        $this->token = $token;
     }
 
-    /**
-     * The Base URL of the API.
-     */
     public function resolveBaseUrl(): string
     {
-        return config('github-client.base_url', 'https://api.github.com');
+        return 'https://api.github.com';
     }
 
-    private function validateToken(string $token): void
+    protected function defaultAuth(): TokenAuthenticator
     {
-        if (empty(trim($token))) {
-            throw new InvalidArgumentException('Token is required');
-        }
+        return new TokenAuthenticator($this->token ?? config('github-client.token'));
     }
 
-    public function repo(string $full_name): RepoData
+    protected function defaultHeaders(): array
     {
-        return (new RepoResource($this))->get(Repo::fromFullName($full_name));
+        return [
+            'Accept' => 'application/vnd.github.v3+json',
+            'X-GitHub-Api-Version' => '2022-11-28',
+        ];
+    }
+
+    public function repos(): RepoResource
+    {
+        return new RepoResource($this);
     }
 
     public function commits(): CommitResource
@@ -62,20 +55,8 @@ class GithubConnector extends Connector implements GithubConnectorInterface
         return new FileResource($this);
     }
 
-    /**
-     * Default headers for every request.
-     *
-     * @return string[]
-     */
-    protected function defaultHeaders(): array
+    public function pullRequests(): PullRequestResource
     {
-        return [
-            'Accept' => 'application/vnd.github.v3+json',
-        ];
-    }
-
-    public function repos(): RepoResource
-    {
-        return new RepoResource($this);
+        return new PullRequestResource($this);
     }
 }
