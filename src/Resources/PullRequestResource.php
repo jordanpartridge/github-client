@@ -7,11 +7,12 @@ use JordanPartridge\GithubClient\Data\PullRequests\PullRequestDTO;
 use JordanPartridge\GithubClient\Data\PullRequests\PullRequestReviewDTO;
 use JordanPartridge\GithubClient\Enums\MergeMethod;
 
-class PullRequestResource extends BaseResource
+readonly class PullRequestResource extends BaseResource
 {
     public function all(string $owner, string $repo, array $parameters = []): array
     {
-        $response = $this->client->get("/repos/{$owner}/{$repo}/pulls", $parameters);
+        $request = new Pul
+        $response = $this->connector()->get("/repos/{$owner}/{$repo}/pulls", $parameters);
 
         return array_map(
             fn (array $pullRequest) => PullRequestDTO::fromApiResponse($pullRequest),
