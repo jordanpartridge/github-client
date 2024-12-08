@@ -2,17 +2,23 @@
 
 namespace JordanPartridge\GithubClient;
 
+use InvalidArgumentException;
+use JordanPartridge\GithubClient\Concerns\ValidatesGithubFullName;
 use JordanPartridge\GithubClient\Contracts\GithubConnectorInterface;
+use JordanPartridge\GithubClient\Data\Repos\RepoData;
 use JordanPartridge\GithubClient\Resources\CommitResource;
 use JordanPartridge\GithubClient\Resources\FileResource;
 use JordanPartridge\GithubClient\Resources\RepoResource;
+use JordanPartridge\GithubClient\ValueObjects\Repo;
+use RuntimeException;
+use Saloon\Http\Response;
 
-class Github
+final class Github
 {
-    use Concerns\ValidatesRepoName;
+    use ValidatesGithubFullName;
 
     public function __construct(
-        protected GithubConnectorInterface $connector,
+        protected readonly GithubConnectorInterface $connector,
     ) {}
 
     public function connector(): GithubConnectorInterface
@@ -33,5 +39,31 @@ class Github
     public function files(): FileResource
     {
         return $this->connector->files();
+    }
+
+    /**
+     * Get a repository by its full name (e.g. owner/repo)
+     *
+     * @throws InvalidArgumentException when the repository name is invalid
+     * @throws RuntimeException if the request fails
+     */
+    public function getRepo(string $fullName): RepoData
+    {
+        $repo = Repo::fromString($fullName);
+
+        return $this->repos()->get($repo);
+    }
+
+    /**
+     * Delete a repository by its full name (e.g. owner/repo)
+     *
+     * @throws InvalidArgumentException when the repository name is invalid
+     * @throws RuntimeException if the request fails
+     */
+    public function deleteRepo(string $fullName): Response
+    {
+        $repo = Repo::fromString($fullName);
+
+        return $this->repos()->delete($repo);
     }
 }
