@@ -11,7 +11,6 @@ readonly class PullRequestResource extends BaseResource
 {
     public function all(string $owner, string $repo, array $parameters = []): array
     {
-        $request = new Pul
         $response = $this->connector()->get("/repos/{$owner}/{$repo}/pulls", $parameters);
 
         return array_map(
