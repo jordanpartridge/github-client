@@ -1,3 +1,4 @@
+- Error handling
 # CommitResource
 
 The CommitResource provides access to GitHub's Git commit API endpoints. It allows you to fetch both individual commits and lists of commits for a repository.

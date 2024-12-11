@@ -1,12 +1,11 @@
 <?php
 
+use JordanPartridge\GithubClient\GithubConnector;
 use JordanPartridge\GithubClient\Resources\CommitResource;
-use JordanPartridge\GithubClient\Tests\TestCase;
 use JordanPartridge\GithubClient\ValueObjects\Repo;
 
-uses(TestCase::class);
-
 beforeEach(function () {
+    $this->connector = new GithubConnector;
     $this->resource = new CommitResource($this->connector);
 });
 
@@ -44,6 +43,6 @@ it('handles pagination parameters correctly', function () {
 it('converts repository name to value object correctly', function () {
     $repo = Repo::fromFullName('jordanpartridge/github-client');
 
-    expect($repo->owner)->toBe('jordanpartridge')
-        ->and($repo->name)->toBe('github-client');
+    expect($repo->owner())->toBe('jordanpartridge')
+        ->and($repo->name())->toBe('github-client');
 });
