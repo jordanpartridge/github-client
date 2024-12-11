@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace JordanPartridge\GithubClient\Enums;
+
 enum Sort: string
 {
     case CREATED = 'created';
