@@ -5,7 +5,7 @@ namespace JordanPartridge\GithubClient\Requests\Repos;
 use InvalidArgumentException;
 use JordanPartridge\GithubClient\Data\Repos\RepoData;
 use JordanPartridge\GithubClient\Enums\Direction;
-use JordanPartridge\GithubClient\Enums\RepoType;
+use JordanPartridge\GithubClient\Enums\Repos\Type;
 use JordanPartridge\GithubClient\Enums\Sort;
 use JordanPartridge\GithubClient\Enums\Visibility;
 use Saloon\Enums\Method;
@@ -24,12 +24,12 @@ class Index extends Request
      * @param  Direction|null  $direction  Can be one of: asc, desc
      */
     public function __construct(
-        protected ?int $per_page = null,
-        protected ?int $page = null,
+        protected ?int        $per_page = null,
+        protected ?int        $page = null,
         protected ?Visibility $visibility = null,
-        protected ?Sort $sort = null,
-        protected ?Direction $direction = null,
-        protected ?RepoType $type = null,
+        protected ?Sort       $sort = null,
+        protected ?Direction  $direction = null,
+        protected ?Type       $type = null,
     ) {
         if ($this->per_page !== null && ($this->per_page < 1 || $this->per_page > 100)) {
             throw new InvalidArgumentException('Per page must be between 1 and 100');

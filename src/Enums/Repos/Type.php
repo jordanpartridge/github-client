@@ -1,8 +1,10 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Enums;
+declare(strict_types=1);
 
-enum RepoType: string
+namespace JordanPartridge\GithubClient\Enums\Repos;
+
+enum Type: string
 {
     case All = 'all';
     case Public = 'public';

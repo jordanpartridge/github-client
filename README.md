@@ -51,6 +51,10 @@ $specificRepo = $repos->get('jordanpartridge/github-client'); // Get specific re
 // Working with Commits
 $commits = GitHub::commits()->all('jordanpartridge/github-client'); // Get all commits for a repository
 $specificCommit = GitHub::commits()->get('abc123...'); // Get a specific commit by SHA
+
+// Working with Pull Requests
+$prs = GitHub::pullRequests()->all('owner/repo'); // Get all pull requests
+$specificPr = GitHub::pullRequests()->get('owner/repo', 123); // Get specific pull request
 ```
 
 Each resource follows a consistent pattern similar to Laravel's basic resource operations:
@@ -67,7 +71,89 @@ GitHub::repos()->get('owner/repo'); // Get a specific repository
 // Commits
 GitHub::commits()->all('owner/repo'); // List all commits for a repository
 GitHub::commits()->get('sha'); // Get a specific commit by SHA
+
+// Pull Requests
+GitHub::pullRequests()->all('owner/repo'); // List all pull requests
+GitHub::pullRequests()->get('owner/repo', 123); // Get a specific pull request
+GitHub::pullRequests()->create('owner/repo', 'Title', 'feature-branch', 'main', 'Description'); // Create a pull request
+GitHub::pullRequests()->merge('owner/repo', 123, 'Merge message', null, MergeMethod::Squash); // Merge a pull request
+
+// Pull Request Reviews
+GitHub::pullRequests()->reviews('owner/repo', 123); // List reviews
+GitHub::pullRequests()->createReview('owner/repo', 123, 'LGTM!', 'APPROVE'); // Create a review
+
+// Pull Request Comments
+GitHub::pullRequests()->comments('owner/repo', 123); // List comments
+GitHub::pullRequests()->createComment('owner/repo', 123, 'Nice work!', 'commit-sha', 'path/to/file.php', 5); // Create a comment
 ```
+
+### Working with Pull Requests
+
+The package provides comprehensive support for working with GitHub Pull Requests:
+
+```php
+use JordanPartridge\GithubClient\Facades\GitHub;
+use JordanPartridge\GithubClient\Enums\MergeMethod;
+
+// List pull requests
+$pullRequests = GitHub::pullRequests()->all('owner/repo');
+
+// Create a pull request
+$pullRequest = GitHub::pullRequests()->create(
+    owner: 'owner',
+    repo: 'repo',
+    title: 'New Feature',
+    head: 'feature-branch',
+    base: 'main',
+    body: 'This PR adds a new feature',
+    draft: false
+);
+
+// Get a specific pull request
+$pullRequest = GitHub::pullRequests()->get('owner', 'repo', 123);
+
+// Update a pull request
+$updated = GitHub::pullRequests()->update('owner', 'repo', 123, [
+    'title' => 'Updated Title',
+    'body' => 'Updated description',
+]);
+
+// Merge a pull request
+$merged = GitHub::pullRequests()->merge(
+    owner: 'owner',
+    repo: 'repo',
+    number: 123,
+    commitMessage: 'Merging new feature',
+    mergeMethod: MergeMethod::Squash
+);
+
+// Work with reviews
+$reviews = GitHub::pullRequests()->reviews('owner', 'repo', 123);
+$review = GitHub::pullRequests()->createReview(
+    owner: 'owner',
+    repo: 'repo',
+    number: 123,
+    body: 'Looks good!',
+    event: 'APPROVE'
+);
+
+// Work with comments
+$comments = GitHub::pullRequests()->comments('owner', 'repo', 123);
+$comment = GitHub::pullRequests()->createComment(
+    owner: 'owner',
+    repo: 'repo',
+    number: 123,
+    body: 'Consider this approach',
+    commitId: 'abc123',
+    path: 'src/File.php',
+    position: 5
+);
+```
+
+All responses are properly typed using data transfer objects (DTOs) powered by spatie/laravel-data:
+- `PullRequestDTO`
+- `PullRequestReviewDTO`
+- `PullRequestCommentDTO`
 
 ### Using Dependency Injection
 
