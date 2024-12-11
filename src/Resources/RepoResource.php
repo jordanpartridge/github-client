@@ -73,12 +73,12 @@ readonly class RepoResource extends BaseResource
      * ```
      */
     public function all(
-        ?int $per_page = null,
-        ?int $page = null,
+        ?int        $per_page = null,
+        ?int        $page = null,
         ?Visibility $visibility = null,
-        ?Sort $sort = null,
-        ?Direction $direction = null,
-        ?Type $type = null,
+        ?Sort       $sort = null,
+        ?Direction  $direction = null,
+        ?Type       $type = null,
     ): Response {
         return $this->connector()->send(new Index(
             per_page: $per_page,

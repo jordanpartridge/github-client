@@ -9,8 +9,14 @@ readonly class Repo
     private function __construct(
         private string $owner,
         private string $name,
-    ) {}
+    )
+    {
+    }
 
+    /**
+     * @param string $full_name
+     * @return self
+     */
     public static function fromFullName(string $full_name): self
     {
         [$owner, $name] = self::validateAndParseRepoName($full_name);
@@ -40,7 +46,7 @@ readonly class Repo
         /**
          * While were at it, lets regex the parts to make sure they're valid
          */
-        if (! preg_match('/^[a-zA-Z0-9._-]+$/', $owner) || ! preg_match('/^[a-zA-Z0-9._-]+$/', $name)) {
+        if (!preg_match('/^[a-zA-Z0-9._-]+$/', $owner) || !preg_match('/^[a-zA-Z0-9._-]+$/', $name)) {
             throw new InvalidArgumentException("Invalid characters in repository name '{$full_name}'.");
         }
 
