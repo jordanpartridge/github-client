@@ -1,8 +1,8 @@
 <?php
 
-use JordanPartridge\GithubClient\Data\PullRequests\PullRequestCommentDTO;
-use JordanPartridge\GithubClient\Data\PullRequests\PullRequestDTO;
-use JordanPartridge\GithubClient\Data\PullRequests\PullRequestReviewDTO;
+use JordanPartridge\GithubClient\Data\Pulls\PullRequestCommentDTO;
+use JordanPartridge\GithubClient\Data\Pulls\PullRequestDTO;
+use JordanPartridge\GithubClient\Data\Pulls\PullRequestReviewDTO;
 use JordanPartridge\GithubClient\Enums\MergeMethod;
 use JordanPartridge\GithubClient\Facades\Github;
 use Saloon\Http\Faking\MockClient;

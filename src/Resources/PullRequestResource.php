@@ -2,9 +2,9 @@
 
 namespace JordanPartridge\GithubClient\Resources;
 
-use JordanPartridge\GithubClient\Data\PullRequests\PullRequestCommentDTO;
-use JordanPartridge\GithubClient\Data\PullRequests\PullRequestDTO;
-use JordanPartridge\GithubClient\Data\PullRequests\PullRequestReviewDTO;
+use JordanPartridge\GithubClient\Data\Pulls\PullRequestCommentDTO;
+use JordanPartridge\GithubClient\Data\Pulls\PullRequestDTO;
+use JordanPartridge\GithubClient\Data\Pulls\PullRequestReviewDTO;
 use JordanPartridge\GithubClient\Enums\MergeMethod;
 
 readonly class PullRequestResource extends BaseResource

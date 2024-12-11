@@ -4,7 +4,7 @@ namespace JordanPartridge\GithubClient\Resources;
 
 use JordanPartridge\GithubClient\Data\Repos\RepoData;
 use JordanPartridge\GithubClient\Enums\Direction;
-use JordanPartridge\GithubClient\Enums\RepoType;
+use JordanPartridge\GithubClient\Enums\Repos\Type;
 use JordanPartridge\GithubClient\Enums\Sort;
 use JordanPartridge\GithubClient\Enums\Visibility;
 use JordanPartridge\GithubClient\Requests\Repos\Delete;
@@ -73,12 +73,12 @@ readonly class RepoResource extends BaseResource
      * ```
      */
     public function all(
-        ?int $per_page = null,
-        ?int $page = null,
+        ?int        $per_page = null,
+        ?int        $page = null,
         ?Visibility $visibility = null,
-        ?Sort $sort = null,
-        ?Direction $direction = null,
-        ?RepoType $type = null,
+        ?Sort       $sort = null,
+        ?Direction  $direction = null,
+        ?Type       $type = null,
     ): Response {
         return $this->connector()->send(new Index(
             per_page: $per_page,

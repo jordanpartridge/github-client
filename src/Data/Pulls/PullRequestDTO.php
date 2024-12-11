@@ -1,6 +1,6 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Data\PullRequests;
+namespace JordanPartridge\GithubClient\Data\Pulls;
 
 use JordanPartridge\GithubClient\Data\GitUserData;
 use Spatie\LaravelData\Data;
