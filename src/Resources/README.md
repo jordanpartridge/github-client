@@ -1,7 +1,3 @@
-MIT License
-
-Copyright (c) 2024 Jordan Partridge
-
 # Resources
 
 This directory contains the core resource classes that handle GitHub API interactions. Each resource class represents a specific GitHub API endpoint group and follows Laravel's resource pattern for consistent interaction.
