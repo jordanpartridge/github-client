@@ -24,12 +24,12 @@ class Index extends Request
      * @param  Direction|null  $direction  Can be one of: asc, desc
      */
     public function __construct(
-        protected ?int        $per_page = null,
-        protected ?int        $page = null,
+        protected ?int $per_page = null,
+        protected ?int $page = null,
         protected ?Visibility $visibility = null,
-        protected ?Sort       $sort = null,
-        protected ?Direction  $direction = null,
-        protected ?Type       $type = null,
+        protected ?Sort $sort = null,
+        protected ?Direction $direction = null,
+        protected ?Type $type = null,
     ) {
         if ($this->per_page !== null && ($this->per_page < 1 || $this->per_page > 100)) {
             throw new InvalidArgumentException('Per page must be between 1 and 100');
