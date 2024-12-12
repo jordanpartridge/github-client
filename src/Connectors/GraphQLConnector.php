@@ -4,9 +4,9 @@ namespace JordanPartridge\GithubClient\Connectors;
 
 use JordanPartridge\GithubClient\Contracts\AbstractGithubConnector;
 use JordanPartridge\GithubClient\Requests\GraphQLRequest;
+use Saloon\Contracts\ArrayStore;
 use Saloon\Exceptions\Request\RequestException;
 use Saloon\Http\Response;
-use Saloon\Contracts\ArrayStore;
 
 class GraphQLConnector extends AbstractGithubConnector
 {
@@ -25,6 +25,7 @@ class GraphQLConnector extends AbstractGithubConnector
     {
         $headers = parent::defaultHeaders();
         $headers['Content-Type'] = 'application/json';
+
         return $headers;
     }
 
@@ -33,7 +34,7 @@ class GraphQLConnector extends AbstractGithubConnector
      */
     protected function defaultQuery(): GraphQLRequest
     {
-        return new GraphQLRequest();
+        return new GraphQLRequest;
     }
 
     /**
@@ -42,30 +43,26 @@ class GraphQLConnector extends AbstractGithubConnector
     public function query(): ArrayStore
     {
         $request = $this->defaultQuery();
+
         return $this->send($request);
     }
 
     /**
      * Execute a GraphQL query with variables.
      *
-     * @param string $query
-     * @param array $variables
-     * @return ArrayStore
      *
      * @throws RequestException
      */
     public function executeQuery(string $query, array $variables = []): ArrayStore
     {
         $request = new GraphQLRequest($query, $variables);
+
         return $this->send($request);
     }
 
     /**
      * Get repositories for a user using GraphQL.
      *
-     * @param string $owner
-     * @param array $fields
-     * @return Response
      * @throws RequestException
      */
     public function repos(string $owner, array $fields = []): Response
@@ -73,7 +70,7 @@ class GraphQLConnector extends AbstractGithubConnector
         $defaultFields = [
             'name',
             'description',
-            'url'
+            'url',
         ];
 
         $fields = $fields ?: $defaultFields;

@@ -1,9 +1,7 @@
 <?php
 
 use JordanPartridge\GithubClient\Resources\CommitResource;
-use Tests\TestCase;
 use JordanPartridge\GithubClient\ValueObjects\Repo;
-
 
 beforeEach(function () {
     $this->resource = new CommitResource($this->connector);

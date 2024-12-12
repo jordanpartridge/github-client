@@ -19,11 +19,11 @@ class DtoGenerator
         $class = $this->generateClass();
         $this->addProperties($class);
 
-        $phpFile = new PhpFile();
+        $phpFile = new PhpFile;
         $phpFile->addUse('Spatie\DataTransferObject\DataTransferObject');
         $phpFile->addClass($class);
 
-        return (new PsrPrinter())->printFile($phpFile);
+        return (new PsrPrinter)->printFile($phpFile);
     }
 
     protected function generateClass(): ClassType
@@ -31,7 +31,7 @@ class DtoGenerator
         $class = new ClassType($this->getDtoClassName());
         $class->setExtends('DataTransferObject');
         $class->addComment('This DTO was automatically generated from a JSON schema.');
-        $class->addComment('@see ' . $this->schema['$id']);
+        $class->addComment('@see '.$this->schema['$id']);
 
         return $class;
     }
@@ -46,7 +46,7 @@ class DtoGenerator
 
     protected function getDtoClassName(): string
     {
-        return Str::studly($this->schema['title']) . 'Dto';
+        return Str::studly($this->schema['title']).'Dto';
     }
 
     protected function mapType(string $type): string

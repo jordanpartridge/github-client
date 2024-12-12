@@ -9,7 +9,7 @@ class User extends Data
     public function __construct(
         public readonly int $id,
         public readonly string $login,
-        public readonly ?string $node_id = null,
+        public readonly ?string $node_id,
         public readonly string $avatar_url,
         public readonly string $url,
         public readonly string $type,

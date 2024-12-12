@@ -3,7 +3,6 @@
 namespace Tests\Unit\DTOs\PullRequests;
 
 use Tests\TestCase;
-use JordanPartridge\GithubClient\DataTransferObjects\PullRequests\PullRequestDTO;
 
 class PullRequestDTOTest extends TestCase
 {
@@ -15,7 +14,7 @@ class PullRequestDTOTest extends TestCase
             'number' => 123,
             'title' => 'Test PR',
             'body' => 'Test PR description',
-            'state' => 'open'
+            'state' => 'open',
         ];
 
         $this->markTestIncomplete('Implementation pending');

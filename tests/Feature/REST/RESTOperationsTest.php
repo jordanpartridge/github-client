@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\REST;
 
-use Tests\TestCase;
 use JordanPartridge\GithubClient\Connectors\RestConnector;
+use Tests\TestCase;
 
 class RESTOperationsTest extends TestCase
 {

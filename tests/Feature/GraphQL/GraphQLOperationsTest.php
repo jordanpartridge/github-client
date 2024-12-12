@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\GraphQL;
 
-use Tests\TestCase;
 use JordanPartridge\GithubClient\Connectors\GraphQLConnector;
+use Tests\TestCase;
 
 class GraphQLOperationsTest extends TestCase
 {

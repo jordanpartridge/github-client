@@ -10,7 +10,7 @@ return [
     | You can generate this token in your GitHub account settings.
     |
     */
-    'token'             => env('GITHUB_TOKEN'),
+    'token' => env('GITHUB_TOKEN'),
 
     /*
     |--------------------------------------------------------------------------
@@ -31,8 +31,8 @@ return [
     | Configure how to handle GitHub API rate limits.
     |
     */
-    'rate_limit'        => [
-        'retry'       => true,
+    'rate_limit' => [
+        'retry' => true,
         'max_retries' => 3,
     ],
 ];

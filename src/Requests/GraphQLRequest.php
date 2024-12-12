@@ -49,7 +49,7 @@ class GraphQLRequest extends Request implements HasBody
     {
         return [
             'query' => $this->query,
-            'variables' => $this->variables
+            'variables' => $this->variables,
         ];
     }
 }

@@ -15,20 +15,16 @@ abstract class AbstractGithubConnector extends Connector implements GithubConnec
 
     /**
      * Set the authentication token.
-     *
-     * @param string $token
-     * @return self
      */
     public function setToken(string $token): self
     {
         $this->token = $token;
+
         return $this;
     }
 
     /**
      * Get the current authentication token.
-     *
-     * @return string|null
      */
     public function getToken(): ?string
     {
@@ -37,8 +33,6 @@ abstract class AbstractGithubConnector extends Connector implements GithubConnec
 
     /**
      * Default headers for GitHub API.
-     *
-     * @return array
      */
     protected function defaultHeaders(): array
     {

@@ -3,7 +3,6 @@
 namespace Tests\Unit\DTOs\Users;
 
 use Tests\TestCase;
-use JordanPartridge\GithubClient\DataTransferObjects\Users\UserDTO;
 
 class UserDTOTest extends TestCase
 {
