@@ -1,6 +1,6 @@
 <?php
 
-use JordanPartridge\GithubClient\GithubConnector;
+use JordanPartridge\GithubClient\Connectors\GithubConnector;
 use JordanPartridge\GithubClient\Requests\User;
 use Saloon\Http\Auth\TokenAuthenticator;
 use Saloon\Http\Connector;

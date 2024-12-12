@@ -3,7 +3,6 @@
 namespace JordanPartridge\GithubClient;
 
 use JordanPartridge\GithubClient\Commands\GithubClientCommand;
-use JordanPartridge\GithubClient\Contracts\GithubConnectorInterface;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -11,11 +10,6 @@ class GithubClientServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
-        /*
-         * This class is a Package Service Provider
-         *
-         * More info: https://github.com/spatie/laravel-package-tools
-         */
         $package
             ->name('github-client')
             ->hasConfigFile()
@@ -23,8 +17,8 @@ class GithubClientServiceProvider extends PackageServiceProvider
             ->hasMigration('create_github_client_table')
             ->hasCommand(GithubClientCommand::class);
 
-        $this->app->singleton(GithubConnectorInterface::class, function () {
-            return new GithubConnector(config('github-client.token'));
+        $this->app->singleton(Github::class, function () {
+            return new Github(config('github-client.token'));
         });
     }
 }

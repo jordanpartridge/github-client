@@ -2,18 +2,23 @@
 
 namespace JordanPartridge\GithubClient\Contracts;
 
-use JordanPartridge\GithubClient\Resources\CommitResource;
-use JordanPartridge\GithubClient\Resources\FileResource;
-use JordanPartridge\GithubClient\Resources\PullRequestResource;
-use JordanPartridge\GithubClient\Resources\RepoResource;
+use Saloon\Http\Request;
+use Saloon\Http\Response;
 
 interface GithubConnectorInterface
 {
-    public function repos(): RepoResource;
+    /**
+     * Set the authentication token.
+     */
+    public function setToken(string $token): self;
 
-    public function commits(): CommitResource;
+    /**
+     * Get the current authentication token.
+     */
+    public function getToken(): ?string;
 
-    public function files(): FileResource;
-
-    public function pullRequests(): PullRequestResource;
+    /**
+     * Send request, get response.
+     */
+    public function send(Request $request): Response;
 }

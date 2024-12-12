@@ -1,6 +1,6 @@
 <?php
 
-namespace JordanPartridge\GithubClient;
+namespace JordanPartridge\GithubClient\Connectors;
 
 use JordanPartridge\GithubClient\Contracts\GithubConnectorInterface;
 use JordanPartridge\GithubClient\Resources\CommitResource;
@@ -58,5 +58,15 @@ class GithubConnector extends Connector implements GithubConnectorInterface
     public function pullRequests(): PullRequestResource
     {
         return new PullRequestResource($this);
+    }
+
+    public function setToken(string $token): GithubConnectorInterface
+    {
+        // TODO: Implement setToken() method.
+    }
+
+    public function getToken(): ?string
+    {
+        // TODO: Implement getToken() method.
     }
 }
