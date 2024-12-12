@@ -16,6 +16,7 @@ A powerful, Laravel-first GitHub API client built on Saloon that makes integrati
 - Support for facades and dependency injection
 - Modern PHP 8.1+ codebase
 - Laravel-style resource pattern
+- Supports Graphql and REST APIs
 
 ## Installation
 
@@ -32,6 +33,7 @@ composer require jordanpartridge/github-client
 
 ```dotenv
 GITHUB_TOKEN=your-token-here
+GITHUB_API=rest #or graphql
 ```
 
 ## Usage

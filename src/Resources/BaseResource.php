@@ -2,9 +2,9 @@
 
 namespace JordanPartridge\GithubClient\Resources;
 
+use JordanPartridge\GithubClient\Connectors\GithubConnector;
 use JordanPartridge\GithubClient\Contracts\GithubConnectorInterface;
 use JordanPartridge\GithubClient\Contracts\ResourceInterface;
-use JordanPartridge\GithubClient\GithubConnector;
 
 abstract readonly class BaseResource implements ResourceInterface
 {

@@ -2,42 +2,57 @@
 
 namespace JordanPartridge\GithubClient;
 
-use JordanPartridge\GithubClient\Contracts\GithubConnectorInterface;
-use JordanPartridge\GithubClient\Resources\CommitResource;
-use JordanPartridge\GithubClient\Resources\FileResource;
-use JordanPartridge\GithubClient\Resources\PullRequestResource;
-use JordanPartridge\GithubClient\Resources\RepoResource;
+use JordanPartridge\GithubClient\Connectors\RestConnector;
+use JordanPartridge\GithubClient\Connectors\GraphQLConnector;
+use InvalidArgumentException;
 
 class Github
 {
-    use Concerns\ValidatesRepoName;
 
-    public function __construct(
-        protected GithubConnectorInterface $connector,
-    ) {}
+    protected RestConnector|GraphQLConnector $connector;
 
-    public function connector(): GithubConnectorInterface
+    protected ?string $token;
+
+    public function __construct(?string $token = null, ?string $connector = null)
     {
-        return $this->connector;
+        $this->token = $token ?? config('github-client.token');
+
+        $this->connector = $this->determineConnector($connector);
     }
 
-    public function repos(): RepoResource
+    public function repos()
     {
         return $this->connector->repos();
     }
 
-    public function commits(): CommitResource
+
+    public function pulls()
     {
-        return $this->connector->commits();
+        return $this->connector->pulls();
     }
 
-    public function files(): FileResource
+    /**
+     * Select a connector by type.
+     *
+     * @param string $type
+     * @throws InvalidArgumentException
+     * @return RestConnector|GraphQLConnector
+     */
+    public function connector(string $type = 'rest'): RestConnector|GraphQLConnector
     {
-        return $this->connector->files();
+        return match (strtolower($type)) {
+            'graphql', 'graph' => new GraphQLConnector($this->token),
+            'rest' => new RestConnector($this->token),
+            default => throw new InvalidArgumentException("Invalid connector type: $type")
+        };
     }
 
-    public function pullRequests(): PullRequestResource
+    private function determineConnector(?string $connector): GraphQLConnector|RestConnector
     {
-        return $this->connector->pullRequests();
+        if ($connector) {
+            return $this->connector($connector);
+        }
+
+        return $this->connector(config('github-client.connector'));
     }
 }
