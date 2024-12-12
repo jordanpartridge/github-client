@@ -37,7 +37,16 @@ class GraphQLConnector extends AbstractGithubConnector
     }
 
     /**
-     * Execute a GraphQL query.
+     * Execute a base query.
+     */
+    public function query(): ArrayStore
+    {
+        $request = $this->defaultQuery();
+        return $this->send($request);
+    }
+
+    /**
+     * Execute a GraphQL query with variables.
      *
      * @param string $query
      * @param array $variables
@@ -45,7 +54,7 @@ class GraphQLConnector extends AbstractGithubConnector
      *
      * @throws RequestException
      */
-    public function query(string $query, array $variables = []): ArrayStore
+    public function executeQuery(string $query, array $variables = []): ArrayStore
     {
         $request = new GraphQLRequest($query, $variables);
         return $this->send($request);
@@ -82,6 +91,6 @@ class GraphQLConnector extends AbstractGithubConnector
         }
         GRAPHQL;
 
-        return $this->query($query, ['owner' => $owner]);
+        return $this->executeQuery($query, ['owner' => $owner]);
     }
 }

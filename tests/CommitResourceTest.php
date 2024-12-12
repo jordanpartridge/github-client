@@ -1,7 +1,7 @@
 <?php
 
 use JordanPartridge\GithubClient\Resources\CommitResource;
-use JordanPartridge\GithubClient\Tests\TestCase;
+use Tests\TestCase;
 use JordanPartridge\GithubClient\ValueObjects\Repo;
 
 
