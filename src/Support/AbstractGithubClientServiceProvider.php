@@ -8,8 +8,6 @@ abstract class AbstractGithubClientServiceProvider extends ServiceProvider
 {
     /**
      * Determine if the application is Laravel Zero.
-     *
-     * @return bool
      */
     protected function isLaravelZero(): bool
     {
@@ -18,12 +16,10 @@ abstract class AbstractGithubClientServiceProvider extends ServiceProvider
 
     /**
      * Determine if the application is standard Laravel.
-     *
-     * @return bool
      */
     protected function isLaravel(): bool
     {
-        return !$this->isLaravelZero() && class_exists('\Illuminate\Foundation\Application');
+        return ! $this->isLaravelZero() && class_exists('\Illuminate\Foundation\Application');
     }
 
     /**

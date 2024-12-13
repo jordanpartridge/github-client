@@ -8,9 +8,13 @@ use JordanPartridge\GithubClient\Support\AuthenticationStrategy;
 class GitHubAppAuthentication implements AuthenticationStrategy
 {
     private string $appId;
+
     private string $installationId;
+
     private string $privateKey;
+
     private ?string $installationToken = null;
+
     private int $tokenExpiration = 0;
 
     public function __construct(string $appId, string $installationId, string $privateKey)
@@ -23,6 +27,7 @@ class GitHubAppAuthentication implements AuthenticationStrategy
     public function getAuthorizationHeader(): string
     {
         $this->validateAndRefreshToken();
+
         return "token {$this->installationToken}";
     }
 
@@ -53,7 +58,7 @@ class GitHubAppAuthentication implements AuthenticationStrategy
         $payload = [
             'iat' => time(),
             'exp' => time() + 600,
-            'iss' => $this->appId
+            'iss' => $this->appId,
         ];
 
         return JWT::encode($payload, $this->privateKey, 'RS256');
@@ -62,6 +67,6 @@ class GitHubAppAuthentication implements AuthenticationStrategy
     private function fetchInstallationToken(string $jwt): string
     {
         // Simulated token fetch - replace with actual GitHub API call
-        return 'github_app_installation_token_' . uniqid();
+        return 'github_app_installation_token_'.uniqid();
     }
 }
