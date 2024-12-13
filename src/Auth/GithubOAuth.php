@@ -36,7 +36,7 @@ class GithubOAuth
 
         parse_str($response->body(), $result);
 
-        if (!isset($result['access_token'])) {
+        if (! isset($result['access_token'])) {
             throw new GithubAuthException('Failed to get access token');
         }
 
