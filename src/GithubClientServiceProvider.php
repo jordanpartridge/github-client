@@ -2,6 +2,7 @@
 
 namespace JordanPartridge\GithubClient;
 
+use JordanPartridge\GithubClient\Auth\GithubOAuth;
 use JordanPartridge\GithubClient\Commands\GithubClientCommand;
 use JordanPartridge\GithubClient\Contracts\GithubConnectorInterface;
 use Spatie\LaravelPackageTools\Package;
@@ -11,11 +12,6 @@ class GithubClientServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
-        /*
-         * This class is a Package Service Provider
-         *
-         * More info: https://github.com/spatie/laravel-package-tools
-         */
         $package
             ->name('github-client')
             ->hasConfigFile()
@@ -25,6 +21,14 @@ class GithubClientServiceProvider extends PackageServiceProvider
 
         $this->app->singleton(GithubConnectorInterface::class, function () {
             return new GithubConnector(config('github-client.token'));
+        });
+
+        $this->app->singleton(GithubOAuth::class, function () {
+            return new GithubOAuth(
+                config('github-client.oauth.client_id'),
+                config('github-client.oauth.client_secret'),
+                config('github-client.oauth.redirect_url')
+            );
         });
     }
 }
