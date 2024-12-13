@@ -38,7 +38,7 @@ class Github
      * @throws InvalidArgumentException
      * @return RestConnector|GraphQLConnector
      */
-    public function connector(string $type = 'rest'): RestConnector|GraphQLConnector
+    public function connector(?string $type = 'rest'): RestConnector|GraphQLConnector
     {
         return match (strtolower($type)) {
             'graphql', 'graph' => new GraphQLConnector($this->token),
@@ -47,7 +47,7 @@ class Github
         };
     }
 
-    private function determineConnector(?string $connector): GraphQLConnector|RestConnector
+    private function determineConnector(?string $connector = null): GraphQLConnector|RestConnector
     {
         if ($connector) {
             return $this->connector($connector);

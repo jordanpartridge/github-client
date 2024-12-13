@@ -1,18 +1,17 @@
-
 {
     "name": "jordanpartridge/github-client",
     "description": "A PHP GitHub API client with support for both REST and GraphQL APIs",
     "type": "library",
     "require": {
         "php": "^8.1",
-        "saloonphp/saloon": "^2.0",
-        "illuminate/support": "^10.0"
+        "illuminate/support": "^11.0",
+        "saloonphp/saloon": "^3.0",
+        "spatie/laravel-data": "^4.11"
     },
     "require-dev": {
         "pestphp/pest": "^2.0",
         "pestphp/pest-plugin-laravel": "^2.0",
-        "phpstan/phpstan": "^1.10",
-        "jordanpartridge/laravel-dto-generator": "^1.0"
+        "phpstan/phpstan": "^1.10"
     },
     "license": "MIT",
     "autoload": {

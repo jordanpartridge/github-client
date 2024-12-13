@@ -2,54 +2,33 @@
 
 namespace JordanPartridge\GithubClient\ValueObjects;
 
-use InvalidArgumentException;
-
-readonly class Repo
+class Repo
 {
     private function __construct(
         private string $owner,
-        private string $name,
+        private string $name
     ) {}
 
-    public static function fromFullName(string $full_name): self
+    public static function from(string $fullName): self
     {
-        [$owner, $name] = self::validateAndParseRepoName($full_name);
-
-        return new self($owner, $name);
-    }
-
-    private static function validateAndParseRepoName(string $full_name): array
-    {
-        /**
-         * if the `$full_name` doesn't contain a slash, I send it back
-         */
-        $parts = explode('/', $full_name);
+        $parts = explode('/', $fullName);
+        
         if (count($parts) !== 2) {
-            throw new InvalidArgumentException('Repository must be in format "owner/repo".');
+            throw new \InvalidArgumentException('Repository name must be in format "owner/name"');
         }
 
-        [$owner, $name] = $parts;
-
-        /**
-         * If either are empty, that's a no-go fo sho
-         */
-        if (empty($owner) || empty($name)) {
-            throw new InvalidArgumentException('Owner and repo name cannot be empty.');
-        }
-
-        /**
-         * While were at it, lets regex the parts to make sure they're valid
-         */
-        if (! preg_match('/^[a-zA-Z0-9._-]+$/', $owner) || ! preg_match('/^[a-zA-Z0-9._-]+$/', $name)) {
-            throw new InvalidArgumentException("Invalid characters in repository name '{$full_name}'.");
-        }
-
-        return [$owner, $name];
+        return new self($parts[0], $parts[1]);
     }
 
-    public static function fromRepo(Repo $repo): self
+    public function toString(): string
     {
-        return new self($repo->owner, $repo->name);
+        return "{$this->owner}/{$this->name}";
+    }
+
+    // Added this method to match what Get.php is expecting
+    public function fullName(): string
+    {
+        return $this->toString();
     }
 
     public function owner(): string
@@ -60,10 +39,5 @@ readonly class Repo
     public function name(): string
     {
         return $this->name;
-    }
-
-    public function fullName(): string
-    {
-        return "{$this->owner}/{$this->name}";
     }
 }
