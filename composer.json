@@ -11,7 +11,7 @@
     "require-dev": {
         "pestphp/pest": "^2.0",
         "pestphp/pest-plugin-laravel": "^2.0",
-        "phpstan/phpstan": "^1.10"
+        "phpstan/phpstan": "^2.0"
     },
     "license": "MIT",
     "autoload": {

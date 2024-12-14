@@ -1,7 +1,6 @@
-
 <?php
 
-namespace JordanPartridge\DtoGenerator\Commands;
+namespace JordanPartridge\GithubClient\Commands;
 
 use Illuminate\Console\Command;
 use JordanPartridge\DtoGenerator\Generators\DtoGenerator;
@@ -12,7 +11,7 @@ class GenerateDtoCommand extends Command
 
     protected $description = 'Generate a DTO class from a JSON schema';
 
-    public function handle(DtoGenerator $generator)
+    public function handle(DtoGenerator $generator): int
     {
         $schemaPath = $this->argument('schema');
 
