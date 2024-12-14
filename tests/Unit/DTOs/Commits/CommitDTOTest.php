@@ -3,7 +3,6 @@
 namespace Tests\Unit\DTOs\Commits;
 
 use Tests\TestCase;
-use JordanPartridge\GithubClient\DataTransferObjects\Commits\CommitDTO;
 
 class CommitDTOTest extends TestCase
 {
@@ -17,9 +16,9 @@ class CommitDTOTest extends TestCase
                 'author' => [
                     'name' => 'Test Author',
                     'email' => 'test@example.com',
-                    'date' => '2024-12-11T00:00:00Z'
-                ]
-            ]
+                    'date' => '2024-12-11T00:00:00Z',
+                ],
+            ],
         ];
 
         $this->markTestIncomplete('Implementation pending');

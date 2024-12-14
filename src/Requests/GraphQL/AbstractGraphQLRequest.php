@@ -43,8 +43,6 @@ abstract class AbstractGraphQLRequest extends Request implements HasBody
 
     /**
      * Get the default fields to request
-     *
-     * @return array
      */
     abstract protected function getDefaultFields(): array;
 
@@ -55,7 +53,7 @@ abstract class AbstractGraphQLRequest extends Request implements HasBody
     {
         return [
             'query' => $this->buildQuery(),
-            'variables' => $this->variables
+            'variables' => $this->variables,
         ];
     }
 

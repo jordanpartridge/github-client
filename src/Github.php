@@ -2,13 +2,12 @@
 
 namespace JordanPartridge\GithubClient;
 
-use JordanPartridge\GithubClient\Connectors\RestConnector;
-use JordanPartridge\GithubClient\Connectors\GraphQLConnector;
 use InvalidArgumentException;
+use JordanPartridge\GithubClient\Connectors\GraphQLConnector;
+use JordanPartridge\GithubClient\Connectors\RestConnector;
 
 class Github
 {
-
     protected RestConnector|GraphQLConnector $connector;
 
     protected ?string $token;
@@ -25,7 +24,6 @@ class Github
         return $this->connector->repos();
     }
 
-
     public function pulls()
     {
         return $this->connector->pulls();
@@ -34,9 +32,7 @@ class Github
     /**
      * Select a connector by type.
      *
-     * @param string $type
      * @throws InvalidArgumentException
-     * @return RestConnector|GraphQLConnector
      */
     public function connector(?string $type = 'rest'): RestConnector|GraphQLConnector
     {

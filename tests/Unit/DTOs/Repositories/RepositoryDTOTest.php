@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\DTOs\Repositories;
 
-use Tests\TestCase;
 use JordanPartridge\GithubClient\DataTransferObjects\Repositories\RepositoryDTO;
+use Tests\TestCase;
 
 class RepositoryDTOTest extends TestCase
 {

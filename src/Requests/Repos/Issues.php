@@ -2,9 +2,9 @@
 
 namespace JordanPartridge\GithubClient\Requests\Repos;
 
+use JordanPartridge\GithubClient\ValueObjects\Repo;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
-use JordanPartridge\GithubClient\ValueObjects\Repo;
 
 class Issues extends Request
 {

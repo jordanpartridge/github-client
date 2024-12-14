@@ -3,7 +3,6 @@
 namespace Tests\Unit\DTOs\Workflows;
 
 use Tests\TestCase;
-use JordanPartridge\GithubClient\DataTransferObjects\Workflows\WorkflowDTO;
 
 class WorkflowDTOTest extends TestCase
 {
@@ -14,7 +13,7 @@ class WorkflowDTOTest extends TestCase
             'id' => 1,
             'name' => 'Test Workflow',
             'path' => '.github/workflows/test.yml',
-            'state' => 'active'
+            'state' => 'active',
         ];
 
         $this->markTestIncomplete('Implementation pending');

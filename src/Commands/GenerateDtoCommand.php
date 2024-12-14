@@ -15,15 +15,17 @@ class GenerateDtoCommand extends Command
     {
         $schemaPath = $this->argument('schema');
 
-        if (!file_exists($schemaPath)) {
-            $this->error('JSON schema file not found: ' . $schemaPath);
+        if (! file_exists($schemaPath)) {
+            $this->error('JSON schema file not found: '.$schemaPath);
+
             return 1;
         }
 
         $schema = json_decode(file_get_contents($schemaPath), true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
-            $this->error('Invalid JSON schema: ' . json_last_error_msg());
+            $this->error('Invalid JSON schema: '.json_last_error_msg());
+
             return 1;
         }
 

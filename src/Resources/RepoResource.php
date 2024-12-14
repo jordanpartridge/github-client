@@ -61,11 +61,10 @@ readonly class RepoResource extends BaseResource
     /**
      * List repository issues
      *
-     * @param string|Repo $repo Repository identifier
-     * @param int|null $per_page Number of results per page (max 100)
-     * @param int|null $page Page number
-     * @param string|null $state Filter by state (open, closed, all)
-     * @return Response
+     * @param  string|Repo  $repo  Repository identifier
+     * @param  int|null  $per_page  Number of results per page (max 100)
+     * @param  int|null  $page  Page number
+     * @param  string|null  $state  Filter by state (open, closed, all)
      */
     public function issues(string|Repo $repo, ?int $per_page = null, ?int $page = null, ?string $state = null): Response
     {

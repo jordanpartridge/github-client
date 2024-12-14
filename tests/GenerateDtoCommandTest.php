@@ -26,7 +26,7 @@ class GenerateDtoCommandTest extends TestCase
                 'email' => ['type' => 'string'],
             ],
         ];
-        File::put($schemaPath = __DIR__ . '/user.schema.json', json_encode($schema));
+        File::put($schemaPath = __DIR__.'/user.schema.json', json_encode($schema));
 
         // Run the dto:generate command
         $this->artisan('dto:generate', ['schema' => $schemaPath])

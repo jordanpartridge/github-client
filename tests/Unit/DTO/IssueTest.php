@@ -2,20 +2,20 @@
 
 namespace Tests\Unit\DTO;
 
-use Tests\TestCase;
 use JordanPartridge\GithubClient\DTO\Issue;
+use Tests\TestCase;
 
 class IssueTest extends TestCase
 {
     /** @test */
-    public function it_can_create_Issue_from_array()
+    public function it_can_create_issue_from_array()
     {
         $data = [
             // TODO: Add test data
         ];
 
         $dto = Issue::from($data);
-        
+
         $this->assertEquals(1, $dto->id);
         $this->assertNull($dto->node_id);
         $this->assertEquals(1, $dto->number);

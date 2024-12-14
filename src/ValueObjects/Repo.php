@@ -12,7 +12,7 @@ class Repo
     public static function from(string $fullName): self
     {
         $parts = explode('/', $fullName);
-        
+
         if (count($parts) !== 2) {
             throw new \InvalidArgumentException('Repository name must be in format "owner/name"');
         }

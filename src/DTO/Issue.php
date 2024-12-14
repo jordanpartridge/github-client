@@ -8,7 +8,7 @@ class Issue extends Data
 {
     public function __construct(
         public readonly int $id,
-        public readonly ?string $node_id = null,
+        public readonly ?string $node_id,
         public readonly int $number,
         public readonly string $title,
         public readonly \User $user,

@@ -9,14 +9,11 @@ class RestConnector extends AbstractGithubConnector
 {
     /**
      * Resolve the base URL for GitHub REST API.
-     *
-     * @return string
      */
     public function resolveBaseUrl(): string
     {
         return 'https://api.github.com';
     }
-
 
     public function repos(): RepoResource
     {
@@ -26,9 +23,8 @@ class RestConnector extends AbstractGithubConnector
     /**
      * List repositories for a user.
      *
-     * @param string $owner
-     * @param array $params
      * @return mixed
+     *
      * @throws \Saloon\Exceptions\RequestException
      */
     public function listRepositories(string $owner, array $params = [])

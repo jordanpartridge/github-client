@@ -2,20 +2,20 @@
 
 namespace Tests\Unit\DTO;
 
-use Tests\TestCase;
 use JordanPartridge\GithubClient\DTO\Repository;
+use Tests\TestCase;
 
 class RepositoryTest extends TestCase
 {
     /** @test */
-    public function it_can_create_Repository_from_array()
+    public function it_can_create_repository_from_array()
     {
         $data = [
             // TODO: Add test data
         ];
 
         $dto = Repository::from($data);
-        
+
         $this->assertEquals(1, $dto->id);
         $this->assertNull($dto->node_id);
         $this->assertEquals('test', $dto->name);

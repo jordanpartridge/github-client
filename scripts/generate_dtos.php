@@ -57,24 +57,28 @@ $schema = [
     ],
 ];
 
-function generateDTO($name, $schema) {
+function generateDTO($name, $schema)
+{
     $fields = $schema['fields'];
     $constructor = [];
-    
+
     foreach ($fields as $field => $info) {
         $type = $info['type'];
-        if ($type === 'array') $type = 'array';
-        elseif (in_array($type, ['User'])) $type = '\\' . $type;
-        
+        if ($type === 'array') {
+            $type = 'array';
+        } elseif (in_array($type, ['User'])) {
+            $type = '\\'.$type;
+        }
+
         $nullable = $info['nullable'] ?? false;
         $type = $nullable ? "?$type" : $type;
-        
+
         $defaultValue = $nullable ? ' = null' : '';
         $constructor[] = "        public readonly $type \$$field$defaultValue";
     }
-    
+
     $constructorStr = implode(",\n", $constructor);
-    
+
     return <<<PHP
 <?php
 
@@ -91,15 +95,16 @@ $constructorStr
 PHP;
 }
 
-function generateTest($name, $schema) {
+function generateTest($name, $schema)
+{
     $fields = $schema['fields'];
     $assertions = [];
-    
+
     foreach ($fields as $field => $info) {
         if ($info['nullable'] ?? false) {
             $assertions[] = "        \$this->assertNull(\$dto->$field);";
         } else {
-            $value = match($info['type']) {
+            $value = match ($info['type']) {
                 'int' => '1',
                 'string' => "'test'",
                 'bool' => 'true',
@@ -109,9 +114,9 @@ function generateTest($name, $schema) {
             $assertions[] = "        \$this->assertEquals($value, \$dto->$field);";
         }
     }
-    
+
     $assertionsStr = implode("\n", $assertions);
-    
+
     return <<<PHP
 <?php
 
@@ -138,17 +143,17 @@ PHP;
 }
 
 // Generate DTOs
-@mkdir(__DIR__ . '/../src/DTO', 0777, true);
-@mkdir(__DIR__ . '/../tests/Unit/DTO', 0777, true);
+@mkdir(__DIR__.'/../src/DTO', 0777, true);
+@mkdir(__DIR__.'/../tests/Unit/DTO', 0777, true);
 
 foreach ($schema as $name => $definition) {
     file_put_contents(
-        __DIR__ . "/../src/DTO/$name.php",
+        __DIR__."/../src/DTO/$name.php",
         generateDTO($name, $definition)
     );
-    
+
     file_put_contents(
-        __DIR__ . "/../tests/Unit/DTO/{$name}Test.php",
+        __DIR__."/../tests/Unit/DTO/{$name}Test.php",
         generateTest($name, $definition)
     );
 }
