@@ -14,7 +14,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 5
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
         php: [8.3, 8.2]
@@ -30,6 +30,10 @@ jobs:
           - laravel: 10.*
             testbench: 8.*
             carbon: ^2.63
+        exclude:
+          # Exclude Laravel 12 with PHP 8.2 prefer-lowest as it's not compatible
+          - laravel: 12.*
+            stability: prefer-lowest
 
     name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }} - ${{ matrix.os }}
 
