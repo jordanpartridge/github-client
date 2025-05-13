@@ -8,7 +8,7 @@ use Saloon\Http\Faking\MockResponse;
 
 beforeEach(function () {
     config(['github-client.token' => 'fake-token']);
-    
+
     // Set up mock client
     $mockClient = new MockClient([
         '*' => MockResponse::make([], 200),
