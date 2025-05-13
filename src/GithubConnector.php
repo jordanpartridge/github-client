@@ -59,7 +59,7 @@ class GithubConnector extends Connector implements GithubConnectorInterface
     {
         return new PullRequestResource($this);
     }
-    
+
     /**
      * Make a GET request to the GitHub API
      */
@@ -67,10 +67,10 @@ class GithubConnector extends Connector implements GithubConnectorInterface
     {
         $request = new \Saloon\Http\Connector\BodyMethods\GetSender($url, $parameters);
         $response = $this->send($request);
-        
+
         return $response->json();
     }
-    
+
     /**
      * Make a POST request to the GitHub API
      */
@@ -78,10 +78,10 @@ class GithubConnector extends Connector implements GithubConnectorInterface
     {
         $request = new \Saloon\Http\Connector\BodyMethods\PostSender($url, $parameters);
         $response = $this->send($request);
-        
+
         return $response->json();
     }
-    
+
     /**
      * Make a PATCH request to the GitHub API
      */
@@ -89,10 +89,10 @@ class GithubConnector extends Connector implements GithubConnectorInterface
     {
         $request = new \Saloon\Http\Connector\BodyMethods\PatchSender($url, $parameters);
         $response = $this->send($request);
-        
+
         return $response->json();
     }
-    
+
     /**
      * Make a PUT request to the GitHub API
      */
@@ -100,10 +100,10 @@ class GithubConnector extends Connector implements GithubConnectorInterface
     {
         $request = new \Saloon\Http\Connector\BodyMethods\PutSender($url, $parameters);
         $response = $this->send($request);
-        
+
         return $response->json();
     }
-    
+
     /**
      * Make a DELETE request to the GitHub API
      */
@@ -111,7 +111,7 @@ class GithubConnector extends Connector implements GithubConnectorInterface
     {
         $request = new \Saloon\Http\Connector\BodyMethods\DeleteSender($url, $parameters);
         $response = $this->send($request);
-        
+
         return $response->json();
     }
 }
