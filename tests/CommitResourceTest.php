@@ -14,7 +14,7 @@ beforeEach(function () {
     $mockClient = new MockClient([
         '*' => MockResponse::make([], 200),
     ]);
-    
+
     $this->connector->withMockClient($mockClient);
     $this->resource = new CommitResource($this->connector);
 });
