@@ -1,9 +1,21 @@
 <?php
 
 use JordanPartridge\GithubClient\Resources\CommitResource;
+use JordanPartridge\GithubClient\Tests\TestCase;
 use JordanPartridge\GithubClient\ValueObjects\Repo;
+use Saloon\Http\Faking\MockClient;
+use Saloon\Http\Faking\MockResponse;
+
+// We need to use TestCase to get access to the connector
+uses(TestCase::class);
 
 beforeEach(function () {
+    // Set up mock client
+    $mockClient = new MockClient([
+        '*' => MockResponse::make([], 200),
+    ]);
+    
+    $this->connector->withMockClient($mockClient);
     $this->resource = new CommitResource($this->connector);
 });
 
