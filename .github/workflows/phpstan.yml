@@ -19,11 +19,15 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd
           coverage: none
 
       - name: Install composer dependencies
         run: |
+          # Use Laravel 11 for static analysis since it's more stable with PHPStan
           composer require "laravel/framework:^11.0" --no-interaction --no-update
+          # Allow flexible larastan version for compatibility
+          composer require --dev "larastan/larastan:^2.0" --no-interaction --no-update
           composer update --prefer-stable --prefer-dist --no-interaction
 
       - name: Run PHPStan
