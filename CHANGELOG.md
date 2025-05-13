@@ -2,6 +2,14 @@
 
 All notable changes to `github-client` will be documented in this file.
 
+## Unreleased
+
+### Laravel 12 Support
+
+* Added Laravel 12 compatibility
+* Updated PHP requirements to support PHP 8.2, 8.3, and 8.4
+* Updated development dependencies to support the latest testing tools
+
 ## v0.2.1 - Commit by Sha added - 2024-11-26
 
 ### Release v0.2.1: Individual Commit Access
