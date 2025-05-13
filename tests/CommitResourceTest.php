@@ -4,7 +4,6 @@ use JordanPartridge\GithubClient\Resources\CommitResource;
 use JordanPartridge\GithubClient\Tests\TestCase;
 use JordanPartridge\GithubClient\ValueObjects\Repo;
 
-uses(TestCase::class);
 
 beforeEach(function () {
     $this->resource = new CommitResource($this->connector);
