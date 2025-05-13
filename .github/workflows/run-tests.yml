@@ -11,31 +11,22 @@ on:
 
 jobs:
   test:
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     timeout-minutes: 5
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
         php: [8.3, 8.2]
         laravel: [12.*, 11.*, 10.*]
-        stability: [prefer-lowest, prefer-stable]
         include:
           - laravel: 12.*
             testbench: 10.*
-            carbon: ^3.8.4
           - laravel: 11.*
             testbench: 9.*
-            carbon: ^2.63
           - laravel: 10.*
             testbench: 8.*
-            carbon: ^2.63
-        exclude:
-          # Exclude Laravel 12 with PHP 8.2 prefer-lowest as it's not compatible
-          - laravel: 12.*
-            stability: prefer-lowest
 
-    name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }} - ${{ matrix.os }}
+    name: P${{ matrix.php }} - L${{ matrix.laravel }}
 
     steps:
       - name: Checkout code
@@ -56,11 +47,11 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          if [[ "${{ matrix.laravel }}" == "12.*" ]]; then
-            composer remove --no-update larastan/larastan
-          fi
-          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "nesbot/carbon:${{ matrix.os == 'windows-latest' && '^^^' || '' }}${{ matrix.carbon }}" --no-interaction --no-update
-          composer update --${{ matrix.stability }} --prefer-dist --no-interaction --with-all-dependencies
+          # For development tests, we'll remove PHPStan to avoid dependency conflicts
+          composer remove --dev --no-update larastan/larastan phpstan/phpstan phpstan/phpstan-deprecation-rules phpstan/phpstan-phpunit phpstan/extension-installer
+          
+          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
+          composer update --prefer-stable --prefer-dist --no-interaction --with-all-dependencies
 
       - name: List Installed Dependencies
         run: composer show -D

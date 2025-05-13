@@ -22,7 +22,9 @@ jobs:
           coverage: none
 
       - name: Install composer dependencies
-        uses: ramsey/composer-install@v3
+        run: |
+          composer require "laravel/framework:^11.0" --no-interaction --no-update
+          composer update --prefer-stable --prefer-dist --no-interaction
 
       - name: Run PHPStan
         run: ./vendor/bin/phpstan --error-format=github
