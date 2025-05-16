@@ -23,7 +23,7 @@ jobs:
         stability: [prefer-stable]
         include:
           - laravel: 12.*
-            testbench: 10.*
+            testbench: 11.*
           - laravel: 11.*
             testbench: 9.*
           - laravel: 10.*
