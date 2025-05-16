@@ -61,57 +61,114 @@ class GithubConnector extends Connector implements GithubConnectorInterface
     }
 
     /**
+     * Create and send a Saloon request for the given HTTP method and URL
+     *
+     * @param \Saloon\Enums\Method $method The HTTP method
+     * @param string $url The endpoint URL
+     * @param array $parameters Query or body parameters
+     * @return array Response data as array
+     */
+    private function sendRequest(\Saloon\Enums\Method $method, string $url, array $parameters = []): array
+    {
+        $request = new class($method, $url, $parameters) extends \Saloon\Http\Request {
+            protected \Saloon\Enums\Method $method;
+            protected string $endpoint;
+            protected array $parameters;
+            
+            public function __construct(
+                \Saloon\Enums\Method $method,
+                string $endpoint,
+                array $parameters = []
+            ) {
+                $this->method = $method;
+                $this->endpoint = $endpoint;
+                $this->parameters = $parameters;
+            }
+            
+            public function resolveEndpoint(): string
+            {
+                return $this->endpoint;
+            }
+            
+            protected function defaultQuery(): array
+            {
+                if ($this->method === \Saloon\Enums\Method::GET || $this->method === \Saloon\Enums\Method::DELETE) {
+                    return $this->parameters;
+                }
+                
+                return [];
+            }
+            
+            protected function defaultBody(): array
+            {
+                if ($this->method !== \Saloon\Enums\Method::GET && $this->method !== \Saloon\Enums\Method::DELETE) {
+                    return $this->parameters;
+                }
+                
+                return [];
+            }
+        };
+        
+        return $this->send($request)->json();
+    }
+    
+    /**
      * Make a GET request to the GitHub API
+     *
+     * @param string $url The endpoint URL
+     * @param array $parameters Query parameters
+     * @return array Response data as array
      */
     public function get(string $url, array $parameters = []): array
     {
-        $request = new \Saloon\Http\Connector\BodyMethods\GetSender($url, $parameters);
-        $response = $this->send($request);
-
-        return $response->json();
+        return $this->sendRequest(\Saloon\Enums\Method::GET, $url, $parameters);
     }
-
+    
     /**
      * Make a POST request to the GitHub API
+     *
+     * @param string $url The endpoint URL
+     * @param array $parameters Request body data
+     * @return array Response data as array
      */
     public function post(string $url, array $parameters = []): array
     {
-        $request = new \Saloon\Http\Connector\BodyMethods\PostSender($url, $parameters);
-        $response = $this->send($request);
-
-        return $response->json();
+        return $this->sendRequest(\Saloon\Enums\Method::POST, $url, $parameters);
     }
-
+    
     /**
      * Make a PATCH request to the GitHub API
+     *
+     * @param string $url The endpoint URL
+     * @param array $parameters Request body data
+     * @return array Response data as array
      */
     public function patch(string $url, array $parameters = []): array
     {
-        $request = new \Saloon\Http\Connector\BodyMethods\PatchSender($url, $parameters);
-        $response = $this->send($request);
-
-        return $response->json();
+        return $this->sendRequest(\Saloon\Enums\Method::PATCH, $url, $parameters);
     }
-
+    
     /**
      * Make a PUT request to the GitHub API
+     *
+     * @param string $url The endpoint URL
+     * @param array $parameters Request body data
+     * @return array Response data as array
      */
     public function put(string $url, array $parameters = []): array
     {
-        $request = new \Saloon\Http\Connector\BodyMethods\PutSender($url, $parameters);
-        $response = $this->send($request);
-
-        return $response->json();
+        return $this->sendRequest(\Saloon\Enums\Method::PUT, $url, $parameters);
     }
-
+    
     /**
      * Make a DELETE request to the GitHub API
+     *
+     * @param string $url The endpoint URL
+     * @param array $parameters Query parameters
+     * @return array Response data as array
      */
     public function delete(string $url, array $parameters = []): array
     {
-        $request = new \Saloon\Http\Connector\BodyMethods\DeleteSender($url, $parameters);
-        $response = $this->send($request);
-
-        return $response->json();
+        return $this->sendRequest(\Saloon\Enums\Method::DELETE, $url, $parameters);
     }
 }
