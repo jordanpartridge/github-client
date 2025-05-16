@@ -21,7 +21,7 @@ readonly class PullRequestResource extends BaseResource
 
     public function get(string $owner, string $repo, int $number): PullRequestDTO
     {
-        $response = $this->client->get("/repos/{$owner}/{$repo}/pulls/{$number}");
+        $response = $this->connector()->get("/repos/{$owner}/{$repo}/pulls/{$number}");
 
         return PullRequestDTO::fromApiResponse($response);
     }
@@ -35,7 +35,7 @@ readonly class PullRequestResource extends BaseResource
         string $body = '',
         bool $draft = false,
     ): PullRequestDTO {
-        $response = $this->client->post("/repos/{$owner}/{$repo}/pulls", [
+        $response = $this->connector()->post("/repos/{$owner}/{$repo}/pulls", [
             'title' => $title,
             'head' => $head,
             'base' => $base,
@@ -52,7 +52,7 @@ readonly class PullRequestResource extends BaseResource
         int $number,
         array $parameters = [],
     ): PullRequestDTO {
-        $response = $this->client->patch("/repos/{$owner}/{$repo}/pulls/{$number}", $parameters);
+        $response = $this->connector()->patch("/repos/{$owner}/{$repo}/pulls/{$number}", $parameters);
 
         return PullRequestDTO::fromApiResponse($response);
     }
@@ -71,7 +71,7 @@ readonly class PullRequestResource extends BaseResource
             'merge_method' => $mergeMethod->value,
         ]);
 
-        $response = $this->client->put(
+        $response = $this->connector()->put(
             "/repos/{$owner}/{$repo}/pulls/{$number}/merge",
             $parameters,
         );
@@ -84,7 +84,7 @@ readonly class PullRequestResource extends BaseResource
         string $repo,
         int $number,
     ): array {
-        $response = $this->client->get("/repos/{$owner}/{$repo}/pulls/{$number}/reviews");
+        $response = $this->connector()->get("/repos/{$owner}/{$repo}/pulls/{$number}/reviews");
 
         return array_map(
             fn (array $review) => PullRequestReviewDTO::fromApiResponse($review),
@@ -100,7 +100,7 @@ readonly class PullRequestResource extends BaseResource
         string $event = 'COMMENT',
         array $comments = [],
     ): PullRequestReviewDTO {
-        $response = $this->client->post(
+        $response = $this->connector()->post(
             "/repos/{$owner}/{$repo}/pulls/{$number}/reviews",
             [
                 'body' => $body,
@@ -117,7 +117,7 @@ readonly class PullRequestResource extends BaseResource
         string $repo,
         int $number,
     ): array {
-        $response = $this->client->get("/repos/{$owner}/{$repo}/pulls/{$number}/comments");
+        $response = $this->connector()->get("/repos/{$owner}/{$repo}/pulls/{$number}/comments");
 
         return array_map(
             fn (array $comment) => PullRequestCommentDTO::fromApiResponse($comment),
@@ -134,7 +134,7 @@ readonly class PullRequestResource extends BaseResource
         string $path,
         int $position,
     ): PullRequestCommentDTO {
-        $response = $this->client->post(
+        $response = $this->connector()->post(
             "/repos/{$owner}/{$repo}/pulls/{$number}/comments",
             [
                 'body' => $body,

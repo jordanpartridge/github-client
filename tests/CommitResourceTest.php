@@ -1,13 +1,21 @@
 <?php
 
+use JordanPartridge\GithubClient\Facades\Github;
 use JordanPartridge\GithubClient\Resources\CommitResource;
-use JordanPartridge\GithubClient\Tests\TestCase;
 use JordanPartridge\GithubClient\ValueObjects\Repo;
-
-uses(TestCase::class);
+use Saloon\Http\Faking\MockClient;
+use Saloon\Http\Faking\MockResponse;
 
 beforeEach(function () {
-    $this->resource = new CommitResource($this->connector);
+    config(['github-client.token' => 'fake-token']);
+
+    // Set up mock client
+    $mockClient = new MockClient([
+        '*' => MockResponse::make([], 200),
+    ]);
+
+    Github::connector()->withMockClient($mockClient);
+    $this->resource = new CommitResource(Github::connector());
 });
 
 it('can fetch all commits for a repository', function () {
@@ -15,7 +23,7 @@ it('can fetch all commits for a repository', function () {
 
     expect($response)
         ->toBeArray()
-        ->and($this->connector)
+        ->and(Github::connector())
         ->toHaveBeenSentRequest('GET', '/repos/jordanpartridge/github-client/commits')
         ->withQuery(['per_page' => 100, 'page' => 1]);
 });
@@ -24,7 +32,7 @@ it('can fetch a specific commit by SHA', function () {
     $sha = '123abc';
     $response = $this->resource->get('jordanpartridge/github-client', $sha);
 
-    expect($this->connector)
+    expect(Github::connector())
         ->toHaveBeenSentRequest('GET', "/repos/jordanpartridge/github-client/commits/{$sha}");
 });
 
@@ -36,7 +44,7 @@ it('validates repository name format', function () {
 it('handles pagination parameters correctly', function () {
     $response = $this->resource->all('jordanpartridge/github-client', 50, 2);
 
-    expect($this->connector)
+    expect(Github::connector())
         ->toHaveBeenSentRequest('GET', '/repos/jordanpartridge/github-client/commits')
         ->withQuery(['per_page' => 50, 'page' => 2]);
 });

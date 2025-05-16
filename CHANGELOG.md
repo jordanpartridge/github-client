@@ -2,6 +2,18 @@
 
 All notable changes to `github-client` will be documented in this file.
 
+## Unreleased
+
+### Laravel 12 Support
+
+* Added full Laravel 12 compatibility
+* Simplified dependency structure to avoid conflicts across Laravel versions
+* Updated PHP requirements to support PHP 8.2, 8.3, and 8.4
+* Updated development dependencies and streamlined test matrix
+* Ensured backward compatibility with Laravel 10 and 11
+* Added support for Pest 3.0 while maintaining compatibility with Pest 2.x
+* Updated PHPStan configuration for Laravel 12 compatibility
+
 ## v0.2.1 - Commit by Sha added - 2024-11-26
 
 ### Release v0.2.1: Individual Commit Access
