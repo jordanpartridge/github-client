@@ -14,7 +14,8 @@ A powerful, Laravel-first GitHub API client built on Saloon that makes integrati
 - Seamless integration with Laravel's configuration and authentication
 - Comprehensive test coverage
 - Support for facades and dependency injection
-- Modern PHP 8.1+ codebase
+- Modern PHP 8.2+ codebase
+- Support for Laravel 10, 11, and 12
 - Laravel-style resource pattern
 
 ## Installation
