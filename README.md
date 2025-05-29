@@ -86,6 +86,11 @@ GitHub::pullRequests()->createReview('owner/repo', 123, 'LGTM!', 'APPROVE'); // 
 // Pull Request Comments
 GitHub::pullRequests()->comments('owner/repo', 123); // List comments
 GitHub::pullRequests()->createComment('owner/repo', 123, 'Nice work!', 'commit-sha', 'path/to/file.php', 5); // Create a comment
+
+// GitHub Actions
+GitHub::actions()->listWorkflows('owner/repo'); // List workflows
+GitHub::actions()->getWorkflowRuns('owner/repo', 123); // Get workflow runs
+GitHub::actions()->triggerWorkflow('owner/repo', 123, ['ref' => 'main', 'inputs' => ['key' => 'value']]); // Trigger workflow
 ```
 
 ### Working with Pull Requests
@@ -155,6 +160,64 @@ All responses are properly typed using data transfer objects (DTOs) powered by s
 - `PullRequestDTO`
 - `PullRequestReviewDTO`
 - `PullRequestCommentDTO`
+
+### Working with GitHub Actions
+
+The package provides comprehensive support for GitHub Actions workflows:
+
+```php
+use JordanPartridge\GithubClient\Facades\GitHub;
+
+// List workflows for a repository
+$workflows = GitHub::actions()->listWorkflows('owner', 'repo');
+
+// Get workflow runs for a specific workflow
+$runs = GitHub::actions()->getWorkflowRuns(
+    owner: 'owner',
+    repo: 'repo', 
+    workflow_id: 161335,
+    per_page: 50,
+    status: 'completed',
+    conclusion: 'success',
+    branch: 'main'
+);
+
+// Trigger a workflow dispatch event
+$result = GitHub::actions()->triggerWorkflow(
+    owner: 'owner',
+    repo: 'repo',
+    workflow_id: 161335,
+    data: [
+        'ref' => 'main',
+        'inputs' => [
+            'environment' => 'production',
+            'debug' => 'false'
+        ]
+    ]
+);
+
+// List all workflows with pagination
+$workflows = GitHub::actions()->listWorkflows(
+    owner: 'owner',
+    repo: 'repo',
+    per_page: 30,
+    page: 2
+);
+```
+
+#### Available Actions Operations
+
+- **List Workflows**: Get all workflows for a repository
+- **Get Workflow Runs**: Retrieve runs for a specific workflow with filtering options
+- **Trigger Workflow**: Dispatch a workflow_dispatch event with custom inputs
+
+#### Filtering Options
+
+When getting workflow runs, you can filter by:
+- `status`: completed, action_required, cancelled, failure, neutral, skipped, stale, success, timed_out, in_progress, queued, requested, waiting
+- `conclusion`: action_required, cancelled, failure, neutral, success, skipped, stale, timed_out
+- `branch`: Filter by branch name
+- Standard pagination with `per_page` and `page`
 
 ### Using Dependency Injection
 

@@ -2,6 +2,7 @@
 
 namespace JordanPartridge\GithubClient\Contracts;
 
+use JordanPartridge\GithubClient\Resources\ActionsResource;
 use JordanPartridge\GithubClient\Resources\CommitResource;
 use JordanPartridge\GithubClient\Resources\FileResource;
 use JordanPartridge\GithubClient\Resources\PullRequestResource;
@@ -19,6 +20,8 @@ interface GithubConnectorInterface
     public function files(): FileResource;
 
     public function pullRequests(): PullRequestResource;
+
+    public function actions(): ActionsResource;
 
     // HTTP methods
     /**
