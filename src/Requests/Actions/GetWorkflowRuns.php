@@ -5,21 +5,20 @@ namespace JordanPartridge\GithubClient\Requests\Actions;
 use InvalidArgumentException;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
-use Saloon\Http\Response;
 
 class GetWorkflowRuns extends Request
 {
     protected Method $method = Method::GET;
 
     /**
-     * @param string $owner The account owner of the repository
-     * @param string $repo The name of the repository
-     * @param int $workflow_id The ID of the workflow
-     * @param int|null $per_page Items per page (max 100)
-     * @param int|null $page Page number
-     * @param string|null $status Filter by status
-     * @param string|null $conclusion Filter by conclusion
-     * @param string|null $branch Filter by branch name
+     * @param  string  $owner  The account owner of the repository
+     * @param  string  $repo  The name of the repository
+     * @param  int  $workflow_id  The ID of the workflow
+     * @param  int|null  $per_page  Items per page (max 100)
+     * @param  int|null  $page  Page number
+     * @param  string|null  $status  Filter by status
+     * @param  string|null  $conclusion  Filter by conclusion
+     * @param  string|null  $branch  Filter by branch name
      */
     public function __construct(
         protected string $owner,
@@ -39,18 +38,18 @@ class GetWorkflowRuns extends Request
         $validStatuses = [
             'completed', 'action_required', 'cancelled', 'failure', 'neutral',
             'skipped', 'stale', 'success', 'timed_out', 'in_progress', 'queued',
-            'requested', 'waiting'
+            'requested', 'waiting',
         ];
-        if ($this->status !== null && !in_array($this->status, $validStatuses)) {
+        if ($this->status !== null && ! in_array($this->status, $validStatuses)) {
             throw new InvalidArgumentException('Invalid status provided');
         }
 
         // Validate conclusion if provided
         $validConclusions = [
             'action_required', 'cancelled', 'failure', 'neutral', 'success',
-            'skipped', 'stale', 'timed_out'
+            'skipped', 'stale', 'timed_out',
         ];
-        if ($this->conclusion !== null && !in_array($this->conclusion, $validConclusions)) {
+        if ($this->conclusion !== null && ! in_array($this->conclusion, $validConclusions)) {
             throw new InvalidArgumentException('Invalid conclusion provided');
         }
     }

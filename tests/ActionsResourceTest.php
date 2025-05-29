@@ -51,8 +51,8 @@ describe('ActionsResource', function () {
 
         it('validates per_page parameter', function () {
             expect(fn () => Github::actions()->listWorkflows(
-                'owner', 
-                'repo', 
+                'owner',
+                'repo',
                 per_page: 101
             ))->toThrow(InvalidArgumentException::class, 'Per page must be between 1 and 100');
         });
@@ -65,9 +65,9 @@ describe('ActionsResource', function () {
             Github::connector()->withMockClient($mockClient);
 
             $response = Github::actions()->listWorkflows(
-                'owner', 
-                'repo', 
-                per_page: 50, 
+                'owner',
+                'repo',
+                per_page: 50,
                 page: 2
             );
 
@@ -112,8 +112,8 @@ describe('ActionsResource', function () {
 
         it('validates per_page parameter', function () {
             expect(fn () => Github::actions()->getWorkflowRuns(
-                'owner', 
-                'repo', 
+                'owner',
+                'repo',
                 161335,
                 per_page: 0
             ))->toThrow(InvalidArgumentException::class, 'Per page must be between 1 and 100');
@@ -121,8 +121,8 @@ describe('ActionsResource', function () {
 
         it('validates status parameter', function () {
             expect(fn () => Github::actions()->getWorkflowRuns(
-                'owner', 
-                'repo', 
+                'owner',
+                'repo',
                 161335,
                 status: 'invalid_status'
             ))->toThrow(InvalidArgumentException::class, 'Invalid status provided');
@@ -130,8 +130,8 @@ describe('ActionsResource', function () {
 
         it('validates conclusion parameter', function () {
             expect(fn () => Github::actions()->getWorkflowRuns(
-                'owner', 
-                'repo', 
+                'owner',
+                'repo',
                 161335,
                 conclusion: 'invalid_conclusion'
             ))->toThrow(InvalidArgumentException::class, 'Invalid conclusion provided');
@@ -145,8 +145,8 @@ describe('ActionsResource', function () {
             Github::connector()->withMockClient($mockClient);
 
             $response = Github::actions()->getWorkflowRuns(
-                'owner', 
-                'repo', 
+                'owner',
+                'repo',
                 161335,
                 per_page: 20,
                 page: 1,
@@ -168,15 +168,15 @@ describe('ActionsResource', function () {
             Github::connector()->withMockClient($mockClient);
 
             $response = Github::actions()->triggerWorkflow(
-                'owner', 
-                'repo', 
-                161335, 
+                'owner',
+                'repo',
+                161335,
                 [
                     'ref' => 'main',
                     'inputs' => [
                         'environment' => 'production',
-                        'debug' => 'false'
-                    ]
+                        'debug' => 'false',
+                    ],
                 ]
             );
 
@@ -185,21 +185,21 @@ describe('ActionsResource', function () {
 
         it('requires ref parameter', function () {
             expect(fn () => Github::actions()->triggerWorkflow(
-                'owner', 
-                'repo', 
-                161335, 
+                'owner',
+                'repo',
+                161335,
                 []
             ))->toThrow(InvalidArgumentException::class, 'The "ref" field is required for workflow dispatch');
         });
 
         it('validates inputs parameter is array', function () {
             expect(fn () => Github::actions()->triggerWorkflow(
-                'owner', 
-                'repo', 
-                161335, 
+                'owner',
+                'repo',
+                161335,
                 [
                     'ref' => 'main',
-                    'inputs' => 'invalid'
+                    'inputs' => 'invalid',
                 ]
             ))->toThrow(InvalidArgumentException::class, 'The "inputs" field must be an array');
         });
@@ -212,9 +212,9 @@ describe('ActionsResource', function () {
             Github::connector()->withMockClient($mockClient);
 
             $response = Github::actions()->triggerWorkflow(
-                'owner', 
-                'repo', 
-                161335, 
+                'owner',
+                'repo',
+                161335,
                 ['ref' => 'main']
             );
 

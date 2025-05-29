@@ -5,17 +5,16 @@ namespace JordanPartridge\GithubClient\Requests\Actions;
 use InvalidArgumentException;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
-use Saloon\Http\Response;
 
 class ListWorkflows extends Request
 {
     protected Method $method = Method::GET;
 
     /**
-     * @param string $owner The account owner of the repository
-     * @param string $repo The name of the repository
-     * @param int|null $per_page Items per page (max 100)
-     * @param int|null $page Page number
+     * @param  string  $owner  The account owner of the repository
+     * @param  string  $repo  The name of the repository
+     * @param  int|null  $per_page  Items per page (max 100)
+     * @param  int|null  $page  Page number
      */
     public function __construct(
         protected string $owner,
