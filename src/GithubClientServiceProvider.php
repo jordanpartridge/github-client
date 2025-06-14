@@ -20,7 +20,17 @@ class GithubClientServiceProvider extends PackageServiceProvider
             ->hasCommand(GithubClientCommand::class);
 
         $this->app->singleton(GithubConnectorInterface::class, function () {
-            return new GithubConnector(config('github-client.token'));
+            $token = config('github-client.token');
+
+            if (empty($token)) {
+                throw new \InvalidArgumentException('GitHub token is required. Please set GITHUB_TOKEN environment variable.');
+            }
+
+            return new GithubConnector($token);
+        });
+
+        $this->app->bind(Github::class, function ($app) {
+            return new Github($app->make(GithubConnectorInterface::class));
         });
 
         $this->app->singleton(GithubOAuth::class, function () {

@@ -34,12 +34,7 @@ beforeEach(function () {
             'additions' => 10,
             'deletions' => 5,
             'changed_files' => 2,
-            'user' => [
-                'login' => 'testuser',
-                'id' => 1,
-                'type' => 'User',
-                'avatar_url' => 'https://github.com/testuser.png',
-            ],
+            'user' => $this->createMockUserData('testuser', 1),
             'merged_by' => null,
             'created_at' => '2024-01-01T00:00:00Z',
             'updated_at' => '2024-01-01T00:00:00Z',
@@ -52,6 +47,37 @@ beforeEach(function () {
 
 describe('pull request operations', function () {
     it('can list pull requests', function () {
+        // Override mock for list operation (expects array of PRs)
+        Github::connector()->withMockClient(new MockClient([
+            '*' => MockResponse::make([[
+                'id' => 1,
+                'number' => 1,
+                'state' => 'open',
+                'title' => 'Test Pull Request',
+                'body' => 'This is a test pull request',
+                'html_url' => 'https://github.com/test/repo/pull/1',
+                'diff_url' => 'https://github.com/test/repo/pull/1.diff',
+                'patch_url' => 'https://github.com/test/repo/pull/1.patch',
+                'base' => ['ref' => 'main'],
+                'head' => ['ref' => 'feature-branch'],
+                'draft' => false,
+                'merged' => false,
+                'merged_at' => null,
+                'merge_commit_sha' => null,
+                'comments' => 0,
+                'review_comments' => 0,
+                'commits' => 1,
+                'additions' => 10,
+                'deletions' => 5,
+                'changed_files' => 2,
+                'user' => $this->createMockUserData('testuser', 1),
+                'merged_by' => null,
+                'created_at' => '2024-01-01T00:00:00Z',
+                'updated_at' => '2024-01-01T00:00:00Z',
+                'closed_at' => null,
+            ]], 200),
+        ]));
+
         $response = Github::pullRequests()->all('test', 'repo');
 
         expect($response)
@@ -120,12 +146,7 @@ describe('pull request reviews', function () {
                 [
                     'id' => 1,
                     'node_id' => 'abc123',
-                    'user' => [
-                        'login' => 'reviewer',
-                        'id' => 2,
-                        'type' => 'User',
-                        'avatar_url' => 'https://github.com/reviewer.png',
-                    ],
+                    'user' => $this->createMockUserData('reviewer', 2),
                     'body' => 'Looks good!',
                     'state' => 'APPROVED',
                     'html_url' => 'https://github.com/test/repo/pull/1#pullrequestreview-1',
@@ -148,6 +169,21 @@ describe('pull request reviews', function () {
     });
 
     it('can create a pull request review', function () {
+        // Override mock for create operation (expects single review object)
+        Github::connector()->withMockClient(new MockClient([
+            '*' => MockResponse::make([
+                'id' => 1,
+                'node_id' => 'abc123',
+                'user' => $this->createMockUserData('reviewer', 2),
+                'body' => 'Looks good!',
+                'state' => 'APPROVED',
+                'html_url' => 'https://github.com/test/repo/pull/1#pullrequestreview-1',
+                'pull_request_url' => 'https://api.github.com/repos/test/repo/pulls/1',
+                'commit_id' => 'abc123def456',
+                'submitted_at' => '2024-01-01T00:00:00Z',
+            ], 200),
+        ]));
+
         $review = Github::pullRequests()->createReview(
             'test',
             'repo',
@@ -174,12 +210,7 @@ describe('pull request comments', function () {
                     'original_position' => 5,
                     'commit_id' => 'abc123def456',
                     'original_commit_id' => 'abc123def456',
-                    'user' => [
-                        'login' => 'commenter',
-                        'id' => 3,
-                        'type' => 'User',
-                        'avatar_url' => 'https://github.com/commenter.png',
-                    ],
+                    'user' => $this->createMockUserData('commenter', 3),
                     'body' => 'Consider using a different approach here',
                     'html_url' => 'https://github.com/test/repo/pull/1#discussion_r1',
                     'pull_request_url' => 'https://api.github.com/repos/test/repo/pulls/1',
@@ -201,6 +232,25 @@ describe('pull request comments', function () {
     });
 
     it('can create a pull request comment', function () {
+        // Override mock for create operation (expects single comment object)
+        Github::connector()->withMockClient(new MockClient([
+            '*' => MockResponse::make([
+                'id' => 1,
+                'node_id' => 'abc123',
+                'path' => 'src/test.php',
+                'position' => 5,
+                'original_position' => 5,
+                'commit_id' => 'abc123def456',
+                'original_commit_id' => 'abc123def456',
+                'user' => $this->createMockUserData('commenter', 3),
+                'body' => 'Consider using a different approach here',
+                'html_url' => 'https://github.com/test/repo/pull/1#discussion_r1',
+                'pull_request_url' => 'https://api.github.com/repos/test/repo/pulls/1',
+                'created_at' => '2024-01-01T00:00:00Z',
+                'updated_at' => '2024-01-01T00:00:00Z',
+            ], 200),
+        ]));
+
         $comment = Github::pullRequests()->createComment(
             'test',
             'repo',

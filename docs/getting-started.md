@@ -22,23 +22,23 @@ GITHUB_TOKEN=your-token-here
 ### Working with Repositories
 
 ```php
-use JordanPartridge\GithubClient\Facades\GitHub;
+use JordanPartridge\GithubClient\Facades\Github;
 
 // List repositories
-$repos = GitHub::repos()->all();
+$repos = Github::repos()->all();
 
 // Get specific repository
-$repo = GitHub::repos()->get('owner/repo');
+$repo = Github::repos()->get('owner/repo');
 ```
 
 ### Working with Commits
 
 ```php
 // List commits
-$commits = GitHub::commits()->all('owner/repo');
+$commits = Github::commits()->all('owner/repo');
 
 // Get specific commit
-$commit = GitHub::commits()->get('sha');
+$commit = Github::commits()->get('sha');
 ```
 
 ## Next Steps

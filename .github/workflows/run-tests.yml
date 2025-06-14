@@ -23,11 +23,15 @@ jobs:
         stability: [prefer-stable]
         include:
           - laravel: 12.*
-            testbench: 11.*
+            testbench: 10.*
           - laravel: 11.*
             testbench: 9.*
           - laravel: 10.*
             testbench: 8.*
+        exclude:
+          # Laravel 12 requires PHP 8.3+
+          - php: 8.2
+            laravel: 12.*
 
     name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }}
 
@@ -57,6 +61,13 @@ jobs:
           # Configure Laravel version
           composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
           
+          # Handle collision version compatibility
+          if [[ "${{ matrix.laravel }}" == "10.*" ]]; then
+            composer require --dev --no-update "nunomaduro/collision:^7.0"
+          elif [[ "${{ matrix.laravel }}" == "11.*" || "${{ matrix.laravel }}" == "12.*" ]]; then
+            composer require --dev --no-update "nunomaduro/collision:^8.0"
+          fi
+          
           # Handle Carbon version for Laravel 12
           if [[ "${{ matrix.laravel }}" == "12.*" ]]; then
             composer require --no-update "nesbot/carbon:^3.0"
@@ -72,3 +83,5 @@ jobs:
 
       - name: Execute tests
         run: vendor/bin/pest
+        env:
+          GITHUB_TOKEN: dummy-token-for-testing
