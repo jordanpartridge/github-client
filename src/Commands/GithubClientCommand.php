@@ -3,7 +3,7 @@
 namespace JordanPartridge\GithubClient\Commands;
 
 use Illuminate\Console\Command;
-use JordanPartridge\GithubClient\Github;
+use JordanPartridge\GithubClient\Facades\Github;
 use JordanPartridge\GithubClient\ValueObjects\Repo;
 
 class GithubClientCommand extends Command
@@ -15,9 +15,8 @@ class GithubClientCommand extends Command
 
     public $description = 'GitHub Client utility commands';
 
-    public function __construct(
-        private readonly Github $github
-    ) {
+    public function __construct()
+    {
         parent::__construct();
     }
 
@@ -38,7 +37,7 @@ class GithubClientCommand extends Command
         $this->info('Testing GitHub API connection...');
 
         try {
-            $repos = $this->github->repos()->all(per_page: 1);
+            $repos = Github::repos()->all(per_page: 1);
             $this->info('✅ Connection successful!');
             $this->line('API token is valid and working.');
 
@@ -66,7 +65,7 @@ class GithubClientCommand extends Command
 
         try {
             $this->info("Fetching repository information for: {$repo}");
-            $repoData = $this->github->repos()->get(Repo::fromFullName($repo));
+            $repoData = Github::repos()->get(Repo::fromFullName($repo));
 
             $this->table(['Property', 'Value'], [
                 ['Name', $repoData->name],
@@ -102,7 +101,7 @@ class GithubClientCommand extends Command
 
         try {
             $this->info("Fetching recent commits for: {$repo}");
-            $commits = $this->github->commits()->all($repo, per_page: $limit);
+            $commits = Github::commits()->all($repo, per_page: $limit);
 
             $tableData = [];
             foreach ($commits as $commit) {
