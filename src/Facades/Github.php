@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static \JordanPartridge\GithubClient\Resources\PullRequestResource pullRequests()
  * @method static \JordanPartridge\GithubClient\Resources\ActionsResource actions()
  * @method static \JordanPartridge\GithubClient\Contracts\GithubConnectorInterface connector()
- * 
+ *
  * @see \JordanPartridge\GithubClient\Github
  */
 class Github extends Facade
