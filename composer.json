@@ -77,7 +77,7 @@
                 "JordanPartridge\\GithubClient\\GithubClientServiceProvider"
             ],
             "aliases": {
-                "GithubClient": "JordanPartridge\\GithubClient\\Facades\\GithubClient"
+                "Github": "JordanPartridge\\GithubClient\\Facades\\Github"
             }
         }
     },

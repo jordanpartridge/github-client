@@ -9,13 +9,13 @@ The CommitResource provides access to GitHub's Git commit API endpoints. It allo
 Fetches all commits for a given repository with pagination support.
 
 ```php
-use JordanPartridge\GithubClient\Facades\GitHub;
+use JordanPartridge\GithubClient\Facades\Github;
 
 // Get first 100 commits
-$commits = GitHub::commits()->all('owner/repo');
+$commits = Github::commits()->all('owner/repo');
 
 // Get specific page with custom page size
-$commits = GitHub::commits()->all('owner/repo', per_page: 50, page: 2);
+$commits = Github::commits()->all('owner/repo', per_page: 50, page: 2);
 ```
 
 Parameters:
@@ -28,7 +28,7 @@ Parameters:
 Fetches a specific commit by its SHA.
 
 ```php
-$commit = GitHub::commits()->get('owner/repo', '123abc');
+$commit = Github::commits()->get('owner/repo', '123abc');
 ```
 
 Parameters:

@@ -5,7 +5,7 @@
 ### GitHub Client
 
 ```php
-use JordanPartridge\GithubClient\Facades\GitHub;
+use JordanPartridge\GithubClient\Facades\Github;
 ```
 
 ## Available Methods
@@ -14,24 +14,24 @@ use JordanPartridge\GithubClient\Facades\GitHub;
 
 #### all()
 ```php
-GitHub::repos()->all(): Collection
+Github::repos()->all(): Collection
 ```
 
 #### get()
 ```php
-GitHub::repos()->get(string $repository): Repository
+Github::repos()->get(string $repository): Repository
 ```
 
 ### Commits
 
 #### all()
 ```php
-GitHub::commits()->all(string $repository): Collection
+Github::commits()->all(string $repository): Collection
 ```
 
 #### get()
 ```php
-GitHub::commits()->get(string $sha): Commit
+Github::commits()->get(string $sha): Commit
 ```
 
 ## Response Types
