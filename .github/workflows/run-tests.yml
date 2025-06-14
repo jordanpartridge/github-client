@@ -28,6 +28,10 @@ jobs:
             testbench: 9.*
           - laravel: 10.*
             testbench: 8.*
+        exclude:
+          # Laravel 12 requires PHP 8.3+
+          - php: 8.2
+            laravel: 12.*
 
     name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }}
 
