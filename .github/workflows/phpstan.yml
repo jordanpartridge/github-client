@@ -32,7 +32,11 @@ jobs:
           composer require "laravel/framework:^11.0" --no-interaction --no-update
           # Allow flexible larastan version for compatibility
           composer require --dev "larastan/larastan:^2.0" --no-interaction --no-update
+          # Fix collision dependency for Laravel compatibility
+          composer require --dev "nunomaduro/collision:^7.0||^8.0" --no-interaction --no-update
           composer update --prefer-stable --prefer-dist --no-interaction
 
       - name: Run PHPStan
         run: ./vendor/bin/phpstan --error-format=github
+        env:
+          GITHUB_TOKEN: dummy-token-for-static-analysis
