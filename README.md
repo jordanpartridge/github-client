@@ -7,7 +7,7 @@
 [![PHP Version](https://img.shields.io/packagist/php-v/jordanpartridge/github-client.svg?style=flat-square)](https://packagist.org/packages/jordanpartridge/github-client)
 [![Laravel Version](https://img.shields.io/badge/Laravel-10%2B%2C%2011%2B%2C%2012%2B-red?style=flat-square)](https://packagist.org/packages/jordanpartridge/github-client)
 
-A powerful, Laravel-first GitHub API client built on Saloon that makes integrating with GitHub's API simple and intuitive. This package provides strongly-typed responses, resource-based architecture, and an elegant developer experience.
+A powerful, Laravel-first GitHub API client built on Saloon that makes integrating with GitHub's API simple and intuitive. This package provides strongly typed responses, resource-based architecture, and an elegant developer experience.
 
 ## 🌟 Features
 

@@ -16,7 +16,7 @@ The GitHub Client for Laravel is built on a clean, modular architecture that fol
 
 The architecture consists of these key components:
 
-```
+```text
 ┌─────────────────────┐      ┌───────────────────┐      ┌───────────────────┐
 │    GitHub Facade    │      │  GitHub Client    │      │  Saloon Connector  │
 │    (Entry Point)    │─────▶│  (Main Service)   │─────▶│  (HTTP Layer)      │
@@ -70,7 +70,7 @@ These classes handle:
 
 ### 5. Data Transfer Objects (DTOs)
 
-DTOs provide strongly-typed structures for GitHub API responses:
+DTOs provide strongly typed structures for GitHub API responses:
 
 - **RepoData**: Repository information
 - **CommitData**: Commit information

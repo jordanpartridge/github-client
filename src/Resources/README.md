@@ -7,7 +7,7 @@ This directory contains the core resource classes that handle GitHub API interac
 Resources are the cornerstone of the GitHub Client's architecture, providing a clean, consistent interface to the GitHub API. The architecture follows these principles:
 
 1. **Resource Pattern**: Each GitHub entity has a dedicated resource class
-2. **Strongly Typed**: All methods return strongly-typed responses using DTOs
+2. **Strongly Typed**: All methods return strongly typed responses using DTOs
 3. **Immutable**: All resources are declared as `readonly` to enforce immutability
 4. **Consistent API**: Resources follow a common pattern with methods like `all()` and `get()`
 5. **Request Encapsulation**: API requests are encapsulated in dedicated request classes
@@ -147,7 +147,7 @@ $contents = Github::files()->contents(
 
 ## Data Transfer Objects (DTOs)
 
-Each resource typically returns strongly-typed DTOs for specific entities:
+Each resource typically returns strongly typed DTOs for specific entities:
 
 - `RepoResource->get()` returns a `RepoData` object
 - `CommitResource->get()` returns a `CommitData` object
