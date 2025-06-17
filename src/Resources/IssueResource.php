@@ -8,7 +8,7 @@ use JordanPartridge\GithubClient\Requests\Issues\GetIssueRequest;
 use JordanPartridge\GithubClient\Requests\Issues\ListIssuesRequest;
 use JordanPartridge\GithubClient\Requests\Issues\UpdateIssueRequest;
 
-class IssueResource extends BaseResource
+readonly class IssueResource extends BaseResource
 {
     /**
      * List issues for a repository
