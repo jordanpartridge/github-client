@@ -6,6 +6,7 @@ use JordanPartridge\GithubClient\Contracts\GithubConnectorInterface;
 use JordanPartridge\GithubClient\Resources\ActionsResource;
 use JordanPartridge\GithubClient\Resources\CommitResource;
 use JordanPartridge\GithubClient\Resources\FileResource;
+use JordanPartridge\GithubClient\Resources\IssueResource;
 use JordanPartridge\GithubClient\Resources\PullRequestResource;
 use JordanPartridge\GithubClient\Resources\RepoResource;
 use Saloon\Http\Auth\TokenAuthenticator;
@@ -64,6 +65,11 @@ class GithubConnector extends Connector implements GithubConnectorInterface
     public function actions(): ActionsResource
     {
         return new ActionsResource($this);
+    }
+
+    public function issues(): IssueResource
+    {
+        return new IssueResource($this);
     }
 
     /**

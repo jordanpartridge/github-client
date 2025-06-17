@@ -6,6 +6,7 @@ use JordanPartridge\GithubClient\Contracts\GithubConnectorInterface;
 use JordanPartridge\GithubClient\Resources\ActionsResource;
 use JordanPartridge\GithubClient\Resources\CommitResource;
 use JordanPartridge\GithubClient\Resources\FileResource;
+use JordanPartridge\GithubClient\Resources\IssueResource;
 use JordanPartridge\GithubClient\Resources\PullRequestResource;
 use JordanPartridge\GithubClient\Resources\RepoResource;
 
@@ -45,5 +46,10 @@ class Github
     public function actions(): ActionsResource
     {
         return $this->connector->actions();
+    }
+
+    public function issues(): IssueResource
+    {
+        return $this->connector->issues();
     }
 }
