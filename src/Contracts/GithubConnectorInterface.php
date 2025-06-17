@@ -5,6 +5,7 @@ namespace JordanPartridge\GithubClient\Contracts;
 use JordanPartridge\GithubClient\Resources\ActionsResource;
 use JordanPartridge\GithubClient\Resources\CommitResource;
 use JordanPartridge\GithubClient\Resources\FileResource;
+use JordanPartridge\GithubClient\Resources\IssueResource;
 use JordanPartridge\GithubClient\Resources\PullRequestResource;
 use JordanPartridge\GithubClient\Resources\RepoResource;
 use Saloon\Http\Request;
@@ -22,6 +23,8 @@ interface GithubConnectorInterface
     public function pullRequests(): PullRequestResource;
 
     public function actions(): ActionsResource;
+
+    public function issues(): IssueResource;
 
     // HTTP methods
     /**
