@@ -17,7 +17,7 @@ readonly class CommitResource extends BaseResource
         ?int $page = 1): array
     {
         return $this->validateRepo($repo_name)
-            ->connector()
+            ->github()->connector()
             ->send(new Index(repo_name: $repo_name, per_page: $per_page, page: $page))->dto();
     }
 
@@ -26,7 +26,7 @@ readonly class CommitResource extends BaseResource
         $this->validateRepoName($repo_name);
         $repo = $this->dataObjectFromFullName($repo_name);
 
-        return $this->connector()->send(new Get($repo, $commit_sha))->dto();
+        return $this->github()->connector()->send(new Get($repo, $commit_sha))->dto();
     }
 
     private function validateRepo(string $repo_name): self

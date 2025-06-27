@@ -2,26 +2,33 @@
 
 namespace JordanPartridge\GithubClient\Resources;
 
-use JordanPartridge\GithubClient\Contracts\GithubConnectorInterface;
 use JordanPartridge\GithubClient\Contracts\ResourceInterface;
-use JordanPartridge\GithubClient\GithubConnector;
+use JordanPartridge\GithubClient\Github;
 
 abstract readonly class BaseResource implements ResourceInterface
 {
     /**
-     * Create a new RepoResource instance
+     * Create a new Resource instance
      *
-     * @param  GithubConnector  $connector  The authenticated GitHub API connector
+     * @param  Github  $github  The authenticated GitHub client
      */
     public function __construct(
-        private GithubConnectorInterface $connector,
+        private Github $github,
     ) {}
 
     /**
-     * Allows access to the GithubConnector instance
+     * Allows access to the Github instance
      */
-    public function connector(): GithubConnectorInterface
+    public function github(): Github
     {
-        return $this->connector;
+        return $this->github;
+    }
+
+    /**
+     * Convenience method to access the connector
+     */
+    public function connector()
+    {
+        return $this->github->connector();
     }
 }

@@ -82,7 +82,7 @@ readonly class RepoResource extends BaseResource
         ?Direction $direction = null,
         ?Type $type = null,
     ): Response {
-        return $this->connector()->send(new Index(
+        return $this->github()->connector()->send(new Index(
             per_page: $per_page,
             page: $page,
             visibility: $visibility,
@@ -108,12 +108,12 @@ readonly class RepoResource extends BaseResource
      */
     public function get(Repo $repo): RepoData
     {
-        return $this->connector()->send(new Get($repo))->dto();
+        return $this->github()->connector()->send(new Get($repo))->dto();
     }
 
     public function delete(string $full_name): Response
     {
-        return $this->connector()->send(new Delete($full_name));
+        return $this->github()->connector()->send(new Delete($full_name));
     }
 
     /**
@@ -157,7 +157,7 @@ readonly class RepoResource extends BaseResource
         ?int $per_page = null,
         ?int $page = null,
     ): SearchRepositoriesData {
-        return $this->connector()->send(new Search(
+        return $this->github()->connector()->send(new Search(
             searchQuery: $query,
             sort: $sort,
             order: $order,
