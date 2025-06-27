@@ -29,7 +29,7 @@ describe('DTO conversion methods', function () {
         ];
 
         $dto = GitUserData::fromArray($userData);
-        
+
         expect($dto)
             ->toBeInstanceOf(GitUserData::class)
             ->and($dto->login)->toBe('testuser')
@@ -42,7 +42,7 @@ describe('DTO conversion methods', function () {
 
     it('can create Issue from API response and convert to array', function () {
         $mockUser = $this->createMockUserData('author', 456);
-        
+
         $issueData = [
             'id' => 789,
             'node_id' => 'MDU6SXNzdWU3ODk=',
@@ -72,7 +72,7 @@ describe('DTO conversion methods', function () {
         ];
 
         $issue = Issue::fromApiResponse($issueData);
-        
+
         expect($issue)
             ->toBeInstanceOf(Issue::class)
             ->and($issue->id)->toBe(789)
@@ -91,7 +91,7 @@ describe('DTO conversion methods', function () {
 
     it('can create PullRequestDTO from API response', function () {
         $mockUser = $this->createMockUserData('contributor', 999);
-        
+
         $prData = [
             'id' => 555,
             'number' => 42,
@@ -121,7 +121,7 @@ describe('DTO conversion methods', function () {
         ];
 
         $pr = PullRequestDTO::fromApiResponse($prData);
-        
+
         expect($pr)
             ->toBeInstanceOf(PullRequestDTO::class)
             ->and($pr->id)->toBe(555)
@@ -163,10 +163,10 @@ describe('DTO conversion methods', function () {
         ];
 
         $dto = GitUserData::fromArray($userData);
-        
+
         expect($dto->gravatar_id)->toBe('');
         expect($dto->user_view_type)->toBe('');
-        
+
         $converted = $dto->toArray();
         expect($converted['gravatar_id'])->toBe('');
         expect($converted['user_view_type'])->toBe('');
@@ -175,7 +175,7 @@ describe('DTO conversion methods', function () {
     it('preserves nested object relationships', function () {
         $mockUser = $this->createMockUserData('author', 111);
         $mockAssignee = $this->createMockUserData('assignee', 222);
-        
+
         $issueData = [
             'id' => 333,
             'node_id' => 'MDU6SXNzdWUzMzM=',
@@ -205,7 +205,7 @@ describe('DTO conversion methods', function () {
         ];
 
         $issue = Issue::fromApiResponse($issueData);
-        
+
         expect($issue->assignee)
             ->toBeInstanceOf(GitUserData::class)
             ->and($issue->assignee->login)->toBe('assignee')
