@@ -20,7 +20,6 @@ class TestCase extends Orchestra
     protected function getPackageProviders($app)
     {
         return [
-            \Spatie\LaravelData\LaravelDataServiceProvider::class,
             GithubClientServiceProvider::class,
         ];
     }
@@ -28,9 +27,6 @@ class TestCase extends Orchestra
     public function getEnvironmentSetUp($app)
     {
         config()->set('database.default', 'testing');
-
-        // Set up spatie/laravel-data configuration
-        config()->set('data.validation_strategy', 'disabled');
 
         // Set up github-client configuration for testing
         config()->set('github-client.token', 'test-token');

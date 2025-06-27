@@ -3,9 +3,8 @@
 namespace JordanPartridge\GithubClient\Data\Pulls;
 
 use JordanPartridge\GithubClient\Data\GitUserData;
-use Spatie\LaravelData\Data;
 
-class PullRequestCommentDTO extends Data
+class PullRequestCommentDTO
 {
     public function __construct(
         public readonly int $id,
@@ -23,7 +22,7 @@ class PullRequestCommentDTO extends Data
         public readonly string $updated_at,
     ) {}
 
-    public static function fromApiResponse(array $data): self
+    public static function fromArray(array $data): self
     {
         return new self(
             id: $data['id'],
@@ -33,12 +32,36 @@ class PullRequestCommentDTO extends Data
             original_position: $data['original_position'] ?? -1,
             commit_id: $data['commit_id'],
             original_commit_id: $data['original_commit_id'],
-            user: GitUserData::from($data['user']),
+            user: GitUserData::fromArray($data['user']),
             body: $data['body'],
             html_url: $data['html_url'],
             pull_request_url: $data['pull_request_url'],
             created_at: $data['created_at'],
             updated_at: $data['updated_at'],
         );
+    }
+
+    public static function fromApiResponse(array $data): self
+    {
+        return self::fromArray($data);
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'node_id' => $this->node_id,
+            'path' => $this->path,
+            'position' => $this->position,
+            'original_position' => $this->original_position,
+            'commit_id' => $this->commit_id,
+            'original_commit_id' => $this->original_commit_id,
+            'user' => $this->user->toArray(),
+            'body' => $this->body,
+            'html_url' => $this->html_url,
+            'pull_request_url' => $this->pull_request_url,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+        ];
     }
 }
