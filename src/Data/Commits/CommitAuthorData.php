@@ -3,16 +3,30 @@
 namespace JordanPartridge\GithubClient\Data\Commits;
 
 use Carbon\Carbon;
-use Spatie\LaravelData\Attributes\WithCast;
-use Spatie\LaravelData\Casts\DateTimeInterfaceCast;
-use Spatie\LaravelData\Data;
 
-class CommitAuthorData extends Data
+class CommitAuthorData
 {
     public function __construct(
         public string $name,
         public string $email,
-        #[WithCast(DateTimeInterfaceCast::class)]
         public Carbon $date,
     ) {}
+
+    public static function fromArray(array $data): self
+    {
+        return new self(
+            name: $data['name'],
+            email: $data['email'],
+            date: Carbon::parse($data['date']),
+        );
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'name' => $this->name,
+            'email' => $this->email,
+            'date' => $this->date->toISOString(),
+        ];
+    }
 }

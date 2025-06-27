@@ -2,7 +2,7 @@
 
 namespace JordanPartridge\GithubClient;
 
-use JordanPartridge\GithubClient\Contracts\GithubConnectorInterface;
+use ConduitUi\GitHubConnector\GithubConnector;
 use JordanPartridge\GithubClient\Resources\ActionsResource;
 use JordanPartridge\GithubClient\Resources\CommitResource;
 use JordanPartridge\GithubClient\Resources\FileResource;
@@ -15,41 +15,67 @@ class Github
     use Concerns\ValidatesRepoName;
 
     public function __construct(
-        protected GithubConnectorInterface $connector,
+        protected GithubConnector $connector,
     ) {}
 
-    public function connector(): GithubConnectorInterface
+    public function connector(): GithubConnector
     {
         return $this->connector;
     }
 
     public function repos(): RepoResource
     {
-        return $this->connector->repos();
+        return new RepoResource($this);
     }
 
     public function commits(): CommitResource
     {
-        return $this->connector->commits();
+        return new CommitResource($this);
     }
 
     public function files(): FileResource
     {
-        return $this->connector->files();
+        return new FileResource($this);
     }
 
     public function pullRequests(): PullRequestResource
     {
-        return $this->connector->pullRequests();
+        return new PullRequestResource($this);
     }
 
     public function actions(): ActionsResource
     {
-        return $this->connector->actions();
+        return new ActionsResource($this);
     }
 
     public function issues(): IssueResource
     {
-        return $this->connector->issues();
+        return new IssueResource($this);
+    }
+
+    // HTTP methods delegated to connector
+    public function get(string $url, array $parameters = []): array
+    {
+        return $this->connector->get($url, $parameters);
+    }
+
+    public function post(string $url, array $parameters = []): array
+    {
+        return $this->connector->post($url, $parameters);
+    }
+
+    public function patch(string $url, array $parameters = []): array
+    {
+        return $this->connector->patch($url, $parameters);
+    }
+
+    public function put(string $url, array $parameters = []): array
+    {
+        return $this->connector->put($url, $parameters);
+    }
+
+    public function delete(string $url, array $parameters = []): array
+    {
+        return $this->connector->delete($url, $parameters);
     }
 }

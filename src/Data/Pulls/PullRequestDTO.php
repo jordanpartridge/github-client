@@ -3,9 +3,8 @@
 namespace JordanPartridge\GithubClient\Data\Pulls;
 
 use JordanPartridge\GithubClient\Data\GitUserData;
-use Spatie\LaravelData\Data;
 
-class PullRequestDTO extends Data
+class PullRequestDTO
 {
     public function __construct(
         public readonly int $id,
@@ -58,11 +57,42 @@ class PullRequestDTO extends Data
             additions: $data['additions'],
             deletions: $data['deletions'],
             changed_files: $data['changed_files'],
-            user: GitUserData::from($data['user']),
-            merged_by: isset($data['merged_by']) ? GitUserData::from($data['merged_by']) : null,
+            user: GitUserData::fromArray($data['user']),
+            merged_by: isset($data['merged_by']) ? GitUserData::fromArray($data['merged_by']) : null,
             created_at: $data['created_at'],
             updated_at: $data['updated_at'],
             closed_at: $data['closed_at'],
         );
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'number' => $this->number,
+            'state' => $this->state,
+            'title' => $this->title,
+            'body' => $this->body,
+            'html_url' => $this->html_url,
+            'diff_url' => $this->diff_url,
+            'patch_url' => $this->patch_url,
+            'base_ref' => $this->base_ref,
+            'head_ref' => $this->head_ref,
+            'draft' => $this->draft,
+            'merged' => $this->merged,
+            'merged_at' => $this->merged_at,
+            'merge_commit_sha' => $this->merge_commit_sha,
+            'comments' => $this->comments,
+            'review_comments' => $this->review_comments,
+            'commits' => $this->commits,
+            'additions' => $this->additions,
+            'deletions' => $this->deletions,
+            'changed_files' => $this->changed_files,
+            'user' => $this->user->toArray(),
+            'merged_by' => $this->merged_by?->toArray(),
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+            'closed_at' => $this->closed_at,
+        ];
     }
 }

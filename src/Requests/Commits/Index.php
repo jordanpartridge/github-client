@@ -55,7 +55,7 @@ class Index extends Request
         }
 
         return $response->collect()->map(function (array $commit) {
-            return CommitData::from($commit);
+            return CommitData::fromArray($commit);
         })->all();
     }
 }

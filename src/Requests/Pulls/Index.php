@@ -41,7 +41,7 @@ class Index extends Request
         $validated = Repo::fromFullName($owner_repo);
         $this->owner = $validated->owner();
         $this->repo = $validated->name();
-        $this->parameters = Params::from($parameters);
+        $this->parameters = Params::fromArray($parameters);
     }
 
     /**

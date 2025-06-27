@@ -53,7 +53,7 @@ readonly class ActionsResource extends BaseResource
         ?int $per_page = null,
         ?int $page = null
     ): Response {
-        return $this->connector()->send(new ListWorkflows(
+        return $this->github()->connector()->send(new ListWorkflows(
             owner: $owner,
             repo: $repo,
             per_page: $per_page,
@@ -86,7 +86,7 @@ readonly class ActionsResource extends BaseResource
         ?string $conclusion = null,
         ?string $branch = null
     ): Response {
-        return $this->connector()->send(new GetWorkflowRuns(
+        return $this->github()->connector()->send(new GetWorkflowRuns(
             owner: $owner,
             repo: $repo,
             workflow_id: $workflow_id,
@@ -115,7 +115,7 @@ readonly class ActionsResource extends BaseResource
         int $workflow_id,
         array $data = []
     ): Response {
-        return $this->connector()->send(new TriggerWorkflow(
+        return $this->github()->connector()->send(new TriggerWorkflow(
             owner: $owner,
             repo: $repo,
             workflow_id: $workflow_id,

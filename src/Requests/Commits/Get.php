@@ -41,6 +41,6 @@ class Get extends Request
      */
     public function createDtoFromResponse(Response $response): CommitData
     {
-        return CommitData::from($response->json());
+        return CommitData::fromArray($response->json());
     }
 }

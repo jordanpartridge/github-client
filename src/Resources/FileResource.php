@@ -17,6 +17,6 @@ readonly class FileResource extends BaseResource
             throw new InvalidArgumentException('Invalid commit SHA format');
         }
 
-        return $this->connector()->send(new Index($repo->fullName(), $commit_sha));
+        return $this->github()->connector()->send(new Index($repo->fullName(), $commit_sha));
     }
 }

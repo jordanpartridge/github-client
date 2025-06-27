@@ -22,7 +22,7 @@ readonly class IssueResource extends BaseResource
         $response = $this->connector->send(new ListIssuesRequest($repository, $filters));
 
         return array_map(
-            fn (array $issue) => Issue::from($issue),
+            fn (array $issue) => Issue::fromApiResponse($issue),
             $response->json()
         );
     }
@@ -37,7 +37,7 @@ readonly class IssueResource extends BaseResource
     {
         $response = $this->connector->send(new GetIssueRequest($repository, $number));
 
-        return Issue::from($response->json());
+        return Issue::fromApiResponse($response->json());
     }
 
     /**
@@ -57,7 +57,7 @@ readonly class IssueResource extends BaseResource
             $options
         ));
 
-        return Issue::from($response->json());
+        return Issue::fromApiResponse($response->json());
     }
 
     /**
@@ -75,6 +75,6 @@ readonly class IssueResource extends BaseResource
             $data
         ));
 
-        return Issue::from($response->json());
+        return Issue::fromApiResponse($response->json());
     }
 }

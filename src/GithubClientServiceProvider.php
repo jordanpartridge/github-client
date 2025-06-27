@@ -2,9 +2,9 @@
 
 namespace JordanPartridge\GithubClient;
 
+use ConduitUi\GitHubConnector\GithubConnector;
 use JordanPartridge\GithubClient\Auth\GithubOAuth;
 use JordanPartridge\GithubClient\Commands\GithubClientCommand;
-use JordanPartridge\GithubClient\Contracts\GithubConnectorInterface;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -19,7 +19,7 @@ class GithubClientServiceProvider extends PackageServiceProvider
             ->hasMigration('create_github_client_table')
             ->hasCommand(GithubClientCommand::class);
 
-        $this->app->singleton(GithubConnectorInterface::class, function () {
+        $this->app->singleton(GithubConnector::class, function () {
             $token = config('github-client.token');
 
             if (empty($token)) {
@@ -30,7 +30,7 @@ class GithubClientServiceProvider extends PackageServiceProvider
         });
 
         $this->app->bind(Github::class, function ($app) {
-            return new Github($app->make(GithubConnectorInterface::class));
+            return new Github($app->make(GithubConnector::class));
         });
 
         $this->app->singleton(GithubOAuth::class, function () {

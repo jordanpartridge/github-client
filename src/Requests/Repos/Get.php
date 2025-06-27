@@ -18,7 +18,7 @@ class Get extends Request
 
     public function createDtoFromResponse(Response $response): RepoData
     {
-        return RepoData::from($response->json());
+        return RepoData::fromArray($response->json());
     }
 
     public function resolveEndpoint(): string
