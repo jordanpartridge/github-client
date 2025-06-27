@@ -3,6 +3,7 @@
 namespace JordanPartridge\GithubClient\Resources;
 
 use JordanPartridge\GithubClient\Data\Repos\RepoData;
+use JordanPartridge\GithubClient\Data\Repos\SearchRepositoriesData;
 use JordanPartridge\GithubClient\Enums\Direction;
 use JordanPartridge\GithubClient\Enums\Repos\Type;
 use JordanPartridge\GithubClient\Enums\Sort;
@@ -10,6 +11,7 @@ use JordanPartridge\GithubClient\Enums\Visibility;
 use JordanPartridge\GithubClient\Requests\Repos\Delete;
 use JordanPartridge\GithubClient\Requests\Repos\Get;
 use JordanPartridge\GithubClient\Requests\Repos\Index;
+use JordanPartridge\GithubClient\Requests\Repos\Search;
 use JordanPartridge\GithubClient\ValueObjects\Repo;
 use Saloon\Http\Response;
 
@@ -112,5 +114,55 @@ readonly class RepoResource extends BaseResource
     public function delete(string $full_name): Response
     {
         return $this->connector()->send(new Delete($full_name));
+    }
+
+    /**
+     * Search for repositories on GitHub
+     *
+     * Searches for repositories based on a query string. This is useful for discovering
+     * repositories that match specific criteria, such as components for the Conduit project.
+     *
+     * @param  string  $query  The search query string (e.g., "topic:conduit-component")
+     * @param  string|null  $sort  Sort field: stars, forks, help-wanted-issues, updated
+     * @param  Direction|null  $order  Sort order: asc or desc
+     * @param  int|null  $per_page  Number of results per page (max 100)
+     * @param  int|null  $page  Page number of the results to fetch
+     * @return SearchRepositoriesData Returns a data object containing search results
+     *
+     * @link https://docs.github.com/en/rest/search#search-repositories
+     *
+     * Example Usage:
+     * ```php
+     * // Search for repositories by topic
+     * $results = $repos->search('topic:conduit-component');
+     * 
+     * // Search with sorting and pagination
+     * $results = $repos->search(
+     *     query: 'laravel php',
+     *     sort: 'stars',
+     *     order: Direction::DESC,
+     *     per_page: 20
+     * );
+     * 
+     * echo "Total repositories found: " . $results->total_count;
+     * foreach ($results->items as $repo) {
+     *     echo $repo->full_name . " - " . $repo->stargazers_count . " stars\n";
+     * }
+     * ```
+     */
+    public function search(
+        string $query,
+        ?string $sort = null,
+        ?Direction $order = null,
+        ?int $per_page = null,
+        ?int $page = null,
+    ): SearchRepositoriesData {
+        return $this->connector()->send(new Search(
+            searchQuery: $query,
+            sort: $sort,
+            order: $order,
+            per_page: $per_page,
+            page: $page,
+        ))->dto();
     }
 }
