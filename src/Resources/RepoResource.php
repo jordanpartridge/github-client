@@ -135,7 +135,7 @@ readonly class RepoResource extends BaseResource
      * ```php
      * // Search for repositories by topic
      * $results = $repos->search('topic:conduit-component');
-     * 
+     *
      * // Search with sorting and pagination
      * $results = $repos->search(
      *     query: 'laravel php',
@@ -143,7 +143,7 @@ readonly class RepoResource extends BaseResource
      *     order: Direction::DESC,
      *     per_page: 20
      * );
-     * 
+     *
      * echo "Total repositories found: " . $results->total_count;
      * foreach ($results->items as $repo) {
      *     echo $repo->full_name . " - " . $repo->stargazers_count . " stars\n";

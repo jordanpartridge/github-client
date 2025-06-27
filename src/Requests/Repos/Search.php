@@ -51,7 +51,7 @@ class Search extends Request
     public function createDtoFromResponse(Response $response): SearchRepositoriesData
     {
         $data = $response->json();
-        
+
         return new SearchRepositoriesData(
             total_count: $data['total_count'],
             incomplete_results: $data['incomplete_results'],
