@@ -4,6 +4,84 @@ All notable changes to `github-client` will be documented in this file.
 
 ## Unreleased
 
+## v2.4.0 - GitHub Issues API - 2025-01-19
+
+### Major New Features
+
+#### Complete GitHub Issues API Implementation
+
+* **Full CRUD Operations**: Create, read, update, and close issues
+* **Issue Comments**: Add, list, and manage issue comments
+* **Auto-Pagination**: Seamlessly paginate through large issue lists
+* **Advanced Filtering**: Filter by state, labels, assignee, creator, and more
+* **Defensive Programming**: Robust error handling and null-safe operations
+
+#### New Classes and Components
+
+**Request Classes:**
+* `Get` - Retrieve individual issues by number
+* `Index` - List user issues across all repositories  
+* `RepoIndex` - List issues for specific repositories
+* `Create` - Create new issues with full metadata
+* `Update` - Update existing issues (title, body, state, etc.)
+* `Comments` - List issue comments
+* `CreateComment` - Add comments to issues
+
+**Data Transfer Objects:**
+* `IssueDTO` - Complete issue data representation
+* `IssueCommentDTO` - Issue comment data structure
+* `LabelDTO` - Issue label information
+
+**Enums:**
+* `Issues\State` - Issue states (open, closed, all)
+* `Issues\Sort` - Sort options (created, updated, comments)
+
+**Utilities:**
+* `HandlesIssueResponses` - Trait for consistent response processing
+* Enhanced `PullRequestDTO` with defensive programming
+
+#### Key Features
+
+```php
+// List user issues
+$issues = GitHub::issues()->index(
+    state: State::OPEN,
+    labels: 'bug,enhancement',
+    sort: Sort::CREATED,
+    direction: Direction::DESC
+);
+
+// Get specific issue
+$issue = GitHub::issues()->get('owner', 'repo', 42);
+
+// Create new issue
+$newIssue = GitHub::issues()->create('owner', 'repo', 'Bug Report', 
+    bodyText: 'Detailed description...',
+    labels: ['bug', 'priority-high'],
+    assignees: ['username']
+);
+
+// Add comment
+$comment = GitHub::issues()->createComment('owner', 'repo', 42, 'Thanks for reporting!');
+
+// Auto-pagination support
+$allIssues = GitHub::issues()->index()->collect();
+```
+
+#### Quality Improvements
+
+* **Comprehensive Testing**: 17 new test cases covering all functionality
+* **Parameter Validation**: Client-side validation for issue numbers and content
+* **Pull Request Filtering**: Automatically filters out PRs from issue listings
+* **Error Handling**: Graceful handling of incomplete API responses
+* **Documentation**: Full PHPDoc coverage for all public methods
+
+#### Bug Fixes
+
+* **PullRequestDTO Defensive Programming**: Fixed missing null coalescing operators for optional fields
+* **Issue/PR Separation**: Proper filtering since GitHub's Issues API returns both
+* **Empty Response Handling**: Robust handling of malformed or incomplete API data
+
 ### Laravel 12 Support
 
 * Added full Laravel 12 compatibility
