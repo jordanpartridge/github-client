@@ -14,7 +14,7 @@ A powerful, Laravel-first GitHub API client built on Saloon that makes integrati
 - **Elegant Resource Pattern**: A Laravel-style resource pattern for all GitHub API entities
 - **Strongly Typed**: Full type-hinting support with typed responses via DTOs
 - **Built on [Saloon](https://github.com/Sammyjo20/Saloon)**: Reliable API handling with MockClient for testing
-- **Comprehensive Coverage**: Support for repositories, commits, pull requests, and files
+- **Comprehensive Coverage**: Support for repositories, commits, pull requests, issues, and files
 - **Laravel Integration**: Seamless integration with Laravel's configuration and authentication
 - **Multiple Access Methods**: Support for facades and dependency injection
 - **Modern Codebase**: PHP 8.2+ with modern features like enums and readonly properties
@@ -53,6 +53,7 @@ This package provides the following GitHub resource classes:
 | `repos()` | Access and manage GitHub repositories |
 | `commits()` | Work with repository commits |
 | `pullRequests()` | Manage pull requests, reviews, and comments |
+| `issues()` | Manage GitHub issues, comments, and labels |
 | `files()` | Access repository file contents |
 
 ## 🚀 Basic Usage
@@ -127,6 +128,67 @@ $mergeResult = Github::pullRequests()->merge(
     number: 123,
     commitMessage: 'Implement new feature',
     mergeMethod: MergeMethod::Squash
+);
+```
+
+### Working with Issues
+
+```php
+use JordanPartridge\GithubClient\Enums\Issues\State;
+use JordanPartridge\GithubClient\Enums\Issues\Sort;
+
+// List issues across all your repositories
+$myIssues = Github::issues()->all();
+
+// List issues for a specific repository
+$repoIssues = Github::issues()->forRepo('jordanpartridge', 'github-client');
+
+// Get ALL issues with auto-pagination
+$allIssues = Github::issues()->allForRepo('jordanpartridge', 'github-client');
+
+// Filter issues by state, labels, and assignee
+$openBugs = Github::issues()->forRepo(
+    owner: 'jordanpartridge',
+    repo: 'github-client', 
+    state: State::OPEN,
+    labels: 'bug,high-priority',
+    sort: Sort::CREATED,
+    direction: Direction::DESC
+);
+
+// Get a specific issue
+$issue = Github::issues()->get('jordanpartridge', 'github-client', 123);
+
+// Create a new issue
+$newIssue = Github::issues()->create(
+    owner: 'jordanpartridge',
+    repo: 'github-client',
+    title: 'Bug: Auto-pagination not working',
+    body: 'Steps to reproduce...',
+    labels: ['bug', 'high-priority'],
+    assignees: ['maintainer-username']
+);
+
+// Update an issue
+$updatedIssue = Github::issues()->update(
+    owner: 'jordanpartridge',
+    repo: 'github-client',
+    issue_number: 123,
+    title: 'Updated title',
+    state: State::CLOSED
+);
+
+// Close/reopen issues
+$closedIssue = Github::issues()->close('jordanpartridge', 'github-client', 123);
+$reopenedIssue = Github::issues()->reopen('jordanpartridge', 'github-client', 123);
+
+// Work with issue comments
+$comments = Github::issues()->comments('jordanpartridge', 'github-client', 123);
+$newComment = Github::issues()->addComment(
+    'jordanpartridge', 
+    'github-client', 
+    123, 
+    'This has been fixed in the latest release.'
 );
 ```
 
@@ -220,6 +282,8 @@ use JordanPartridge\GithubClient\Enums\Sort;
 use JordanPartridge\GithubClient\Enums\Direction;
 use JordanPartridge\GithubClient\Enums\MergeMethod;
 use JordanPartridge\GithubClient\Enums\Pulls\State;
+use JordanPartridge\GithubClient\Enums\Issues\State as IssueState;
+use JordanPartridge\GithubClient\Enums\Issues\Sort as IssueSort;
 
 // Using enums for parameter validation
 $repos = Github::repos()->all(
@@ -240,6 +304,14 @@ $mergeResult = Github::pullRequests()->merge(
     'github-client',
     123,
     mergeMethod: MergeMethod::Squash   // 'merge', 'squash', 'rebase'
+);
+
+// Issue states and sorting
+$issues = Github::issues()->forRepo(
+    'jordanpartridge',
+    'github-client',
+    state: IssueState::OPEN,           // 'open', 'closed', 'all'
+    sort: IssueSort::CREATED           // 'created', 'updated', 'comments'
 );
 ```
 

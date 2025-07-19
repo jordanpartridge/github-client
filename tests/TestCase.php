@@ -153,4 +153,40 @@ class TestCase extends Orchestra
             'default_branch' => 'main',
         ];
     }
+
+    protected function createMockIssueData(array $overrides = []): array
+    {
+        $defaults = [
+            'id' => 1,
+            'number' => 1,
+            'title' => 'Test Issue',
+            'body' => 'This is a test issue',
+            'state' => 'open',
+            'assignee' => null,
+            'assignees' => [],
+            'labels' => [],
+            'comments' => 0,
+            'html_url' => 'https://github.com/test/repo/issues/1',
+            'user' => $this->createMockUserData('testuser', 1),
+            'created_at' => '2024-01-01T00:00:00Z',
+            'updated_at' => '2024-01-01T00:00:00Z',
+            'closed_at' => null,
+        ];
+
+        return array_merge($defaults, $overrides);
+    }
+
+    protected function createMockCommentData(array $overrides = []): array
+    {
+        $defaults = [
+            'id' => 1,
+            'body' => 'Test comment',
+            'user' => $this->createMockUserData('testuser', 1),
+            'html_url' => 'https://github.com/test/repo/issues/1#issuecomment-1',
+            'created_at' => '2024-01-01T00:00:00Z',
+            'updated_at' => '2024-01-01T00:00:00Z',
+        ];
+
+        return array_merge($defaults, $overrides);
+    }
 }

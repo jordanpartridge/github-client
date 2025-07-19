@@ -1,10 +1,20 @@
 {
     "name": "jordanpartridge/github-client",
-    "description": "This is my package github-client",
+    "description": "A powerful, Laravel-first GitHub API client with auto-pagination, strong typing, and comprehensive GitHub integration for repositories, pull requests, issues, and more.",
     "keywords": [
-        "JordanPartridge",
         "laravel",
-        "github-client"
+        "github",
+        "github-api",
+        "github-client",
+        "php",
+        "saloon",
+        "api-client",
+        "conduit-ui",
+        "repositories",
+        "pull-requests",
+        "issues",
+        "git",
+        "version-control"
     ],
     "homepage": "https://github.com/jordanpartridge/github-client",
     "license": "MIT",

@@ -6,6 +6,7 @@ use ConduitUi\GitHubConnector\GithubConnector;
 use JordanPartridge\GithubClient\Resources\ActionsResource;
 use JordanPartridge\GithubClient\Resources\CommitResource;
 use JordanPartridge\GithubClient\Resources\FileResource;
+use JordanPartridge\GithubClient\Resources\IssuesResource;
 use JordanPartridge\GithubClient\Resources\PullRequestResource;
 use JordanPartridge\GithubClient\Resources\RepoResource;
 
@@ -45,5 +46,10 @@ class Github
     public function actions(): ActionsResource
     {
         return new ActionsResource($this);
+    }
+
+    public function issues(): IssuesResource
+    {
+        return new IssuesResource($this);
     }
 }
