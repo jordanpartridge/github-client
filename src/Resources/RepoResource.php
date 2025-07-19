@@ -130,7 +130,7 @@ readonly class RepoResource extends BaseResource
     ): array {
         $page = 1;
         $allRepos = [];
-        
+
         do {
             $response = $this->github()->connector()->send(new Index(
                 per_page: $per_page,
@@ -140,20 +140,20 @@ readonly class RepoResource extends BaseResource
                 direction: $direction,
                 type: $type,
             ));
-            
+
             $repos = $response->dto();
-            
-            if (!empty($repos)) {
+
+            if (! empty($repos)) {
                 $allRepos = array_merge($allRepos, $repos);
             }
-            
+
             // Check if there are more pages by examining the Link header
             $linkHeader = $response->header('Link');
             $hasNextPage = $linkHeader && str_contains($linkHeader, 'rel="next"');
-            
+
             $page++;
-        } while ($hasNextPage && !empty($repos));
-        
+        } while ($hasNextPage && ! empty($repos));
+
         return $allRepos;
     }
 

@@ -73,7 +73,7 @@ class TestCase extends Orchestra
             'private' => false,
             'owner' => $this->createMockUserData($owner, $id),
             'html_url' => "https://github.com/{$owner}/{$name}",
-            'description' => "This is a test repository",
+            'description' => 'This is a test repository',
             'fork' => false,
             'url' => "https://api.github.com/repos/{$owner}/{$name}",
             'forks_url' => "https://api.github.com/repos/{$owner}/{$name}/forks",
@@ -140,7 +140,7 @@ class TestCase extends Orchestra
                 'name' => 'MIT License',
                 'spdx_id' => 'MIT',
                 'url' => 'https://api.github.com/licenses/mit',
-                'node_id' => 'MDc6TGljZW5zZW1pdA=='
+                'node_id' => 'MDc6TGljZW5zZW1pdA==',
             ],
             'allow_forking' => true,
             'is_template' => false,
@@ -150,7 +150,7 @@ class TestCase extends Orchestra
             'forks' => 9,
             'open_issues' => 0,
             'watchers' => 80,
-            'default_branch' => 'main'
+            'default_branch' => 'main',
         ];
     }
 }

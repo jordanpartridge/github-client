@@ -46,6 +46,4 @@ class Github
     {
         return new ActionsResource($this);
     }
-
-
 }

@@ -13,7 +13,9 @@ class Comments extends Request
     protected Method $method = Method::GET;
 
     private string $repo;
+
     private string $owner;
+
     private int $number;
 
     public function __construct(string $owner_repo, int $number)

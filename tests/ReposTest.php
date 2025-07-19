@@ -59,10 +59,10 @@ describe('sort parameter validation', function () {
         // Setup mock with multiple repositories for sorting test
         $olderRepo = $this->createMockRepoData('older-repo', 1, 'test');
         $olderRepo['created_at'] = '2024-01-01T00:00:00Z';
-        
+
         $newerRepo = $this->createMockRepoData('newer-repo', 2, 'test');
         $newerRepo['created_at'] = '2024-01-02T00:00:00Z';
-        
+
         Github::connector()->withMockClient(new MockClient([
             '*' => MockResponse::make([$olderRepo, $newerRepo], 200),
         ]));
@@ -165,10 +165,10 @@ describe('auto-pagination functionality', function () {
             'Link' => '</user/repos?page=1>; rel="first", </user/repos?page=1>; rel="prev"',
         ]);
 
-        $mockClient = new MockClient();
+        $mockClient = new MockClient;
         $mockClient->addResponse($page1Response);
         $mockClient->addResponse($page2Response);
-        
+
         Github::connector()->withMockClient($mockClient);
 
         $allRepos = Github::repos()->allWithPagination();

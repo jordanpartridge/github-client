@@ -17,7 +17,9 @@ class CreateComment extends Request implements HasBody
     protected Method $method = Method::POST;
 
     private string $repo;
+
     private string $owner;
+
     private int $number;
 
     public function __construct(

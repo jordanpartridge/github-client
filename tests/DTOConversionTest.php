@@ -39,7 +39,6 @@ describe('DTO conversion methods', function () {
         expect($converted)->toBe($userData);
     });
 
-
     it('can create PullRequestDTO from API response', function () {
         $mockUser = $this->createMockUserData('contributor', 999);
 

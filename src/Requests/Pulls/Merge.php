@@ -17,7 +17,9 @@ class Merge extends Request implements HasBody
     protected Method $method = Method::PUT;
 
     private string $repo;
+
     private string $owner;
+
     private int $number;
 
     public function __construct(

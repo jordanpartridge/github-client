@@ -17,7 +17,9 @@ class Update extends Request implements HasBody
     protected Method $method = Method::PATCH;
 
     private string $repo;
+
     private string $owner;
+
     private int $number;
 
     public function __construct(
