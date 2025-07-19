@@ -20,6 +20,9 @@ class Comments extends Request
         protected ?int $page = null,
         protected ?string $since = null,
     ) {
+        if ($issue_number < 1) {
+            throw new InvalidArgumentException('Issue number must be a positive integer');
+        }
         if ($this->per_page !== null && ($this->per_page < 1 || $this->per_page > 100)) {
             throw new InvalidArgumentException('Per page must be between 1 and 100');
         }

@@ -189,4 +189,37 @@ class TestCase extends Orchestra
 
         return array_merge($defaults, $overrides);
     }
+
+    protected function createMockPullRequestData(array $overrides = []): array
+    {
+        $defaults = [
+            'id' => 1,
+            'number' => 1,
+            'state' => 'open',
+            'title' => 'Test Pull Request',
+            'body' => 'This is a test pull request',
+            'html_url' => 'https://github.com/test/repo/pull/1',
+            'diff_url' => 'https://github.com/test/repo/pull/1.diff',
+            'patch_url' => 'https://github.com/test/repo/pull/1.patch',
+            'base' => ['ref' => 'main'],
+            'head' => ['ref' => 'feature-branch'],
+            'draft' => false,
+            'merged' => false,
+            'merged_at' => null,
+            'merge_commit_sha' => null,
+            'comments' => 0,
+            'review_comments' => 0,
+            'commits' => 1,
+            'additions' => 10,
+            'deletions' => 5,
+            'changed_files' => 2,
+            'user' => $this->createMockUserData('testuser', 1),
+            'merged_by' => null,
+            'created_at' => '2024-01-01T00:00:00Z',
+            'updated_at' => '2024-01-01T00:00:00Z',
+            'closed_at' => null,
+        ];
+
+        return array_merge($defaults, $overrides);
+    }
 }

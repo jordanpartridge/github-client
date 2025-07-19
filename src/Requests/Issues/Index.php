@@ -3,18 +3,34 @@
 namespace JordanPartridge\GithubClient\Requests\Issues;
 
 use InvalidArgumentException;
-use JordanPartridge\GithubClient\Data\Issues\IssueDTO;
+use JordanPartridge\GithubClient\Concerns\HandlesIssueResponses;
 use JordanPartridge\GithubClient\Enums\Direction;
 use JordanPartridge\GithubClient\Enums\Issues\Sort;
 use JordanPartridge\GithubClient\Enums\Issues\State;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
-use Saloon\Http\Response;
 
 class Index extends Request
 {
+    use HandlesIssueResponses;
+    
     protected Method $method = Method::GET;
 
+    /**
+     * List issues assigned to the authenticated user across all visible repositories.
+     *
+     * @param int|null $per_page Results per page (1-100)
+     * @param int|null $page Page number
+     * @param State|null $state Filter by issue state
+     * @param string|null $labels Comma-separated list of label names
+     * @param Sort|null $sort Sort field
+     * @param Direction|null $direction Sort direction
+     * @param string|null $assignee Filter by assignee username
+     * @param string|null $creator Filter by creator username
+     * @param string|null $mentioned Filter by mentioned username
+     * @param string|null $since Only show issues updated after this time (ISO 8601 format)
+     * @throws InvalidArgumentException When per_page is out of valid range
+     */
     public function __construct(
         protected ?int $per_page = null,
         protected ?int $page = null,
@@ -32,6 +48,11 @@ class Index extends Request
         }
     }
 
+    /**
+     * Get the query parameters for the request.
+     *
+     * @return array Filtered query parameters
+     */
     protected function defaultQuery(): array
     {
         return array_filter([
@@ -48,24 +69,11 @@ class Index extends Request
         ], fn ($value) => $value !== null);
     }
 
-    public function createDtoFromResponse(Response $response): array
-    {
-        $issues = [];
-        foreach ($response->json() as $item) {
-            // Skip pull requests - GitHub's Issues API returns both
-            if (! isset($item['pull_request'])) {
-                try {
-                    $issues[] = IssueDTO::fromApiResponse($item);
-                } catch (\InvalidArgumentException $e) {
-                    // Skip items that can't be converted to issues (e.g., PRs)
-                    continue;
-                }
-            }
-        }
-
-        return $issues;
-    }
-
+    /**
+     * Get the API endpoint for this request.
+     *
+     * @return string The GitHub API endpoint
+     */
     public function resolveEndpoint(): string
     {
         return '/user/issues';

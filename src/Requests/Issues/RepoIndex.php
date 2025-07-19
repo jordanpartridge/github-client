@@ -3,16 +3,17 @@
 namespace JordanPartridge\GithubClient\Requests\Issues;
 
 use InvalidArgumentException;
-use JordanPartridge\GithubClient\Data\Issues\IssueDTO;
+use JordanPartridge\GithubClient\Concerns\HandlesIssueResponses;
 use JordanPartridge\GithubClient\Enums\Direction;
 use JordanPartridge\GithubClient\Enums\Issues\Sort;
 use JordanPartridge\GithubClient\Enums\Issues\State;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
-use Saloon\Http\Response;
 
 class RepoIndex extends Request
 {
+    use HandlesIssueResponses;
+    
     protected Method $method = Method::GET;
 
     public function __construct(
@@ -50,23 +51,6 @@ class RepoIndex extends Request
         ], fn ($value) => $value !== null);
     }
 
-    public function createDtoFromResponse(Response $response): array
-    {
-        $issues = [];
-        foreach ($response->json() as $item) {
-            // Skip pull requests - GitHub's Issues API returns both
-            if (! isset($item['pull_request'])) {
-                try {
-                    $issues[] = IssueDTO::fromApiResponse($item);
-                } catch (\InvalidArgumentException $e) {
-                    // Skip items that can't be converted to issues (e.g., PRs)
-                    continue;
-                }
-            }
-        }
-
-        return $issues;
-    }
 
     public function resolveEndpoint(): string
     {

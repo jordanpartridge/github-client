@@ -26,7 +26,11 @@ class Update extends Request implements HasBody
         protected ?array $assignees = null,
         protected ?int $milestone = null,
         protected ?array $labels = null,
-    ) {}
+    ) {
+        if ($issue_number < 1) {
+            throw new \InvalidArgumentException('Issue number must be a positive integer');
+        }
+    }
 
     protected function defaultBody(): array
     {
