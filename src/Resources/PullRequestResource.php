@@ -10,17 +10,17 @@ use JordanPartridge\GithubClient\Data\Pulls\PullRequestSummaryDTO;
 use JordanPartridge\GithubClient\Enums\MergeMethod;
 use JordanPartridge\GithubClient\Requests\Pulls\Comments;
 use JordanPartridge\GithubClient\Requests\Pulls\CommentsWithFilters;
-use JordanPartridge\GithubClient\Requests\Pulls\GetWithDetailDTO;
-use JordanPartridge\GithubClient\Requests\Pulls\IndexWithSummaryDTO;
 use JordanPartridge\GithubClient\Requests\Pulls\Create;
 use JordanPartridge\GithubClient\Requests\Pulls\CreateComment;
 use JordanPartridge\GithubClient\Requests\Pulls\CreateReview;
+use JordanPartridge\GithubClient\Requests\Pulls\Files;
 use JordanPartridge\GithubClient\Requests\Pulls\Get;
+use JordanPartridge\GithubClient\Requests\Pulls\GetWithDetailDTO;
 use JordanPartridge\GithubClient\Requests\Pulls\Index;
+use JordanPartridge\GithubClient\Requests\Pulls\IndexWithSummaryDTO;
 use JordanPartridge\GithubClient\Requests\Pulls\Merge;
 use JordanPartridge\GithubClient\Requests\Pulls\Reviews;
 use JordanPartridge\GithubClient\Requests\Pulls\Update;
-use JordanPartridge\GithubClient\Requests\Pulls\Files;
 
 readonly class PullRequestResource extends BaseResource
 {
@@ -260,7 +260,7 @@ readonly class PullRequestResource extends BaseResource
     ): array {
         // Safety limit to prevent rate limit issues
         $prNumbers = array_slice($prNumbers, 0, $maxRequests);
-        
+
         $details = [];
         foreach ($prNumbers as $number) {
             try {
@@ -298,7 +298,8 @@ readonly class PullRequestResource extends BaseResource
         ]);
 
         // Get detailed data for each
-        $prNumbers = array_map(fn($pr) => $pr->number, $summaries);
+        $prNumbers = array_map(fn ($pr) => $pr->number, $summaries);
+
         return $this->detailsForMultiple($owner, $repo, $prNumbers, $limit);
     }
 
@@ -315,7 +316,7 @@ readonly class PullRequestResource extends BaseResource
      * @example
      * // Get all changed files
      * $files = $github->pullRequests()->files('owner', 'repo', 42);
-     * 
+     *
      * // Analyze file changes
      * foreach ($files as $file) {
      *     echo "{$file->filename}: +{$file->additions}/-{$file->deletions}\n";
@@ -326,7 +327,7 @@ readonly class PullRequestResource extends BaseResource
     public function files(string $owner, string $repo, int $number): array
     {
         $response = $this->github()->connector()->send(new Files("{$owner}/{$repo}", $number));
-        
+
         return $response->dto();
     }
 
@@ -340,7 +341,7 @@ readonly class PullRequestResource extends BaseResource
      *
      * @example
      * $analysis = $github->pullRequests()->diff('owner', 'repo', 42);
-     * 
+     *
      * echo "Total files: {$analysis['summary']['total_files']}\n";
      * echo "Large changes: {$analysis['summary']['large_changes']}\n";
      * echo "Test files: " . count($analysis['categories']['tests']) . "\n";
@@ -349,7 +350,7 @@ readonly class PullRequestResource extends BaseResource
     public function diff(string $owner, string $repo, int $number): array
     {
         $files = $this->files($owner, $repo, $number);
-        
+
         $categories = [
             'tests' => [],
             'config' => [],
@@ -357,7 +358,7 @@ readonly class PullRequestResource extends BaseResource
             'code' => [],
             'other' => [],
         ];
-        
+
         $summary = [
             'total_files' => count($files),
             'total_additions' => 0,
@@ -369,19 +370,29 @@ readonly class PullRequestResource extends BaseResource
             'modified_files' => 0,
             'renamed_files' => 0,
         ];
-        
+
         foreach ($files as $file) {
             // Update summary statistics
             $summary['total_additions'] += $file->additions;
             $summary['total_deletions'] += $file->deletions;
             $summary['total_changes'] += $file->changes;
-            
-            if ($file->isLargeChange()) $summary['large_changes']++;
-            if ($file->isAdded()) $summary['new_files']++;
-            if ($file->isDeleted()) $summary['deleted_files']++;
-            if ($file->isModified()) $summary['modified_files']++;
-            if ($file->isRenamed()) $summary['renamed_files']++;
-            
+
+            if ($file->isLargeChange()) {
+                $summary['large_changes']++;
+            }
+            if ($file->isAdded()) {
+                $summary['new_files']++;
+            }
+            if ($file->isDeleted()) {
+                $summary['deleted_files']++;
+            }
+            if ($file->isModified()) {
+                $summary['modified_files']++;
+            }
+            if ($file->isRenamed()) {
+                $summary['renamed_files']++;
+            }
+
             // Categorize files
             if ($file->isTestFile()) {
                 $categories['tests'][] = $file;
@@ -395,7 +406,7 @@ readonly class PullRequestResource extends BaseResource
                 $categories['other'][] = $file;
             }
         }
-        
+
         return [
             'summary' => $summary,
             'categories' => $categories,
@@ -413,7 +424,7 @@ readonly class PullRequestResource extends BaseResource
         foreach ($files as $file) {
             $allTags = array_merge($allTags, $file->getAnalysisTags());
         }
-        
+
         return array_unique($allTags);
     }
 }

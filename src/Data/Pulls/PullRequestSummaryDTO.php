@@ -6,12 +6,12 @@ use JordanPartridge\GithubClient\Data\GitUserData;
 
 /**
  * Pull Request Summary DTO for list endpoint responses.
- * 
+ *
  * This DTO represents the lightweight PR data returned by the GitHub API
  * list endpoint (/repos/owner/repo/pulls). It contains basic PR information
  * but does NOT include comment counts, additions/deletions, or other detailed
  * metrics that are only available in the individual PR endpoint.
- * 
+ *
  * Use this DTO when you need fast, lightweight PR listings without detailed stats.
  * For detailed PR data including comment counts, use PullRequestDetailDTO.
  */
@@ -41,7 +41,7 @@ class PullRequestSummaryDTO
 
     /**
      * Create DTO from GitHub API list endpoint response.
-     * 
+     *
      * This method is optimized for the list endpoint response format,
      * which doesn't include detailed statistics like comment counts.
      */
@@ -100,7 +100,7 @@ class PullRequestSummaryDTO
 
     /**
      * Check if this PR has detailed data available.
-     * 
+     *
      * Summary DTOs from list endpoints don't have detailed statistics.
      * To get detailed data, fetch the individual PR using PullRequestDetailDTO.
      */

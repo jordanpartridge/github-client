@@ -11,7 +11,7 @@ use Saloon\Http\Response;
 
 /**
  * Enhanced Get request that explicitly returns PullRequestDetailDTO objects.
- * 
+ *
  * This request is designed for the GitHub API individual endpoint and clearly
  * communicates that it returns detailed data including comment counts and
  * code statistics. Use this when you need complete PR information.
@@ -21,12 +21,14 @@ class GetWithDetailDTO extends Request
     protected Method $method = Method::GET;
 
     private string $repo;
+
     private string $owner;
+
     private int $number;
 
     /**
-     * @param string $owner_repo - eg jordanpartridge/github-client
-     * @param int $number Pull request number
+     * @param  string  $owner_repo  - eg jordanpartridge/github-client
+     * @param  int  $number  Pull request number
      */
     public function __construct(string $owner_repo, int $number)
     {

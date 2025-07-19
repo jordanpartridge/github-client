@@ -4,10 +4,10 @@ namespace JordanPartridge\GithubClient\Data\Pulls;
 
 /**
  * Pull Request File DTO representing a single file change in a PR.
- * 
+ *
  * This DTO contains detailed information about each file modified, added, or deleted
  * in a pull request, including change statistics and diff content.
- * 
+ *
  * Perfect for AI-powered code analysis, security assessments, and change impact analysis.
  */
 class PullRequestFileDTO
@@ -172,7 +172,7 @@ class PullRequestFileDTO
         $extension = strtolower($this->getExtension());
         $basename = strtolower($this->getBasename());
         $filename = strtolower(basename($this->filename));
-        
+
         // Handle files with no extension by filename
         if (empty($extension)) {
             $specialFiles = [
@@ -182,12 +182,12 @@ class PullRequestFileDTO
                 'gemfile' => 'ruby',
                 'vagrantfile' => 'vagrant',
             ];
-            
+
             if (isset($specialFiles[$filename])) {
                 return $specialFiles[$filename];
             }
         }
-        
+
         $typeMap = [
             // Programming languages
             'php' => 'php',
@@ -203,7 +203,7 @@ class PullRequestFileDTO
             'cpp' => 'cpp',
             'c' => 'c',
             'cs' => 'csharp',
-            
+
             // Web technologies
             'html' => 'html',
             'css' => 'css',
@@ -212,7 +212,7 @@ class PullRequestFileDTO
             'vue' => 'vue',
             'jsx' => 'react',
             'tsx' => 'react-typescript',
-            
+
             // Data formats
             'json' => 'json',
             'xml' => 'xml',
@@ -220,22 +220,22 @@ class PullRequestFileDTO
             'yml' => 'yaml',
             'toml' => 'toml',
             'ini' => 'config',
-            
+
             // Documentation
             'md' => 'markdown',
             'rst' => 'restructuredtext',
             'txt' => 'text',
-            
+
             // Configuration
             'env' => 'environment',
             'dockerfile' => 'docker',
             'gitignore' => 'gitignore',
-            
+
             // Database
             'sql' => 'sql',
             'migration' => 'migration',
         ];
-        
+
         return $typeMap[$extension] ?? 'unknown';
     }
 
@@ -245,8 +245,8 @@ class PullRequestFileDTO
     public function isTestFile(): bool
     {
         $filename = strtolower($this->filename);
-        
-        return str_contains($filename, 'test') || 
+
+        return str_contains($filename, 'test') ||
                str_contains($filename, 'spec') ||
                str_contains(dirname($filename), 'test') ||
                str_contains(dirname($filename), '__test');
@@ -260,10 +260,10 @@ class PullRequestFileDTO
         $extension = strtolower($this->getExtension());
         $basename = strtolower($this->getBasename());
         $filename = strtolower($this->filename);
-        
+
         $configExtensions = ['env', 'ini', 'toml', 'yaml', 'yml', 'conf'];
         $configNames = ['config', 'configuration', 'settings', 'options'];
-        
+
         return in_array($extension, $configExtensions) ||
                in_array($basename, $configNames) ||
                str_contains($filename, 'config') ||
@@ -278,10 +278,10 @@ class PullRequestFileDTO
     {
         $extension = strtolower($this->getExtension());
         $basename = strtolower($this->getBasename());
-        
+
         $docExtensions = ['md', 'rst', 'txt'];
         $docNames = ['readme', 'changelog', 'license', 'contributing', 'docs'];
-        
+
         return in_array($extension, $docExtensions) ||
                in_array($basename, $docNames) ||
                str_contains(dirname($this->filename), 'doc');
@@ -307,18 +307,32 @@ class PullRequestFileDTO
     public function getAnalysisTags(): array
     {
         $tags = [];
-        
-        if ($this->isTestFile()) $tags[] = 'test';
-        if ($this->isConfigFile()) $tags[] = 'config';
-        if ($this->isDocumentationFile()) $tags[] = 'docs';
-        if ($this->isLargeChange()) $tags[] = 'large-change';
-        if ($this->hasOnlyAdditions()) $tags[] = 'only-additions';
-        if ($this->hasOnlyDeletions()) $tags[] = 'only-deletions';
-        if ($this->isRenamed()) $tags[] = 'renamed';
-        
+
+        if ($this->isTestFile()) {
+            $tags[] = 'test';
+        }
+        if ($this->isConfigFile()) {
+            $tags[] = 'config';
+        }
+        if ($this->isDocumentationFile()) {
+            $tags[] = 'docs';
+        }
+        if ($this->isLargeChange()) {
+            $tags[] = 'large-change';
+        }
+        if ($this->hasOnlyAdditions()) {
+            $tags[] = 'only-additions';
+        }
+        if ($this->hasOnlyDeletions()) {
+            $tags[] = 'only-deletions';
+        }
+        if ($this->isRenamed()) {
+            $tags[] = 'renamed';
+        }
+
         $tags[] = $this->getFileType();
         $tags[] = $this->status;
-        
+
         return $tags;
     }
 }

@@ -26,7 +26,7 @@ class Files extends Request
         $data = $response->json();
 
         return array_map(
-            fn(array $file) => PullRequestFileDTO::fromApiResponse($file),
+            fn (array $file) => PullRequestFileDTO::fromApiResponse($file),
             $data
         );
     }

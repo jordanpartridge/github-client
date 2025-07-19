@@ -6,12 +6,12 @@ use JordanPartridge\GithubClient\Data\GitUserData;
 
 /**
  * Pull Request Detail DTO for individual endpoint responses.
- * 
+ *
  * This DTO represents the complete PR data returned by the GitHub API
  * individual endpoint (/repos/owner/repo/pulls/NUMBER). It contains all
  * PR information including comment counts, code statistics, and other
  * detailed metrics that are only available in individual PR responses.
- * 
+ *
  * Use this DTO when you need complete PR data including accurate comment
  * counts and code change statistics.
  */
@@ -72,7 +72,7 @@ class PullRequestDetailDTO extends PullRequestSummaryDTO
 
     /**
      * Create DTO from GitHub API individual endpoint response.
-     * 
+     *
      * This method is optimized for the individual endpoint response format,
      * which includes detailed statistics like comment counts and code changes.
      */
@@ -127,7 +127,7 @@ class PullRequestDetailDTO extends PullRequestSummaryDTO
 
     /**
      * Check if this PR has detailed data available.
-     * 
+     *
      * Detail DTOs always have complete statistics.
      */
     public function hasDetailedData(): bool
@@ -149,6 +149,7 @@ class PullRequestDetailDTO extends PullRequestSummaryDTO
     public function getAdditionRatio(): float
     {
         $total = $this->getTotalLinesChanged();
+
         return $total > 0 ? $this->additions / $total : 0.0;
     }
 

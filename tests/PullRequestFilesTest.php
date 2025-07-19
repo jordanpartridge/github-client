@@ -69,10 +69,10 @@ describe('Pull Request Files API', function () {
             it('correctly identifies file status', function () {
                 $modifiedFile = PullRequestFileDTO::fromApiResponse($this->mockFileData);
                 $addedFile = PullRequestFileDTO::fromApiResponse($this->mockTestFileData);
-                
+
                 $deletedFileData = array_merge($this->mockFileData, ['status' => 'removed']);
                 $deletedFile = PullRequestFileDTO::fromApiResponse($deletedFileData);
-                
+
                 $renamedFileData = array_merge($this->mockFileData, ['status' => 'renamed']);
                 $renamedFile = PullRequestFileDTO::fromApiResponse($renamedFileData);
 
@@ -141,7 +141,7 @@ describe('Pull Request Files API', function () {
             it('identifies addition/deletion only changes', function () {
                 $additionOnlyData = array_merge($this->mockFileData, ['deletions' => 0]);
                 $additionOnlyDto = PullRequestFileDTO::fromApiResponse($additionOnlyData);
-                
+
                 $deletionOnlyData = array_merge($this->mockFileData, ['additions' => 0]);
                 $deletionOnlyDto = PullRequestFileDTO::fromApiResponse($deletionOnlyData);
 
@@ -156,7 +156,7 @@ describe('Pull Request Files API', function () {
             it('generates correct analysis tags', function () {
                 $testFile = PullRequestFileDTO::fromApiResponse($this->mockTestFileData);
                 $configFile = PullRequestFileDTO::fromApiResponse($this->mockConfigFileData);
-                
+
                 $testTags = $testFile->getAnalysisTags();
                 $configTags = $configFile->getAnalysisTags();
 
@@ -202,7 +202,7 @@ describe('Pull Request Files API', function () {
             foreach ($testCases as [$filename, $expectedType]) {
                 $fileData = array_merge($this->mockFileData, ['filename' => $filename]);
                 $dto = PullRequestFileDTO::fromApiResponse($fileData);
-                
+
                 expect($dto->getFileType())->toBe($expectedType, "Failed for file: {$filename}");
             }
         });
@@ -219,7 +219,7 @@ describe('Pull Request Files API', function () {
             foreach ($testCases as [$filename, $expectedType]) {
                 $fileData = array_merge($this->mockFileData, ['filename' => $filename]);
                 $dto = PullRequestFileDTO::fromApiResponse($fileData);
-                
+
                 expect($dto->getFileType())->toBe($expectedType, "Failed for file: {$filename}");
             }
         });
@@ -238,7 +238,7 @@ describe('Pull Request Files API', function () {
             foreach ($testCases as [$filename, $expectedType]) {
                 $fileData = array_merge($this->mockFileData, ['filename' => $filename]);
                 $dto = PullRequestFileDTO::fromApiResponse($fileData);
-                
+
                 expect($dto->getFileType())->toBe($expectedType, "Failed for file: {$filename}");
             }
         });
@@ -246,7 +246,7 @@ describe('Pull Request Files API', function () {
         it('returns unknown for unrecognized file types', function () {
             $fileData = array_merge($this->mockFileData, ['filename' => 'binary.exe']);
             $dto = PullRequestFileDTO::fromApiResponse($fileData);
-            
+
             expect($dto->getFileType())->toBe('unknown');
         });
     });
@@ -279,7 +279,7 @@ describe('Pull Request Files API', function () {
                 'contents_url' => 'https://example.com/contents',
                 // No patch or previous_filename
             ];
-            
+
             $dto = PullRequestFileDTO::fromApiResponse($minimalData);
 
             expect($dto->patch)->toBeNull()

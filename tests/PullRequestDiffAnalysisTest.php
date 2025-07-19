@@ -7,7 +7,7 @@ use Saloon\Http\Faking\MockResponse;
 describe('Pull Request Diff Analysis', function () {
     beforeEach(function () {
         config(['github-client.token' => 'fake-token']);
-        
+
         // Mock file data representing different types of changes
         $this->mockFilesResponse = [
             // PHP code file - modified
@@ -377,7 +377,7 @@ describe('Pull Request Diff Analysis', function () {
 
             Github::connector()->withMockClient($mockClient);
 
-            expect(fn() => Github::pullRequests()->files('owner', 'repo', 999))
+            expect(fn () => Github::pullRequests()->files('owner', 'repo', 999))
                 ->toThrow(TypeError::class);
         });
     });

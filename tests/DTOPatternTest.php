@@ -158,7 +158,7 @@ describe('DTO Pattern: Summary vs Detail DTOs', function () {
 
             // Summary DTO doesn't have these fields - compile-time safety!
             expect($summaryDto)->toBeInstanceOf(PullRequestSummaryDTO::class);
-            
+
             // This would be a compile error in strict mode:
             // $summaryDto->comments // Property doesn't exist!
         });
