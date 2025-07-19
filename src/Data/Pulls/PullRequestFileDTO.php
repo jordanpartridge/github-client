@@ -336,3 +336,4 @@ class PullRequestFileDTO
         return $tags;
     }
 }
+

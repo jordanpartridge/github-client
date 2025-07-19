@@ -201,11 +201,12 @@ describe('Pull Request Diff Analysis', function () {
                 ->and($categories['docs'][0]->filename)->toBe('docs/API.md');
 
             // Code category (PHP files that aren't tests, JS files)
-            expect($categories['code'])->toHaveCount(3) // UserController.php, UserService.php, legacy.js
-                ->and(collect($categories['code'])->pluck('filename')->toArray())
-                ->toContain('src/Controllers/UserController.php')
-                ->toContain('src/Services/UserService.php')
-                ->toContain('assets/js/legacy.js');
+            expect($categories['code'])->toHaveCount(3); // UserController.php, UserService.php, legacy.js
+            
+            $codeFilenames = array_map(fn($file) => $file->filename, $categories['code']);
+            expect($codeFilenames)->toContain('src/Controllers/UserController.php')
+                ->and($codeFilenames)->toContain('src/Services/UserService.php')
+                ->and($codeFilenames)->toContain('assets/js/legacy.js');
 
             // Other category should be empty in this test
             expect($categories['other'])->toHaveCount(0);
@@ -382,3 +383,4 @@ describe('Pull Request Diff Analysis', function () {
         });
     });
 });
+
