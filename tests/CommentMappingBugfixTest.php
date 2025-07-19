@@ -21,7 +21,7 @@ describe('Comment Mapping Bug Fix (Issue #71)', function () {
             'merged' => false,
             'merged_at' => null,
             'merge_commit_sha' => null,
-            
+
             // The problem scenario: API might return strings instead of integers
             'comments' => '1',         // String value from API
             'review_comments' => '20', // String value from API
@@ -29,7 +29,7 @@ describe('Comment Mapping Bug Fix (Issue #71)', function () {
             'additions' => '150',
             'deletions' => '75',
             'changed_files' => '8',
-            
+
             'user' => [
                 'login' => 'developer',
                 'id' => 12345,
@@ -94,12 +94,12 @@ describe('Comment Mapping Bug Fix (Issue #71)', function () {
             'merged' => true,
             'merged_at' => '2024-12-15T12:00:00Z',
             'merge_commit_sha' => 'abc123def456',
-            
+
             // Some fields might be null or missing
             'comments' => null,
             'review_comments' => null,
             // commits, additions, deletions, changed_files intentionally missing
-            
+
             'user' => [
                 'login' => 'tester',
                 'id' => 67890,

@@ -174,14 +174,14 @@ describe('PullRequest Comment Mapping Diagnostics', function () {
             'original_review_comments' => $debugApiResponse['review_comments'],
             'dto_comments' => $dto->comments,
             'dto_review_comments' => $dto->review_comments,
-            'mapping_working' => ($dto->comments === $debugApiResponse['comments'] && 
-                                 $dto->review_comments === $debugApiResponse['review_comments'])
+            'mapping_working' => ($dto->comments === $debugApiResponse['comments'] &&
+                                 $dto->review_comments === $debugApiResponse['review_comments']),
         ])->toEqual([
             'original_comments' => 1,
             'original_review_comments' => 20,
             'dto_comments' => 1,
             'dto_review_comments' => 20,
-            'mapping_working' => true
+            'mapping_working' => true,
         ]);
     });
 });
