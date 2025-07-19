@@ -2,6 +2,7 @@
 
 namespace JordanPartridge\GithubClient\Exceptions;
 
-use Exception;
-
-class GithubAuthException extends Exception {}
+/**
+ * @deprecated Use AuthenticationException instead
+ */
+class GithubAuthException extends AuthenticationException {}

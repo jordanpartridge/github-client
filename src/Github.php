@@ -3,6 +3,11 @@
 namespace JordanPartridge\GithubClient;
 
 use ConduitUi\GitHubConnector\GithubConnector;
+use JordanPartridge\GithubClient\Data\RateLimitDTO;
+use JordanPartridge\GithubClient\Exceptions\ApiException;
+use JordanPartridge\GithubClient\Exceptions\NetworkException;
+use JordanPartridge\GithubClient\Exceptions\RateLimitException;
+use JordanPartridge\GithubClient\Requests\RateLimit\Get;
 use JordanPartridge\GithubClient\Resources\ActionsResource;
 use JordanPartridge\GithubClient\Resources\CommitResource;
 use JordanPartridge\GithubClient\Resources\FileResource;
@@ -51,5 +56,73 @@ class Github
     public function issues(): IssuesResource
     {
         return new IssuesResource($this);
+    }
+
+    /**
+     * Get the current rate limit status for all resources.
+     *
+     * @return array<string, RateLimitDTO> Array of rate limit DTOs keyed by resource type
+     * @throws ApiException When the API request fails
+     * @throws NetworkException When network connectivity issues occur
+     */
+    public function getRateLimitStatus(): array
+    {
+        try {
+            $request = new Get();
+            $response = $this->connector->send($request);
+            
+            if (!$response->successful()) {
+                throw new ApiException($response);
+            }
+            
+            return $request->createDtoFromResponse($response);
+        } catch (\Exception $e) {
+            if ($e instanceof ApiException) {
+                throw $e;
+            }
+            throw new NetworkException('rate limit check', $e->getMessage(), previous: $e);
+        }
+    }
+
+    /**
+     * Get rate limit status for a specific resource type.
+     *
+     * @param string $resource The resource type (core, search, graphql, etc.)
+     * @return RateLimitDTO The rate limit information for the specified resource
+     * @throws ApiException When the API request fails or resource not found
+     */
+    public function getRateLimitForResource(string $resource = 'core'): RateLimitDTO
+    {
+        $rateLimits = $this->getRateLimitStatus();
+        
+        if (!isset($rateLimits[$resource])) {
+            throw new ApiException(
+                response: $this->connector->send(new Get()),
+                message: "Rate limit resource '{$resource}' not found"
+            );
+        }
+        
+        return $rateLimits[$resource];
+    }
+
+    /**
+     * Check if any rate limits are exceeded.
+     */
+    public function hasRateLimitExceeded(): bool
+    {
+        try {
+            $rateLimits = $this->getRateLimitStatus();
+            
+            foreach ($rateLimits as $rateLimit) {
+                if ($rateLimit->isExceeded()) {
+                    return true;
+                }
+            }
+            
+            return false;
+        } catch (\Exception) {
+            // If we can't check rate limits, assume we haven't exceeded them
+            return false;
+        }
     }
 }
