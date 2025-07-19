@@ -3,7 +3,7 @@
 namespace JordanPartridge\GithubClient\Auth;
 
 use Illuminate\Support\Facades\Http;
-use JordanPartridge\GithubClient\Exceptions\GithubAuthException;
+use JordanPartridge\GithubClient\Exceptions\AuthenticationException;
 
 class GithubOAuth
 {
@@ -37,7 +37,7 @@ class GithubOAuth
         parse_str($response->body(), $result);
 
         if (! isset($result['access_token'])) {
-            throw new GithubAuthException('Failed to get access token');
+            throw AuthenticationException::invalidToken('Failed to get access token');
         }
 
         return $result['access_token'];
