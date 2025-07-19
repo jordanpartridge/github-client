@@ -3,6 +3,7 @@
 namespace JordanPartridge\GithubClient\Requests\Pulls;
 
 use JordanPartridge\GithubClient\Data\Pulls\PullRequestFileDTO;
+use JordanPartridge\GithubClient\ValueObjects\Repo;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use Saloon\Http\Response;
@@ -11,14 +12,18 @@ class Files extends Request
 {
     protected Method $method = Method::GET;
 
-    public function __construct(
-        protected string $repo,
-        protected int $number,
-    ) {}
+    private string $repo;
 
-    public function resolveEndpoint(): string
+    private string $owner;
+
+    private int $number;
+
+    public function __construct(string $owner_repo, int $number)
     {
-        return "/repos/{$this->repo}/pulls/{$this->number}/files";
+        $validated = Repo::fromFullName($owner_repo);
+        $this->owner = $validated->owner();
+        $this->repo = $validated->name();
+        $this->number = $number;
     }
 
     public function createDtoFromResponse(Response $response): array
@@ -26,8 +31,15 @@ class Files extends Request
         $data = $response->json();
 
         return array_map(
-            fn (array $file) => PullRequestFileDTO::fromApiResponse($file),
+            function (array $file) {
+                return PullRequestFileDTO::fromApiResponse($file);
+            },
             $data
         );
+    }
+
+    public function resolveEndpoint(): string
+    {
+        return sprintf('repos/%s/%s/pulls/%d/files', $this->owner, $this->repo, $this->number);
     }
 }
