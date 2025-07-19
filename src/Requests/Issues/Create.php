@@ -18,13 +18,13 @@ class Create extends Request implements HasBody
     /**
      * Create a new issue in a repository.
      *
-     * @param string $owner Repository owner
-     * @param string $repo Repository name
-     * @param string $title Issue title (required)
-     * @param string|null $bodyText Issue body content
-     * @param array|null $assignees Array of logins for users to assign to this issue
-     * @param int|null $milestone Milestone to associate with this issue
-     * @param array|null $labels Array of label names to associate with this issue
+     * @param  string  $owner  Repository owner
+     * @param  string  $repo  Repository name
+     * @param  string  $title  Issue title (required)
+     * @param  string|null  $bodyText  Issue body content
+     * @param  array|null  $assignees  Array of logins for users to assign to this issue
+     * @param  int|null  $milestone  Milestone to associate with this issue
+     * @param  array|null  $labels  Array of label names to associate with this issue
      */
     public function __construct(
         protected string $owner,
@@ -55,7 +55,7 @@ class Create extends Request implements HasBody
     /**
      * Convert the API response to an IssueDTO.
      *
-     * @param Response $response The HTTP response from GitHub API
+     * @param  Response  $response  The HTTP response from GitHub API
      * @return IssueDTO The created issue data transfer object
      */
     public function createDtoFromResponse(Response $response): IssueDTO

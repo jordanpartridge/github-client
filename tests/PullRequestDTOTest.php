@@ -1,13 +1,12 @@
 <?php
 
 use JordanPartridge\GithubClient\Data\Pulls\PullRequestDTO;
-use JordanPartridge\GithubClient\Tests\TestCase;
 
 describe('PullRequestDTO defensive programming', function () {
     it('handles missing optional fields gracefully', function () {
         // Create a complete mock first, then remove optional fields
         $completeData = $this->createMockPullRequestData();
-        
+
         // Remove optional fields that might be missing from some GitHub API responses
         unset($completeData['comments']);
         unset($completeData['review_comments']);
