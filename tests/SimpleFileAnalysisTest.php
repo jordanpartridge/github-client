@@ -3,7 +3,7 @@
 use JordanPartridge\GithubClient\Data\Pulls\PullRequestFileDTO;
 
 describe('Simple File Analysis (Laravel 10 Compatible)', function () {
-    
+
     it('can create and analyze file DTOs without external dependencies', function () {
         $fileData = [
             'sha' => 'abc123',
@@ -16,9 +16,9 @@ describe('Simple File Analysis (Laravel 10 Compatible)', function () {
             'raw_url' => 'https://example.com/raw',
             'contents_url' => 'https://example.com/contents',
         ];
-        
+
         $dto = PullRequestFileDTO::fromApiResponse($fileData);
-        
+
         expect($dto->filename)->toBe('src/Test.php')
             ->and($dto->status)->toBe('modified')
             ->and($dto->additions)->toBe(10)
@@ -50,7 +50,7 @@ describe('Simple File Analysis (Laravel 10 Compatible)', function () {
                 'raw_url' => 'https://example.com/raw',
                 'contents_url' => 'https://example.com/contents',
             ];
-            
+
             $dto = PullRequestFileDTO::fromApiResponse($fileData);
             expect($dto->getFileType())->toBe($expectedType);
         }
@@ -68,9 +68,9 @@ describe('Simple File Analysis (Laravel 10 Compatible)', function () {
             'raw_url' => 'https://example.com/raw',
             'contents_url' => 'https://example.com/contents',
         ];
-        
+
         $dto = PullRequestFileDTO::fromApiResponse($fileData);
-        
+
         expect($dto->isTestFile())->toBeTrue()
             ->and($dto->getFileType())->toBe('php')
             ->and($dto->isAdded())->toBeTrue()
