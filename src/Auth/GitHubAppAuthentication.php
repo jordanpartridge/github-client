@@ -13,6 +13,7 @@ use JordanPartridge\GithubClient\Exceptions\AuthenticationException;
 class GitHubAppAuthentication implements AuthenticationStrategy
 {
     private ?string $installationToken = null;
+
     private ?DateTimeImmutable $installationTokenExpiry = null;
 
     public function __construct(
@@ -37,7 +38,7 @@ class GitHubAppAuthentication implements AuthenticationStrategy
             throw AuthenticationException::githubAppAuthFailed('App ID is required');
         }
 
-        if (!is_numeric($this->appId)) {
+        if (! is_numeric($this->appId)) {
             throw AuthenticationException::githubAppAuthFailed('App ID must be numeric');
         }
 
@@ -46,7 +47,7 @@ class GitHubAppAuthentication implements AuthenticationStrategy
         }
 
         // Validate private key format
-        if (!$this->isValidPrivateKey()) {
+        if (! $this->isValidPrivateKey()) {
             throw AuthenticationException::githubAppAuthFailed('Invalid private key format');
         }
     }
@@ -58,11 +59,11 @@ class GitHubAppAuthentication implements AuthenticationStrategy
 
     public function needsRefresh(): bool
     {
-        if (!$this->installationId) {
+        if (! $this->installationId) {
             return false; // App-level JWT tokens are generated fresh each time
         }
 
-        return !$this->hasValidInstallationToken();
+        return ! $this->hasValidInstallationToken();
     }
 
     public function refresh(): void
@@ -77,7 +78,7 @@ class GitHubAppAuthentication implements AuthenticationStrategy
      */
     private function generateJwtToken(): string
     {
-        $now = new DateTimeImmutable();
+        $now = new DateTimeImmutable;
         $expiry = $now->modify('+10 minutes'); // GitHub recommends max 10 minutes
 
         $payload = [
@@ -94,14 +95,14 @@ class GitHubAppAuthentication implements AuthenticationStrategy
      */
     private function hasValidInstallationToken(): bool
     {
-        if (!$this->installationToken || !$this->installationTokenExpiry) {
+        if (! $this->installationToken || ! $this->installationTokenExpiry) {
             return false;
         }
 
         // Add 5-minute buffer before expiry
         $bufferTime = $this->installationTokenExpiry->modify('-5 minutes');
-        
-        return new DateTimeImmutable() < $bufferTime;
+
+        return new DateTimeImmutable < $bufferTime;
     }
 
     /**
@@ -109,7 +110,7 @@ class GitHubAppAuthentication implements AuthenticationStrategy
      */
     private function refreshInstallationToken(): void
     {
-        if (!$this->installationId) {
+        if (! $this->installationId) {
             throw AuthenticationException::githubAppAuthFailed('Installation ID required for installation token');
         }
 

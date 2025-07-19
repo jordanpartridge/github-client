@@ -2,14 +2,13 @@
 
 use JordanPartridge\GithubClient\Data\RateLimitDTO;
 use JordanPartridge\GithubClient\Exceptions\ApiException;
-use JordanPartridge\GithubClient\Exceptions\NetworkException;
 use JordanPartridge\GithubClient\Github;
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
 
 describe('Rate Limit Functionality', function () {
     beforeEach(function () {
-        $this->mockClient = new MockClient();
+        $this->mockClient = new MockClient;
         $this->github = app(Github::class);
         $this->github->connector()->withMockClient($this->mockClient);
     });
@@ -73,7 +72,7 @@ describe('Rate Limit Functionality', function () {
                 ],
             ],
         ]));
-        
+
         // Add another response for the second API call inside the exception
         $this->mockClient->addResponse(MockResponse::make([
             'resources' => [

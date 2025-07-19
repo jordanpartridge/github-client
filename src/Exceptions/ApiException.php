@@ -10,6 +10,7 @@ use Saloon\Http\Response;
 class ApiException extends GithubClientException
 {
     protected Response $response;
+
     protected array $errorDetails;
 
     public function __construct(
@@ -44,7 +45,7 @@ class ApiException extends GithubClientException
     protected function parseErrorResponse(Response $response): array
     {
         $body = $response->json();
-        
+
         return [
             'message' => $body['message'] ?? 'Unknown API error',
             'documentation_url' => $body['documentation_url'] ?? null,
@@ -56,7 +57,7 @@ class ApiException extends GithubClientException
     {
         $status = $this->response->status();
         $message = $this->errorDetails['message'];
-        
+
         return "GitHub API error ({$status}): {$message}";
     }
 
@@ -71,6 +72,7 @@ class ApiException extends GithubClientException
         if ($reason) {
             $message .= ": {$reason}";
         }
+
         return new self($response, $message);
     }
 }

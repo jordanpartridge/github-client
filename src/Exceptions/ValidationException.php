@@ -8,6 +8,7 @@ namespace JordanPartridge\GithubClient\Exceptions;
 class ValidationException extends GithubClientException
 {
     protected string $field;
+
     protected mixed $value;
 
     public function __construct(
@@ -19,9 +20,9 @@ class ValidationException extends GithubClientException
     ) {
         $this->field = $field;
         $this->value = $value;
-        
+
         $fullMessage = "Validation failed for field '{$field}': {$message}";
-        
+
         parent::__construct($fullMessage, $code, $previous, [
             'field' => $field,
             'value' => $value,
