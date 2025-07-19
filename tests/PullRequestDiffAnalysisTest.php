@@ -202,8 +202,8 @@ describe('Pull Request Diff Analysis', function () {
 
             // Code category (PHP files that aren't tests, JS files)
             expect($categories['code'])->toHaveCount(3); // UserController.php, UserService.php, legacy.js
-            
-            $codeFilenames = array_map(fn($file) => $file->filename, $categories['code']);
+
+            $codeFilenames = array_map(fn ($file) => $file->filename, $categories['code']);
             expect($codeFilenames)->toContain('src/Controllers/UserController.php')
                 ->and($codeFilenames)->toContain('src/Services/UserService.php')
                 ->and($codeFilenames)->toContain('assets/js/legacy.js');
@@ -383,4 +383,3 @@ describe('Pull Request Diff Analysis', function () {
         });
     });
 });
-

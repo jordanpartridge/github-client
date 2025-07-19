@@ -31,4 +31,3 @@ class Files extends Request
         );
     }
 }
-
