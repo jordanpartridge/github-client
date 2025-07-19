@@ -4,7 +4,7 @@ All notable changes to `github-client` will be documented in this file.
 
 ## Unreleased
 
-## v2.4.0 - GitHub Issues API - 2025-01-19
+## v2.5.0 - Complete GitHub Issues API - 2025-01-19
 
 ### Major New Features
 
@@ -81,6 +81,18 @@ $allIssues = GitHub::issues()->index()->collect();
 * **PullRequestDTO Defensive Programming**: Fixed missing null coalescing operators for optional fields
 * **Issue/PR Separation**: Proper filtering since GitHub's Issues API returns both
 * **Empty Response Handling**: Robust handling of malformed or incomplete API data
+
+## v2.4.0 - Auto-Pagination & Enhanced PullRequest Operations - 2025-01-19
+
+### Auto-Pagination Enhancements
+* Enhanced auto-pagination functionality for repositories
+* Improved pagination handling with better error management
+* Seamless collection of large datasets
+
+### PullRequest Operations Improvements  
+* Improved PullRequest operations with better error handling
+* Enhanced data validation and processing
+* More robust API response handling
 
 ### Laravel 12 Support
 
