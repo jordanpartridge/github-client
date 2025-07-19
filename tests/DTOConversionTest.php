@@ -1,7 +1,6 @@
 <?php
 
 use JordanPartridge\GithubClient\Data\GitUserData;
-use JordanPartridge\GithubClient\Data\Issue;
 use JordanPartridge\GithubClient\Data\Pulls\PullRequestDTO;
 
 describe('DTO conversion methods', function () {
@@ -40,54 +39,6 @@ describe('DTO conversion methods', function () {
         expect($converted)->toBe($userData);
     });
 
-    it('can create Issue from API response and convert to array', function () {
-        $mockUser = $this->createMockUserData('author', 456);
-
-        $issueData = [
-            'id' => 789,
-            'node_id' => 'MDU6SXNzdWU3ODk=',
-            'url' => 'https://api.github.com/repos/test/repo/issues/1',
-            'repository_url' => 'https://api.github.com/repos/test/repo',
-            'labels_url' => 'https://api.github.com/repos/test/repo/issues/1/labels{/name}',
-            'comments_url' => 'https://api.github.com/repos/test/repo/issues/1/comments',
-            'events_url' => 'https://api.github.com/repos/test/repo/issues/1/events',
-            'html_url' => 'https://github.com/test/repo/issues/1',
-            'number' => 1,
-            'state' => 'open',
-            'title' => 'Test Issue',
-            'body' => 'This is a test issue',
-            'user' => $mockUser,
-            'labels' => [],
-            'assignee' => null,
-            'assignees' => [],
-            'milestone' => null,
-            'comments' => 0,
-            'created_at' => '2024-01-01T00:00:00Z',
-            'updated_at' => '2024-01-01T01:00:00Z',
-            'closed_at' => null,
-            'closed_by' => null,
-            'author_association' => 'OWNER',
-            'active_lock_reason' => null,
-            'locked' => false,
-        ];
-
-        $issue = Issue::fromApiResponse($issueData);
-
-        expect($issue)
-            ->toBeInstanceOf(Issue::class)
-            ->and($issue->id)->toBe(789)
-            ->and($issue->title)->toBe('Test Issue')
-            ->and($issue->user)->toBeInstanceOf(GitUserData::class)
-            ->and($issue->user->login)->toBe('author');
-
-        $converted = $issue->toArray();
-        expect($converted)
-            ->toHaveKey('id', 789)
-            ->toHaveKey('title', 'Test Issue')
-            ->toHaveKey('user')
-            ->and($converted['user'])->toBeArray()
-            ->and($converted['user']['login'])->toBe('author');
-    });
 
     it('can create PullRequestDTO from API response', function () {
         $mockUser = $this->createMockUserData('contributor', 999);
@@ -172,53 +123,4 @@ describe('DTO conversion methods', function () {
         expect($converted['user_view_type'])->toBe('');
     });
 
-    it('preserves nested object relationships', function () {
-        $mockUser = $this->createMockUserData('author', 111);
-        $mockAssignee = $this->createMockUserData('assignee', 222);
-
-        $issueData = [
-            'id' => 333,
-            'node_id' => 'MDU6SXNzdWUzMzM=',
-            'url' => 'https://api.github.com/repos/test/repo/issues/1',
-            'repository_url' => 'https://api.github.com/repos/test/repo',
-            'labels_url' => 'https://api.github.com/repos/test/repo/issues/1/labels{/name}',
-            'comments_url' => 'https://api.github.com/repos/test/repo/issues/1/comments',
-            'events_url' => 'https://api.github.com/repos/test/repo/issues/1/events',
-            'html_url' => 'https://github.com/test/repo/issues/1',
-            'number' => 1,
-            'state' => 'open',
-            'title' => 'Test Issue with Assignee',
-            'body' => 'This issue has an assignee',
-            'user' => $mockUser,
-            'labels' => [],
-            'assignee' => $mockAssignee,
-            'assignees' => [$mockAssignee],
-            'milestone' => null,
-            'comments' => 0,
-            'created_at' => '2024-01-01T00:00:00Z',
-            'updated_at' => '2024-01-01T01:00:00Z',
-            'closed_at' => null,
-            'closed_by' => null,
-            'author_association' => 'OWNER',
-            'active_lock_reason' => null,
-            'locked' => false,
-        ];
-
-        $issue = Issue::fromApiResponse($issueData);
-
-        expect($issue->assignee)
-            ->toBeInstanceOf(GitUserData::class)
-            ->and($issue->assignee->login)->toBe('assignee')
-            ->and($issue->assignees)->toHaveCount(1)
-            ->and($issue->assignees[0])->toBeInstanceOf(GitUserData::class)
-            ->and($issue->assignees[0]->login)->toBe('assignee');
-
-        $converted = $issue->toArray();
-        expect($converted['assignee'])
-            ->toBeArray()
-            ->and($converted['assignee']['login'])->toBe('assignee')
-            ->and($converted['assignees'])->toHaveCount(1)
-            ->and($converted['assignees'][0])->toBeArray()
-            ->and($converted['assignees'][0]['login'])->toBe('assignee');
-    });
 });

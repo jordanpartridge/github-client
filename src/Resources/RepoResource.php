@@ -93,6 +93,71 @@ readonly class RepoResource extends BaseResource
     }
 
     /**
+     * List all repositories for the authenticated user with automatic pagination
+     *
+     * This method automatically fetches all repositories across multiple pages,
+     * eliminating the default 30-repository limit. It continues fetching until
+     * all repositories have been retrieved.
+     *
+     * @param  int|null  $per_page  Number of results per page (max 100, default 100 for efficiency)
+     * @param  Visibility|null  $visibility  Filter repositories by visibility (public, private, all)
+     * @param  Sort|null  $sort  Sort repositories by field (created, updated, pushed, full_name)
+     * @param  Direction|null  $direction  Sort direction (asc or desc)
+     * @param  Type|null  $type  Filter repositories by type
+     * @return array<RepoData> Returns an array of all repositories
+     *
+     * @link https://docs.github.com/en/rest/repos/repos#list-repositories-for-the-authenticated-user
+     *
+     * Example Usage:
+     * ```php
+     * // Get all repositories with auto-pagination
+     * $allRepos = $repos->allWithPagination();
+     *
+     * // Get all public repositories sorted by creation date
+     * $publicRepos = $repos->allWithPagination(
+     *     visibility: Visibility::PUBLIC,
+     *     sort: Sort::CREATED,
+     *     direction: Direction::DESC
+     * );
+     * ```
+     */
+    public function allWithPagination(
+        ?int $per_page = 100,
+        ?Visibility $visibility = null,
+        ?Sort $sort = null,
+        ?Direction $direction = null,
+        ?Type $type = null,
+    ): array {
+        $page = 1;
+        $allRepos = [];
+        
+        do {
+            $response = $this->github()->connector()->send(new Index(
+                per_page: $per_page,
+                page: $page,
+                visibility: $visibility,
+                sort: $sort,
+                direction: $direction,
+                type: $type,
+            ));
+            
+            $repos = $response->dto();
+            
+            if (!empty($repos)) {
+                $allRepos = array_merge($allRepos, $repos);
+            }
+            
+            // Check if there are more pages by examining the Link header
+            $linkHeader = $response->header('Link');
+            $hasNextPage = $linkHeader && str_contains($linkHeader, 'rel="next"');
+            
+            $page++;
+        } while ($hasNextPage && !empty($repos));
+        
+        return $allRepos;
+    }
+
+    /**
      * Get a specific repository by full name
      *
      * @param  Repo  $repo  -- the repo value object, which handles the validation
