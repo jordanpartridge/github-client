@@ -130,8 +130,13 @@ readonly class RepoResource extends BaseResource
     ): array {
         $page = 1;
         $allRepos = [];
+        $maxPages = 1000; // Prevent infinite loops
 
         do {
+            if ($page > $maxPages) {
+                throw new \RuntimeException("Maximum page limit ($maxPages) exceeded during pagination");
+            }
+
             $response = $this->github()->connector()->send(new Index(
                 per_page: $per_page,
                 page: $page,

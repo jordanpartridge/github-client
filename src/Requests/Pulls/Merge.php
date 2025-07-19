@@ -2,6 +2,7 @@
 
 namespace JordanPartridge\GithubClient\Requests\Pulls;
 
+use JordanPartridge\GithubClient\Data\Pulls\MergeResponseDTO;
 use JordanPartridge\GithubClient\Enums\MergeMethod;
 use JordanPartridge\GithubClient\ValueObjects\Repo;
 use Saloon\Contracts\Body\HasBody;
@@ -35,9 +36,9 @@ class Merge extends Request implements HasBody
         $this->number = $number;
     }
 
-    public function createDtoFromResponse(Response $response): array
+    public function createDtoFromResponse(Response $response): MergeResponseDTO
     {
-        return $response->json();
+        return MergeResponseDTO::fromApiResponse($response->json());
     }
 
     public function resolveEndpoint(): string

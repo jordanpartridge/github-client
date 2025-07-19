@@ -82,7 +82,7 @@ readonly class PullRequestResource extends BaseResource
 
         $result = $response->dto();
 
-        return $result['merged'] ?? false;
+        return $result->merged;
     }
 
     public function reviews(

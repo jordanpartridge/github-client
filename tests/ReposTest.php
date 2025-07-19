@@ -231,4 +231,20 @@ describe('auto-pagination functionality', function () {
             ->toHaveCount(1)
             ->and($allRepos[0]->name)->toBe('public-repo');
     });
+
+    it('throws exception when maximum page limit is exceeded', function () {
+        // Create a response that always has a "next" link to simulate infinite pagination
+        $infiniteResponse = MockResponse::make([
+            $this->createMockRepoData('repo-1', 1, 'test'),
+        ], 200, [
+            'Link' => '</user/repos?page=2>; rel="next"',
+        ]);
+
+        Github::connector()->withMockClient(new MockClient([
+            '*' => $infiniteResponse,
+        ]));
+
+        expect(fn () => Github::repos()->allWithPagination())
+            ->toThrow(RuntimeException::class, 'Maximum page limit (1000) exceeded during pagination');
+    });
 });
