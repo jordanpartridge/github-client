@@ -16,9 +16,9 @@ class NetworkException extends GithubClientException
         ?\Throwable $previous = null
     ) {
         $this->operation = $operation;
-        
+
         $fullMessage = "Network error during {$operation}: {$message}";
-        
+
         parent::__construct($fullMessage, $code, $previous, [
             'operation' => $operation,
             'original_message' => $message,
@@ -45,7 +45,7 @@ class NetworkException extends GithubClientException
         if ($reason) {
             $message .= ": {$reason}";
         }
-        
+
         return new self($operation, $message, 503);
     }
 }

@@ -10,7 +10,9 @@ use DateTimeImmutable;
 class RateLimitException extends GithubClientException
 {
     protected int $remainingRequests;
+
     protected DateTimeImmutable $resetTime;
+
     protected int $totalLimit;
 
     public function __construct(

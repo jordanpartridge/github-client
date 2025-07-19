@@ -29,7 +29,7 @@ class TokenAuthentication implements AuthenticationStrategy
         }
 
         // GitHub tokens typically start with specific prefixes
-        if (!$this->hasValidTokenPrefix()) {
+        if (! $this->hasValidTokenPrefix()) {
             throw AuthenticationException::invalidToken('Token format appears invalid');
         }
     }

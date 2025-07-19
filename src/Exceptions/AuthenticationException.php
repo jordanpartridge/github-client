@@ -16,7 +16,7 @@ class AuthenticationException extends GithubClientException
         ?\Throwable $previous = null
     ) {
         $this->authenticationType = $authenticationType;
-        
+
         parent::__construct($message, $code, $previous, [
             'authentication_type' => $authenticationType,
         ]);
