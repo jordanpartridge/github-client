@@ -13,22 +13,23 @@ use Saloon\Http\Request;
 class Index extends Request
 {
     use HandlesIssueResponses;
-    
+
     protected Method $method = Method::GET;
 
     /**
      * List issues assigned to the authenticated user across all visible repositories.
      *
-     * @param int|null $per_page Results per page (1-100)
-     * @param int|null $page Page number
-     * @param State|null $state Filter by issue state
-     * @param string|null $labels Comma-separated list of label names
-     * @param Sort|null $sort Sort field
-     * @param Direction|null $direction Sort direction
-     * @param string|null $assignee Filter by assignee username
-     * @param string|null $creator Filter by creator username
-     * @param string|null $mentioned Filter by mentioned username
-     * @param string|null $since Only show issues updated after this time (ISO 8601 format)
+     * @param  int|null  $per_page  Results per page (1-100)
+     * @param  int|null  $page  Page number
+     * @param  State|null  $state  Filter by issue state
+     * @param  string|null  $labels  Comma-separated list of label names
+     * @param  Sort|null  $sort  Sort field
+     * @param  Direction|null  $direction  Sort direction
+     * @param  string|null  $assignee  Filter by assignee username
+     * @param  string|null  $creator  Filter by creator username
+     * @param  string|null  $mentioned  Filter by mentioned username
+     * @param  string|null  $since  Only show issues updated after this time (ISO 8601 format)
+     *
      * @throws InvalidArgumentException When per_page is out of valid range
      */
     public function __construct(

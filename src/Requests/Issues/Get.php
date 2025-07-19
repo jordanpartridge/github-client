@@ -14,9 +14,10 @@ class Get extends Request
     /**
      * Get a specific issue by number.
      *
-     * @param string $owner Repository owner
-     * @param string $repo Repository name
-     * @param int $issue_number Issue number (must be positive)
+     * @param  string  $owner  Repository owner
+     * @param  string  $repo  Repository name
+     * @param  int  $issue_number  Issue number (must be positive)
+     *
      * @throws \InvalidArgumentException When issue number is invalid
      */
     public function __construct(
@@ -32,7 +33,7 @@ class Get extends Request
     /**
      * Convert the API response to an IssueDTO.
      *
-     * @param Response $response The HTTP response from GitHub API
+     * @param  Response  $response  The HTTP response from GitHub API
      * @return IssueDTO The issue data transfer object
      */
     public function createDtoFromResponse(Response $response): IssueDTO

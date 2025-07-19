@@ -13,7 +13,7 @@ use Saloon\Http\Request;
 class RepoIndex extends Request
 {
     use HandlesIssueResponses;
-    
+
     protected Method $method = Method::GET;
 
     public function __construct(
@@ -50,7 +50,6 @@ class RepoIndex extends Request
             'since' => $this->since,
         ], fn ($value) => $value !== null);
     }
-
 
     public function resolveEndpoint(): string
     {
