@@ -7,6 +7,7 @@ use JordanPartridge\GithubClient\Data\Pulls\PullRequestDTO;
 use JordanPartridge\GithubClient\Data\Pulls\PullRequestReviewDTO;
 use JordanPartridge\GithubClient\Enums\MergeMethod;
 use JordanPartridge\GithubClient\Requests\Pulls\Comments;
+use JordanPartridge\GithubClient\Requests\Pulls\CommentsWithFilters;
 use JordanPartridge\GithubClient\Requests\Pulls\Create;
 use JordanPartridge\GithubClient\Requests\Pulls\CreateComment;
 use JordanPartridge\GithubClient\Requests\Pulls\CreateReview;
@@ -143,5 +144,65 @@ readonly class PullRequestResource extends BaseResource
         ));
 
         return $response->dto();
+    }
+
+    /**
+     * Get PR comments with filtering capabilities.
+     *
+     * @param  string  $owner  Repository owner
+     * @param  string  $repo  Repository name
+     * @param  int  $number  Pull request number
+     * @param  array  $filters  Filtering options
+     * @return array<PullRequestCommentDTO>
+     *
+     * @example
+     * // Get all CodeRabbit comments
+     * $comments = $github->pullRequests()->commentsWithFilters('owner', 'repo', 42, [
+     *     'author' => 'coderabbitai'
+     * ]);
+     *
+     * // Get all bot comments with high severity
+     * $comments = $github->pullRequests()->commentsWithFilters('owner', 'repo', 42, [
+     *     'author_type' => 'bot',
+     *     'severity' => 'high'
+     * ]);
+     *
+     * // Get comments from specific file
+     * $comments = $github->pullRequests()->commentsWithFilters('owner', 'repo', 42, [
+     *     'file_path' => 'app/Http/Controllers/UserController.php'
+     * ]);
+     */
+    public function commentsWithFilters(
+        string $owner,
+        string $repo,
+        int $number,
+        array $filters = [],
+    ): array {
+        $response = $this->github()->connector()->send(new CommentsWithFilters(
+            "{$owner}/{$repo}",
+            $number,
+            $filters
+        ));
+
+        return $response->dto();
+    }
+
+    /**
+     * Batch fetch all comments from a pull request with author filtering.
+     * Alias for commentsWithFilters() for backward compatibility.
+     *
+     * @param  string  $owner  Repository owner
+     * @param  string  $repo  Repository name
+     * @param  int  $number  Pull request number
+     * @param  array  $filters  Filtering options
+     * @return array<PullRequestCommentDTO>
+     */
+    public function forPullRequest(
+        string $owner,
+        string $repo,
+        int $number,
+        array $filters = [],
+    ): array {
+        return $this->commentsWithFilters($owner, $repo, $number, $filters);
     }
 }

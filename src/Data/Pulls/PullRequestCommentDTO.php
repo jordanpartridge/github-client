@@ -20,6 +20,7 @@ class PullRequestCommentDTO
         public readonly string $pull_request_url,
         public readonly string $created_at,
         public readonly string $updated_at,
+        public readonly ?CommentMetadata $metadata = null,
     ) {}
 
     public static function fromArray(array $data): self
@@ -38,6 +39,12 @@ class PullRequestCommentDTO
             pull_request_url: $data['pull_request_url'],
             created_at: $data['created_at'],
             updated_at: $data['updated_at'],
+            metadata: CommentMetadata::extract(
+                $data['body'],
+                $data['path'],
+                $data['position'] ?? null,
+                $data['user']['login'] ?? null
+            ),
         );
     }
 
@@ -62,6 +69,7 @@ class PullRequestCommentDTO
             'pull_request_url' => $this->pull_request_url,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'metadata' => $this->metadata?->toArray(),
         ];
     }
 }
