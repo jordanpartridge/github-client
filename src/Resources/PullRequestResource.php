@@ -3,11 +3,15 @@
 namespace JordanPartridge\GithubClient\Resources;
 
 use JordanPartridge\GithubClient\Data\Pulls\PullRequestCommentDTO;
+use JordanPartridge\GithubClient\Data\Pulls\PullRequestDetailDTO;
 use JordanPartridge\GithubClient\Data\Pulls\PullRequestDTO;
 use JordanPartridge\GithubClient\Data\Pulls\PullRequestReviewDTO;
+use JordanPartridge\GithubClient\Data\Pulls\PullRequestSummaryDTO;
 use JordanPartridge\GithubClient\Enums\MergeMethod;
 use JordanPartridge\GithubClient\Requests\Pulls\Comments;
 use JordanPartridge\GithubClient\Requests\Pulls\CommentsWithFilters;
+use JordanPartridge\GithubClient\Requests\Pulls\GetWithDetailDTO;
+use JordanPartridge\GithubClient\Requests\Pulls\IndexWithSummaryDTO;
 use JordanPartridge\GithubClient\Requests\Pulls\Create;
 use JordanPartridge\GithubClient\Requests\Pulls\CreateComment;
 use JordanPartridge\GithubClient\Requests\Pulls\CreateReview;
@@ -204,5 +208,96 @@ readonly class PullRequestResource extends BaseResource
         array $filters = [],
     ): array {
         return $this->commentsWithFilters($owner, $repo, $number, $filters);
+    }
+
+    // === NEW DTO-SPECIFIC METHODS ===
+
+    /**
+     * Get PR summaries (lightweight, no comment counts) - RECOMMENDED for lists.
+     *
+     * @param  string  $owner  Repository owner
+     * @param  string  $repo  Repository name
+     * @param  array  $parameters  Query parameters
+     * @return array<PullRequestSummaryDTO> Lightweight PR summaries
+     */
+    public function summaries(string $owner, string $repo, array $parameters = []): array
+    {
+        $response = $this->github()->connector()->send(new IndexWithSummaryDTO("{$owner}/{$repo}", $parameters));
+
+        return $response->dto();
+    }
+
+    /**
+     * Get PR with complete details including comment counts.
+     *
+     * @param  string  $owner  Repository owner
+     * @param  string  $repo  Repository name
+     * @param  int  $number  Pull request number
+     * @return PullRequestDetailDTO Complete PR data with statistics
+     */
+    public function detail(string $owner, string $repo, int $number): PullRequestDetailDTO
+    {
+        $response = $this->github()->connector()->send(new GetWithDetailDTO("{$owner}/{$repo}", $number));
+
+        return $response->dto();
+    }
+
+    /**
+     * Get multiple PRs with complete details (WARNING: Rate limit intensive).
+     *
+     * @param  string  $owner  Repository owner
+     * @param  string  $repo  Repository name
+     * @param  array  $prNumbers  Array of PR numbers
+     * @param  int  $maxRequests  Safety limit to prevent rate limit exhaustion
+     * @return array<PullRequestDetailDTO> Complete PR data with statistics
+     */
+    public function detailsForMultiple(
+        string $owner,
+        string $repo,
+        array $prNumbers,
+        int $maxRequests = 20
+    ): array {
+        // Safety limit to prevent rate limit issues
+        $prNumbers = array_slice($prNumbers, 0, $maxRequests);
+        
+        $details = [];
+        foreach ($prNumbers as $number) {
+            try {
+                $details[] = $this->detail($owner, $repo, $number);
+            } catch (\Exception $e) {
+                // Skip PRs that can't be fetched
+                continue;
+            }
+        }
+
+        return $details;
+    }
+
+    /**
+     * Get recent PRs with complete details (optimized for common workflow).
+     *
+     * @param  string  $owner  Repository owner
+     * @param  string  $repo  Repository name
+     * @param  int  $limit  Number of recent PRs (max 10 for rate limit protection)
+     * @param  string  $state  PR state filter
+     * @return array<PullRequestDetailDTO> Recent PRs with complete data
+     */
+    public function recentDetails(
+        string $owner,
+        string $repo,
+        int $limit = 5,
+        string $state = 'open'
+    ): array {
+        // First get PR list
+        $summaries = $this->summaries($owner, $repo, [
+            'state' => $state,
+            'sort' => 'updated',
+            'direction' => 'desc',
+            'per_page' => min($limit, 10), // Protect against rate limit abuse
+        ]);
+
+        // Get detailed data for each
+        $prNumbers = array_map(fn($pr) => $pr->number, $summaries);
+        return $this->detailsForMultiple($owner, $repo, $prNumbers, $limit);
     }
 }
