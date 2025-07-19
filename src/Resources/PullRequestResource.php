@@ -5,6 +5,7 @@ namespace JordanPartridge\GithubClient\Resources;
 use JordanPartridge\GithubClient\Data\Pulls\PullRequestCommentDTO;
 use JordanPartridge\GithubClient\Data\Pulls\PullRequestDetailDTO;
 use JordanPartridge\GithubClient\Data\Pulls\PullRequestDTO;
+use JordanPartridge\GithubClient\Data\Pulls\PullRequestFileDTO;
 use JordanPartridge\GithubClient\Data\Pulls\PullRequestReviewDTO;
 use JordanPartridge\GithubClient\Data\Pulls\PullRequestSummaryDTO;
 use JordanPartridge\GithubClient\Enums\MergeMethod;
