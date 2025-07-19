@@ -6,24 +6,30 @@ use JordanPartridge\GithubClient\Data\Pulls\PullRequestCommentDTO;
 use JordanPartridge\GithubClient\Data\Pulls\PullRequestDTO;
 use JordanPartridge\GithubClient\Data\Pulls\PullRequestReviewDTO;
 use JordanPartridge\GithubClient\Enums\MergeMethod;
+use JordanPartridge\GithubClient\Requests\Pulls\Comments;
+use JordanPartridge\GithubClient\Requests\Pulls\Create;
+use JordanPartridge\GithubClient\Requests\Pulls\CreateComment;
+use JordanPartridge\GithubClient\Requests\Pulls\CreateReview;
+use JordanPartridge\GithubClient\Requests\Pulls\Get;
+use JordanPartridge\GithubClient\Requests\Pulls\Index;
+use JordanPartridge\GithubClient\Requests\Pulls\Merge;
+use JordanPartridge\GithubClient\Requests\Pulls\Reviews;
+use JordanPartridge\GithubClient\Requests\Pulls\Update;
 
 readonly class PullRequestResource extends BaseResource
 {
     public function all(string $owner, string $repo, array $parameters = []): array
     {
-        $response = $this->github()->get("/repos/{$owner}/{$repo}/pulls", $parameters);
+        $response = $this->github()->connector()->send(new Index("{$owner}/{$repo}", $parameters));
 
-        return array_map(
-            fn (array $pullRequest) => PullRequestDTO::fromApiResponse($pullRequest),
-            $response,
-        );
+        return $response->dto();
     }
 
     public function get(string $owner, string $repo, int $number): PullRequestDTO
     {
-        $response = $this->github()->get("/repos/{$owner}/{$repo}/pulls/{$number}");
+        $response = $this->github()->connector()->send(new Get("{$owner}/{$repo}", $number));
 
-        return PullRequestDTO::fromApiResponse($response);
+        return $response->dto();
     }
 
     public function create(
@@ -35,15 +41,16 @@ readonly class PullRequestResource extends BaseResource
         string $body = '',
         bool $draft = false,
     ): PullRequestDTO {
-        $response = $this->github()->post("/repos/{$owner}/{$repo}/pulls", [
-            'title' => $title,
-            'head' => $head,
-            'base' => $base,
-            'body' => $body,
-            'draft' => $draft,
-        ]);
+        $response = $this->github()->connector()->send(new Create(
+            "{$owner}/{$repo}",
+            $title,
+            $head,
+            $base,
+            $body,
+            $draft
+        ));
 
-        return PullRequestDTO::fromApiResponse($response);
+        return $response->dto();
     }
 
     public function update(
@@ -52,9 +59,9 @@ readonly class PullRequestResource extends BaseResource
         int $number,
         array $parameters = [],
     ): PullRequestDTO {
-        $response = $this->github()->patch("/repos/{$owner}/{$repo}/pulls/{$number}", $parameters);
+        $response = $this->github()->connector()->send(new Update("{$owner}/{$repo}", $number, $parameters));
 
-        return PullRequestDTO::fromApiResponse($response);
+        return $response->dto();
     }
 
     public function merge(
@@ -65,18 +72,17 @@ readonly class PullRequestResource extends BaseResource
         ?string $sha = null,
         MergeMethod $mergeMethod = MergeMethod::Merge,
     ): bool {
-        $parameters = array_filter([
-            'commit_message' => $commitMessage,
-            'sha' => $sha,
-            'merge_method' => $mergeMethod->value,
-        ]);
+        $response = $this->github()->connector()->send(new Merge(
+            "{$owner}/{$repo}",
+            $number,
+            $commitMessage,
+            $sha,
+            $mergeMethod
+        ));
 
-        $response = $this->github()->put(
-            "/repos/{$owner}/{$repo}/pulls/{$number}/merge",
-            $parameters,
-        );
+        $result = $response->dto();
 
-        return $response['merged'] ?? false;
+        return $result->merged;
     }
 
     public function reviews(
@@ -84,12 +90,9 @@ readonly class PullRequestResource extends BaseResource
         string $repo,
         int $number,
     ): array {
-        $response = $this->github()->get("/repos/{$owner}/{$repo}/pulls/{$number}/reviews");
+        $response = $this->github()->connector()->send(new Reviews("{$owner}/{$repo}", $number));
 
-        return array_map(
-            fn (array $review) => PullRequestReviewDTO::fromApiResponse($review),
-            $response,
-        );
+        return $response->dto();
     }
 
     public function createReview(
@@ -100,16 +103,15 @@ readonly class PullRequestResource extends BaseResource
         string $event = 'COMMENT',
         array $comments = [],
     ): PullRequestReviewDTO {
-        $response = $this->github()->post(
-            "/repos/{$owner}/{$repo}/pulls/{$number}/reviews",
-            [
-                'body' => $body,
-                'event' => $event,
-                'comments' => $comments,
-            ],
-        );
+        $response = $this->github()->connector()->send(new CreateReview(
+            "{$owner}/{$repo}",
+            $number,
+            $body,
+            $event,
+            $comments
+        ));
 
-        return PullRequestReviewDTO::fromApiResponse($response);
+        return $response->dto();
     }
 
     public function comments(
@@ -117,12 +119,9 @@ readonly class PullRequestResource extends BaseResource
         string $repo,
         int $number,
     ): array {
-        $response = $this->github()->get("/repos/{$owner}/{$repo}/pulls/{$number}/comments");
+        $response = $this->github()->connector()->send(new Comments("{$owner}/{$repo}", $number));
 
-        return array_map(
-            fn (array $comment) => PullRequestCommentDTO::fromApiResponse($comment),
-            $response,
-        );
+        return $response->dto();
     }
 
     public function createComment(
@@ -134,16 +133,15 @@ readonly class PullRequestResource extends BaseResource
         string $path,
         int $position,
     ): PullRequestCommentDTO {
-        $response = $this->github()->post(
-            "/repos/{$owner}/{$repo}/pulls/{$number}/comments",
-            [
-                'body' => $body,
-                'commit_id' => $commitId,
-                'path' => $path,
-                'position' => $position,
-            ],
-        );
+        $response = $this->github()->connector()->send(new CreateComment(
+            "{$owner}/{$repo}",
+            $number,
+            $body,
+            $commitId,
+            $path,
+            $position
+        ));
 
-        return PullRequestCommentDTO::fromApiResponse($response);
+        return $response->dto();
     }
 }

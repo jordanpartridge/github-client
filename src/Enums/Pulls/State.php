@@ -2,9 +2,9 @@
 
 namespace JordanPartridge\GithubClient\Enums\Pulls;
 
-enum State
+enum State: string
 {
-    case OPEN;
-    case CLOSED;
-    case ALL;
+    case OPEN = 'open';
+    case CLOSED = 'closed';
+    case ALL = 'all';
 }

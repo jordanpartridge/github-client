@@ -62,16 +62,29 @@ This package provides the following GitHub resource classes:
 ```php
 use JordanPartridge\GithubClient\Facades\Github;
 
-// List all repositories
-$allRepos = Github::repos()->all();
+// List repositories (first page only, max 30 by default)
+$firstPageRepos = Github::repos()->all();
+
+// List ALL repositories with automatic pagination
+$allRepos = Github::repos()->allWithPagination();
 
 // Get a specific repository
 $repo = Github::repos()->get('jordanpartridge/github-client');
 
 // Filter repositories by visibility
 use JordanPartridge\GithubClient\Enums\Visibility;
+use JordanPartridge\GithubClient\Enums\Sort;
+use JordanPartridge\GithubClient\Enums\Direction;
+
 $publicRepos = Github::repos()->all(
     visibility: Visibility::PUBLIC,
+);
+
+// Get ALL public repositories with auto-pagination
+$allPublicRepos = Github::repos()->allWithPagination(
+    visibility: Visibility::PUBLIC,
+    sort: Sort::CREATED,
+    direction: Direction::DESC
 );
 ```
 

@@ -13,13 +13,7 @@ beforeEach(function () {
     // Set up default mock response
     $mockClient = new MockClient([
         '*' => MockResponse::make([
-            [
-                'id' => 1,
-                'name' => 'test-repo',
-                'full_name' => 'test/test-repo',
-                'visibility' => 'public',
-                'created_at' => '2024-01-01T00:00:00Z',
-            ],
+            $this->createMockRepoData('test-repo', 1, 'test'),
         ], 200),
     ]);
 
@@ -63,19 +57,14 @@ describe('sort parameter validation', function () {
 
     it('accepts valid Sort enum and orders results correctly', function () {
         // Setup mock with multiple repositories for sorting test
+        $olderRepo = $this->createMockRepoData('older-repo', 1, 'test');
+        $olderRepo['created_at'] = '2024-01-01T00:00:00Z';
+
+        $newerRepo = $this->createMockRepoData('newer-repo', 2, 'test');
+        $newerRepo['created_at'] = '2024-01-02T00:00:00Z';
+
         Github::connector()->withMockClient(new MockClient([
-            '*' => MockResponse::make([
-                [
-                    'id' => 1,
-                    'created_at' => '2024-01-01T00:00:00Z',
-                    'name' => 'older-repo',
-                ],
-                [
-                    'id' => 2,
-                    'created_at' => '2024-01-02T00:00:00Z',
-                    'name' => 'newer-repo',
-                ],
-            ], 200),
+            '*' => MockResponse::make([$olderRepo, $newerRepo], 200),
         ]));
 
         $response = Github::repos()->all(
@@ -157,5 +146,105 @@ describe('per_page parameter validation', function () {
         expect($response->json())
             ->toBeArray()
             ->and($response->status())->toBe(200);
+    });
+});
+
+describe('auto-pagination functionality', function () {
+    it('fetches all repositories across multiple pages', function () {
+        // Mock multiple pages of responses
+        $page1Response = MockResponse::make([
+            $this->createMockRepoData('repo-1', 1, 'test'),
+            $this->createMockRepoData('repo-2', 2, 'test'),
+        ], 200, [
+            'Link' => '</user/repos?page=2>; rel="next", </user/repos?page=2>; rel="last"',
+        ]);
+
+        $page2Response = MockResponse::make([
+            $this->createMockRepoData('repo-3', 3, 'test'),
+        ], 200, [
+            'Link' => '</user/repos?page=1>; rel="first", </user/repos?page=1>; rel="prev"',
+        ]);
+
+        $mockClient = new MockClient;
+        $mockClient->addResponse($page1Response);
+        $mockClient->addResponse($page2Response);
+
+        Github::connector()->withMockClient($mockClient);
+
+        $allRepos = Github::repos()->allWithPagination();
+
+        expect($allRepos)
+            ->toBeArray()
+            ->toHaveCount(3)
+            ->and($allRepos[0]->name)->toBe('repo-1')
+            ->and($allRepos[1]->name)->toBe('repo-2')
+            ->and($allRepos[2]->name)->toBe('repo-3');
+    });
+
+    it('stops pagination when no more pages available', function () {
+        // Mock single page response without next link
+        $singlePageResponse = MockResponse::make([
+            $this->createMockRepoData('only-repo', 1, 'test'),
+        ], 200);
+
+        Github::connector()->withMockClient(new MockClient([
+            '*' => $singlePageResponse,
+        ]));
+
+        $allRepos = Github::repos()->allWithPagination();
+
+        expect($allRepos)
+            ->toBeArray()
+            ->toHaveCount(1)
+            ->and($allRepos[0]->name)->toBe('only-repo');
+    });
+
+    it('handles empty repository list', function () {
+        Github::connector()->withMockClient(new MockClient([
+            '*' => MockResponse::make([], 200),
+        ]));
+
+        $allRepos = Github::repos()->allWithPagination();
+
+        expect($allRepos)
+            ->toBeArray()
+            ->toHaveCount(0);
+    });
+
+    it('respects filtering parameters during pagination', function () {
+        $publicReposResponse = MockResponse::make([
+            $this->createMockRepoData('public-repo', 1, 'test'),
+        ], 200);
+
+        Github::connector()->withMockClient(new MockClient([
+            '*' => $publicReposResponse,
+        ]));
+
+        $allRepos = Github::repos()->allWithPagination(
+            visibility: Visibility::PUBLIC,
+            sort: Sort::CREATED,
+            direction: Direction::DESC
+        );
+
+        expect($allRepos)
+            ->toBeArray()
+            ->toHaveCount(1)
+            ->and($allRepos[0]->name)->toBe('public-repo');
+    });
+
+    it('throws exception when maximum page limit is exceeded', function () {
+        // Create a response that always has a "next" link to simulate infinite pagination
+        $infiniteResponse = MockResponse::make([
+            $this->createMockRepoData('repo-1', 1, 'test'),
+        ], 200, [
+            'Link' => '</user/repos?page=2>; rel="next"',
+        ]);
+
+        Github::connector()->withMockClient(new MockClient([
+            '*' => $infiniteResponse,
+        ]));
+
+        expect(fn () => Github::repos()->allWithPagination())
+            ->toThrow(RuntimeException::class, 'Maximum page limit (1000) exceeded during pagination');
     });
 });

@@ -3,9 +3,11 @@
 namespace JordanPartridge\GithubClient\Requests\Pulls;
 
 use JordanPartridge\GithubClient\Data\Pulls\Params;
+use JordanPartridge\GithubClient\Data\Pulls\PullRequestDTO;
 use JordanPartridge\GithubClient\ValueObjects\Repo;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
+use Saloon\Http\Response;
 
 class Index extends Request
 {
@@ -51,6 +53,14 @@ class Index extends Request
     public function resolveEndpoint(): string
     {
         return sprintf('repos/%s/%s/pulls', $this->owner, $this->repo);
+    }
+
+    public function createDtoFromResponse(Response $response): array
+    {
+        return array_map(
+            fn (array $pullRequest) => PullRequestDTO::fromApiResponse($pullRequest),
+            $response->json()
+        );
     }
 
     /**
