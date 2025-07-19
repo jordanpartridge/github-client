@@ -17,10 +17,10 @@ class CommentMetadata
         public readonly array $raw_patterns = [],
     ) {}
 
-    public static function extract(string $body, string $path = null, int $position = null, string $author = null): self
+    public static function extract(string $body, ?string $path = null, ?int $position = null, ?string $author = null): self
     {
         $metadata = new self;
-        
+
         return new self(
             severity: $metadata->extractSeverity($body),
             file_path: $path,
@@ -39,22 +39,22 @@ class CommentMetadata
             // Explicit severity markers
             '/\[(?:SEVERITY|SEV):\s*(HIGH|MEDIUM|LOW)\]/i' => '$1',
             '/\b(?:severity|priority):\s*(high|medium|low|critical|warning|info)\b/i' => '$1',
-            
+
             // Emoji-based severity
             '/🔴|❌|⛔/' => 'high',
-            '/🟡|⚠️|⚠/' => 'medium', 
+            '/🟡|⚠️|⚠/' => 'medium',
             '/🟢|✅|ℹ️/' => 'low',
-            
+
             // Keywords indicating severity
             '/\b(critical|security|vulnerability|exploit|dangerous)\b/i' => 'high',
             '/\b(warning|potential|possible|consider|recommend)\b/i' => 'medium',
             '/\b(suggestion|nit|style|formatting|minor)\b/i' => 'low',
-            
+
             // CodeRabbit patterns
             '/\*\*Potential\s+(?:security\s+)?(?:vulnerability|issue)\*\*/i' => 'high',
             '/\*\*Warning\*\*/i' => 'medium',
             '/\*\*Suggestion\*\*/i' => 'low',
-            
+
             // SonarQube patterns
             '/\bbug\b/i' => 'high',
             '/\bcode\s+smell\b/i' => 'medium',
@@ -64,6 +64,7 @@ class CommentMetadata
         foreach ($severityPatterns as $pattern => $severity) {
             if (preg_match($pattern, $body, $matches)) {
                 $result = str_replace('$1', $matches[1] ?? $severity, $severity);
+
                 return strtolower($result);
             }
         }
@@ -137,9 +138,9 @@ class CommentMetadata
         return null;
     }
 
-    private function determineReviewerType(string $author = null): ?string
+    private function determineReviewerType(?string $author = null): ?string
     {
-        if (!$author) {
+        if (! $author) {
             return null;
         }
 

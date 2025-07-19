@@ -16,8 +16,11 @@ class CommentsWithFilters extends Request
     protected Method $method = Method::GET;
 
     private string $repo;
+
     private string $owner;
+
     private int $number;
+
     private array $filters;
 
     public function __construct(string $owner_repo, int $number, array $filters = [])
@@ -77,7 +80,7 @@ class CommentsWithFilters extends Request
         if (isset($this->filters['author'])) {
             $targetAuthor = strtolower($this->filters['author']);
             $commentAuthor = strtolower($comment->user->login);
-            
+
             if ($commentAuthor !== $targetAuthor) {
                 return false;
             }
@@ -87,11 +90,11 @@ class CommentsWithFilters extends Request
         if (isset($this->filters['author_type'])) {
             $authorType = $this->filters['author_type'];
             $isBot = $this->isBot($comment->user->login);
-            
-            if ($authorType === 'bot' && !$isBot) {
+
+            if ($authorType === 'bot' && ! $isBot) {
                 return false;
             }
-            
+
             if ($authorType === 'human' && $isBot) {
                 return false;
             }
@@ -101,7 +104,7 @@ class CommentsWithFilters extends Request
         if (isset($this->filters['severity'])) {
             $targetSeverity = strtolower($this->filters['severity']);
             $commentSeverity = $comment->metadata?->severity;
-            
+
             if ($commentSeverity !== $targetSeverity) {
                 return false;
             }
@@ -110,7 +113,7 @@ class CommentsWithFilters extends Request
         // File path filtering
         if (isset($this->filters['file_path'])) {
             $targetPath = $this->filters['file_path'];
-            
+
             if ($comment->path !== $targetPath) {
                 return false;
             }
@@ -120,7 +123,7 @@ class CommentsWithFilters extends Request
         if (isset($this->filters['since'])) {
             $since = new \DateTimeImmutable($this->filters['since']);
             $commentDate = new \DateTimeImmutable($comment->created_at);
-            
+
             if ($commentDate < $since) {
                 return false;
             }
@@ -129,7 +132,7 @@ class CommentsWithFilters extends Request
         if (isset($this->filters['until'])) {
             $until = new \DateTimeImmutable($this->filters['until']);
             $commentDate = new \DateTimeImmutable($comment->created_at);
-            
+
             if ($commentDate > $until) {
                 return false;
             }
@@ -139,7 +142,7 @@ class CommentsWithFilters extends Request
         if (isset($this->filters['claim_type'])) {
             $targetClaimType = $this->filters['claim_type'];
             $commentClaimType = $comment->metadata?->claim_type;
-            
+
             if ($commentClaimType !== $targetClaimType) {
                 return false;
             }
@@ -149,7 +152,7 @@ class CommentsWithFilters extends Request
         if (isset($this->filters['contains'])) {
             $needle = strtolower($this->filters['contains']);
             $haystack = strtolower($comment->body);
-            
+
             if (strpos($haystack, $needle) === false) {
                 return false;
             }
