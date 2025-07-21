@@ -162,10 +162,11 @@ describe('pull request reviews', function () {
         $reviews = Github::pullRequests()->reviews('test', 'repo', 1);
 
         expect($reviews)
-            ->toBeArray()
-            ->and($reviews[0])
+            ->toBeInstanceOf(\Illuminate\Support\Collection::class)
+            ->and($reviews->isEmpty())->toBeFalse()
+            ->and($reviews->first())
             ->toBeInstanceOf(PullRequestReviewDTO::class)
-            ->and($reviews[0]->state)->toBe('APPROVED');
+            ->and($reviews->first()->state)->toBe('APPROVED');
     });
 
     it('can create a pull request review', function () {

@@ -2,6 +2,7 @@
 
 namespace JordanPartridge\GithubClient\Requests\Pulls;
 
+use Illuminate\Support\Collection;
 use JordanPartridge\GithubClient\Data\Pulls\PullRequestReviewDTO;
 use JordanPartridge\GithubClient\ValueObjects\Repo;
 use Saloon\Enums\Method;
@@ -26,12 +27,16 @@ class Reviews extends Request
         $this->number = $number;
     }
 
-    public function createDtoFromResponse(Response $response): array
+    public function createDtoFromResponse(Response $response): Collection
     {
-        return array_map(
-            fn (array $review) => PullRequestReviewDTO::fromApiResponse($review),
+        $reviews = array_map(
+            function (array $review) {
+                return PullRequestReviewDTO::fromApiResponse($review);
+            },
             $response->json()
         );
+
+        return collect($reviews);
     }
 
     public function resolveEndpoint(): string

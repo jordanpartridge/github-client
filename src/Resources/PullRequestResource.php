@@ -96,7 +96,7 @@ readonly class PullRequestResource extends BaseResource
         string $owner,
         string $repo,
         int $number,
-    ): array {
+    ): \Illuminate\Support\Collection {
         $response = $this->github()->connector()->send(new Reviews("{$owner}/{$repo}", $number));
 
         return $response->dto();

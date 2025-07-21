@@ -46,6 +46,11 @@ class PullRequestDetailDTO extends PullRequestSummaryDTO
         public readonly int $additions,
         public readonly int $deletions,
         public readonly int $changed_files,
+
+        // Merge status fields
+        public readonly ?bool $mergeable,
+        public readonly ?string $mergeable_state,
+        public readonly ?bool $rebaseable,
     ) {
         parent::__construct(
             $id,
@@ -107,6 +112,11 @@ class PullRequestDetailDTO extends PullRequestSummaryDTO
             additions: (int) ($data['additions'] ?? 0),
             deletions: (int) ($data['deletions'] ?? 0),
             changed_files: (int) ($data['changed_files'] ?? 0),
+
+            // Merge status fields
+            mergeable: $data['mergeable'] ?? null,
+            mergeable_state: $data['mergeable_state'] ?? null,
+            rebaseable: $data['rebaseable'] ?? null,
         );
     }
 
@@ -122,6 +132,9 @@ class PullRequestDetailDTO extends PullRequestSummaryDTO
             'additions' => $this->additions,
             'deletions' => $this->deletions,
             'changed_files' => $this->changed_files,
+            'mergeable' => $this->mergeable,
+            'mergeable_state' => $this->mergeable_state,
+            'rebaseable' => $this->rebaseable,
         ]);
     }
 
@@ -170,6 +183,50 @@ class PullRequestDetailDTO extends PullRequestSummaryDTO
     }
 
     /**
+     * Check if this PR is ready to merge (no conflicts).
+     */
+    public function isReadyToMerge(): bool
+    {
+        return $this->mergeable === true && $this->mergeable_state === 'clean';
+    }
+
+    /**
+     * Check if this PR has merge conflicts.
+     */
+    public function hasMergeConflicts(): bool
+    {
+        return $this->mergeable === false || $this->mergeable_state === 'dirty';
+    }
+
+    /**
+     * Check if this PR can be rebased onto the target branch.
+     */
+    public function canRebase(): bool
+    {
+        return $this->rebaseable === true;
+    }
+
+    /**
+     * Get a human-readable merge status description.
+     */
+    public function getMergeStatusDescription(): string
+    {
+        if ($this->mergeable === null) {
+            return 'Merge status unknown (checking...)';
+        }
+
+        return match ($this->mergeable_state) {
+            'clean' => 'Ready to merge',
+            'dirty' => 'Has merge conflicts',
+            'unstable' => 'Mergeable with failing checks',
+            'blocked' => 'Blocked by branch protection',
+            'behind' => 'Behind base branch',
+            'draft' => 'Draft pull request',
+            default => $this->mergeable_state ?? 'Unknown status',
+        };
+    }
+
+    /**
      * Create a summary representation for display purposes.
      */
     public function getSummary(): array
@@ -182,6 +239,12 @@ class PullRequestDetailDTO extends PullRequestSummaryDTO
                 'commits' => $this->commits,
                 'changes' => "+{$this->additions}/-{$this->deletions}",
                 'files' => $this->changed_files,
+            ],
+            'merge_status' => [
+                'mergeable' => $this->mergeable,
+                'mergeable_state' => $this->mergeable_state,
+                'rebaseable' => $this->rebaseable,
+                'description' => $this->getMergeStatusDescription(),
             ],
             'state' => $this->state,
             'author' => $this->user->login,
