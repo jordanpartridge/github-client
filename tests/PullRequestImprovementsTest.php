@@ -385,7 +385,7 @@ describe('Pull Request Improvements', function () {
                 'created_at' => '2024-01-01T00:00:00Z',
                 'updated_at' => '2024-01-01T00:00:00Z',
                 'closed_at' => null,
-                
+
                 // Detail fields
                 'comments' => 0,
                 'review_comments' => 0,
@@ -393,7 +393,7 @@ describe('Pull Request Improvements', function () {
                 'additions' => 5,
                 'deletions' => 2,
                 'changed_files' => 1,
-                
+
                 // Test specific mergeable_state
                 'mergeable' => false,
                 'mergeable_state' => $state,
@@ -401,7 +401,7 @@ describe('Pull Request Improvements', function () {
             ];
 
             $dto = PullRequestDetailDTO::fromDetailResponse($mockData);
-            
+
             expect($dto->mergeable_state)->toBe($state)
                 ->and($dto->getMergeStatusDescription())->toBe($expectedDescription);
         }
@@ -468,7 +468,7 @@ describe('Pull Request Improvements', function () {
             'created_at' => '2024-01-01T00:00:00Z',
             'updated_at' => '2024-01-01T12:00:00Z',
             'closed_at' => '2024-01-01T12:00:00Z',
-            
+
             // Detail fields
             'comments' => 3,
             'review_comments' => 5,
@@ -476,7 +476,7 @@ describe('Pull Request Improvements', function () {
             'additions' => 25,
             'deletions' => 10,
             'changed_files' => 3,
-            
+
             // Merged PR typically has null merge status
             'mergeable' => null,
             'mergeable_state' => null,
