@@ -8,6 +8,7 @@ use JordanPartridge\GithubClient\Exceptions\ApiException;
 use JordanPartridge\GithubClient\Exceptions\NetworkException;
 use JordanPartridge\GithubClient\Requests\RateLimit\Get;
 use JordanPartridge\GithubClient\Resources\ActionsResource;
+use JordanPartridge\GithubClient\Resources\CommentsResource;
 use JordanPartridge\GithubClient\Resources\CommitResource;
 use JordanPartridge\GithubClient\Resources\FileResource;
 use JordanPartridge\GithubClient\Resources\IssuesResource;
@@ -55,6 +56,11 @@ class Github
     public function issues(): IssuesResource
     {
         return new IssuesResource($this);
+    }
+
+    public function comments(): CommentsResource
+    {
+        return new CommentsResource($this);
     }
 
     /**
