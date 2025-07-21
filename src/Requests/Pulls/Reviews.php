@@ -30,7 +30,9 @@ class Reviews extends Request
     public function createDtoFromResponse(Response $response): Collection
     {
         $reviews = array_map(
-            fn (array $review) => PullRequestReviewDTO::fromApiResponse($review),
+            function (array $review) {
+                return PullRequestReviewDTO::fromApiResponse($review);
+            },
             $response->json()
         );
 
