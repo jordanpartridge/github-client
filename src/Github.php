@@ -4,6 +4,7 @@ namespace JordanPartridge\GithubClient;
 
 use ConduitUi\GitHubConnector\GithubConnector;
 use JordanPartridge\GithubClient\Data\RateLimitDTO;
+use JordanPartridge\GithubClient\Data\Repos\RepoData;
 use JordanPartridge\GithubClient\Exceptions\ApiException;
 use JordanPartridge\GithubClient\Exceptions\NetworkException;
 use JordanPartridge\GithubClient\Requests\RateLimit\Get;
@@ -14,6 +15,8 @@ use JordanPartridge\GithubClient\Resources\FileResource;
 use JordanPartridge\GithubClient\Resources\IssuesResource;
 use JordanPartridge\GithubClient\Resources\PullRequestResource;
 use JordanPartridge\GithubClient\Resources\RepoResource;
+use JordanPartridge\GithubClient\ValueObjects\Repo;
+use Saloon\Http\Response;
 
 class Github
 {
@@ -131,5 +134,31 @@ class Github
             // If we can't check rate limits, assume we haven't exceeded them
             return false;
         }
+    }
+
+    /**
+     * Get a repository by full name with automatic validation.
+     *
+     * @param  string  $fullName  The full repository name (owner/repo)
+     * @return RepoData The repository data
+     */
+    public function getRepo(string $fullName): RepoData
+    {
+        $repo = Repo::fromFullName($fullName); // Validates the name
+
+        return $this->repos()->get($repo);
+    }
+
+    /**
+     * Delete a repository by full name with automatic validation.
+     *
+     * @param  string  $fullName  The full repository name (owner/repo)
+     * @return Response The deletion response
+     */
+    public function deleteRepo(string $fullName): Response
+    {
+        $repo = Repo::fromFullName($fullName); // Ensures validation
+
+        return $this->repos()->delete($repo);
     }
 }

@@ -181,9 +181,9 @@ readonly class RepoResource extends BaseResource
         return $this->github()->connector()->send(new Get($repo))->dto();
     }
 
-    public function delete(string $full_name): Response
+    public function delete(Repo $repo): Response
     {
-        return $this->github()->connector()->send(new Delete($full_name));
+        return $this->github()->connector()->send(new Delete($repo));
     }
 
     /**
