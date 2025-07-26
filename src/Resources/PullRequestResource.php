@@ -14,14 +14,17 @@ use JordanPartridge\GithubClient\Requests\Pulls\CommentsWithFilters;
 use JordanPartridge\GithubClient\Requests\Pulls\Create;
 use JordanPartridge\GithubClient\Requests\Pulls\CreateComment;
 use JordanPartridge\GithubClient\Requests\Pulls\CreateReview;
+use JordanPartridge\GithubClient\Requests\Pulls\DeleteComment;
 use JordanPartridge\GithubClient\Requests\Pulls\Files;
 use JordanPartridge\GithubClient\Requests\Pulls\Get;
+use JordanPartridge\GithubClient\Requests\Pulls\GetComment;
 use JordanPartridge\GithubClient\Requests\Pulls\GetWithDetailDTO;
 use JordanPartridge\GithubClient\Requests\Pulls\Index;
 use JordanPartridge\GithubClient\Requests\Pulls\IndexWithSummaryDTO;
 use JordanPartridge\GithubClient\Requests\Pulls\Merge;
 use JordanPartridge\GithubClient\Requests\Pulls\Reviews;
 use JordanPartridge\GithubClient\Requests\Pulls\Update;
+use JordanPartridge\GithubClient\Requests\Pulls\UpdateComment;
 
 readonly class PullRequestResource extends BaseResource
 {
@@ -210,6 +213,59 @@ readonly class PullRequestResource extends BaseResource
         array $filters = [],
     ): array {
         return $this->commentsWithFilters($owner, $repo, $number, $filters);
+    }
+
+    /**
+     * Get a single pull request review comment by ID
+     */
+    public function getComment(
+        string $owner,
+        string $repo,
+        int $commentId,
+    ): PullRequestCommentDTO {
+        $response = $this->github()->connector()->send(new GetComment(
+            owner: $owner,
+            repo: $repo,
+            commentId: $commentId,
+        ));
+
+        return $response->dto();
+    }
+
+    /**
+     * Update a pull request review comment
+     */
+    public function updateComment(
+        string $owner,
+        string $repo,
+        int $commentId,
+        string $body,
+    ): PullRequestCommentDTO {
+        $response = $this->github()->connector()->send(new UpdateComment(
+            owner: $owner,
+            repo: $repo,
+            commentId: $commentId,
+            bodyText: $body,
+        ));
+
+        return $response->dto();
+    }
+
+    /**
+     * Delete a pull request review comment
+     */
+    public function deleteComment(
+        string $owner,
+        string $repo,
+        int $commentId,
+    ): bool {
+        $response = $this->github()->connector()->send(new DeleteComment(
+            owner: $owner,
+            repo: $repo,
+            commentId: $commentId,
+        ));
+
+        return $response->successful();
     }
 
     // === NEW DTO-SPECIFIC METHODS ===

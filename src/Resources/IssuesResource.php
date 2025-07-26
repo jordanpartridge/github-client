@@ -10,10 +10,13 @@ use JordanPartridge\GithubClient\Enums\Issues\State;
 use JordanPartridge\GithubClient\Requests\Issues\Comments;
 use JordanPartridge\GithubClient\Requests\Issues\Create;
 use JordanPartridge\GithubClient\Requests\Issues\CreateComment;
+use JordanPartridge\GithubClient\Requests\Issues\DeleteComment;
 use JordanPartridge\GithubClient\Requests\Issues\Get;
+use JordanPartridge\GithubClient\Requests\Issues\GetComment;
 use JordanPartridge\GithubClient\Requests\Issues\Index;
 use JordanPartridge\GithubClient\Requests\Issues\RepoIndex;
 use JordanPartridge\GithubClient\Requests\Issues\Update;
+use JordanPartridge\GithubClient\Requests\Issues\UpdateComment;
 use Saloon\Http\Response;
 
 readonly class IssuesResource extends BaseResource
@@ -270,5 +273,58 @@ readonly class IssuesResource extends BaseResource
         ));
 
         return $response->dto();
+    }
+
+    /**
+     * Get a single issue comment by ID
+     */
+    public function getComment(
+        string $owner,
+        string $repo,
+        int $commentId,
+    ): IssueCommentDTO {
+        $response = $this->connector()->send(new GetComment(
+            owner: $owner,
+            repo: $repo,
+            commentId: $commentId,
+        ));
+
+        return $response->dto();
+    }
+
+    /**
+     * Update an issue comment
+     */
+    public function updateComment(
+        string $owner,
+        string $repo,
+        int $commentId,
+        string $body,
+    ): IssueCommentDTO {
+        $response = $this->connector()->send(new UpdateComment(
+            owner: $owner,
+            repo: $repo,
+            commentId: $commentId,
+            bodyText: $body,
+        ));
+
+        return $response->dto();
+    }
+
+    /**
+     * Delete an issue comment
+     */
+    public function deleteComment(
+        string $owner,
+        string $repo,
+        int $commentId,
+    ): bool {
+        $response = $this->connector()->send(new DeleteComment(
+            owner: $owner,
+            repo: $repo,
+            commentId: $commentId,
+        ));
+
+        return $response->successful();
     }
 }
