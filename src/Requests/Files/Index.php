@@ -36,6 +36,6 @@ class Index extends Request
 
     public function resolveEndpoint(): string
     {
-        return 'repos/' . $this->repo_name . '/commits/' . $this->commit_sha . '/files';
+        return 'repos/'.$this->repo_name.'/commits/'.$this->commit_sha.'/files';
     }
 }

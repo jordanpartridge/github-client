@@ -162,7 +162,6 @@ readonly class PullRequestResource extends BaseResource
      * @param  string  $repo  Repository name
      * @param  int  $number  Pull request number
      * @param  array  $filters  Filtering options
-     *
      * @return array<PullRequestCommentDTO>
      *
      * @example
@@ -205,7 +204,6 @@ readonly class PullRequestResource extends BaseResource
      * @param  string  $repo  Repository name
      * @param  int  $number  Pull request number
      * @param  array  $filters  Filtering options
-     *
      * @return array<PullRequestCommentDTO>
      */
     public function forPullRequest(
@@ -278,7 +276,6 @@ readonly class PullRequestResource extends BaseResource
      * @param  string  $owner  Repository owner
      * @param  string  $repo  Repository name
      * @param  array  $parameters  Query parameters
-     *
      * @return array<PullRequestSummaryDTO> Lightweight PR summaries
      */
     public function summaries(string $owner, string $repo, array $parameters = []): array
@@ -294,7 +291,6 @@ readonly class PullRequestResource extends BaseResource
      * @param  string  $owner  Repository owner
      * @param  string  $repo  Repository name
      * @param  int  $number  Pull request number
-     *
      * @return PullRequestDetailDTO Complete PR data with statistics
      */
     public function detail(string $owner, string $repo, int $number): PullRequestDetailDTO
@@ -311,7 +307,6 @@ readonly class PullRequestResource extends BaseResource
      * @param  string  $repo  Repository name
      * @param  array  $prNumbers  Array of PR numbers
      * @param  int  $maxRequests  Safety limit to prevent rate limit exhaustion
-     *
      * @return array<PullRequestDetailDTO> Complete PR data with statistics
      */
     public function detailsForMultiple(
@@ -343,7 +338,6 @@ readonly class PullRequestResource extends BaseResource
      * @param  string  $repo  Repository name
      * @param  int  $limit  Number of recent PRs (max 10 for rate limit protection)
      * @param  string  $state  PR state filter
-     *
      * @return array<PullRequestDetailDTO> Recent PRs with complete data
      */
     public function recentDetails(
@@ -374,7 +368,6 @@ readonly class PullRequestResource extends BaseResource
      * @param  string  $owner  Repository owner
      * @param  string  $repo  Repository name
      * @param  int  $number  Pull request number
-     *
      * @return array<PullRequestFileDTO> Array of file changes with diff data
      *
      * @example
@@ -401,7 +394,6 @@ readonly class PullRequestResource extends BaseResource
      * @param  string  $owner  Repository owner
      * @param  string  $repo  Repository name
      * @param  int  $number  Pull request number
-     *
      * @return array Analysis data with categorized files and statistics
      *
      * @example

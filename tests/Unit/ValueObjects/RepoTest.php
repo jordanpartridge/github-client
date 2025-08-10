@@ -14,7 +14,7 @@ describe('Repo ValueObject', function () {
 
         it('throws exception for invalid format', function () {
             expect(fn () => Repo::fromFullName('invalid'))
-                ->toThrow(\\InvalidArgumentException::class, 'Repository must be in format "owner/repo"');
+                ->toThrow(\InvalidArgumentException::class, 'Repository must be in format "owner/repo"');
         });
 
         it('throws exception for empty owner or name', function () {

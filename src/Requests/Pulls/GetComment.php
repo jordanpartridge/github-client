@@ -34,7 +34,6 @@ class GetComment extends Request
      * Convert the API response to a PullRequestCommentDTO.
      *
      * @param  Response  $response  The HTTP response from GitHub API
-     *
      * @return PullRequestCommentDTO The pull request comment data transfer object
      */
     public function createDtoFromResponse(Response $response): PullRequestCommentDTO

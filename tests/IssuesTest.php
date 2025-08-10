@@ -149,7 +149,7 @@ describe('Issue auto-pagination', function () {
             'Link' => '</repos/test/repo/issues?page=1>; rel="first", </repos/test/repo/issues?page=1>; rel="prev"',
         ]);
 
-        $mockClient = new MockClient();
+        $mockClient = new MockClient;
         $mockClient->addResponse($page1Response);
         $mockClient->addResponse($page2Response);
 

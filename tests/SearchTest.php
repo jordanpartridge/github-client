@@ -8,7 +8,7 @@ use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
 
 beforeEach(function () {
-    $this->mockClient = new MockClient();
+    $this->mockClient = new MockClient;
     Github::connector()->withMockClient($this->mockClient);
 });
 

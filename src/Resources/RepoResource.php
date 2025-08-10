@@ -51,7 +51,6 @@ readonly class RepoResource extends BaseResource
      * @param  Visibility|null  $visibility  Filter repositories by visibility (public, private, all)
      * @param  Sort|null  $sort  Sort repositories by field (created, updated, pushed, full_name)
      * @param  Direction|null  $direction  Sort direction (asc or desc)
-     *
      * @return Response Returns a Saloon response containing the repository data
      *
      * @link https://docs.github.com/en/rest/repos/repos#list-repositories-for-the-authenticated-user
@@ -105,7 +104,6 @@ readonly class RepoResource extends BaseResource
      * @param  Sort|null  $sort  Sort repositories by field (created, updated, pushed, full_name)
      * @param  Direction|null  $direction  Sort direction (asc or desc)
      * @param  Type|null  $type  Filter repositories by type
-     *
      * @return array<RepoData> Returns an array of all repositories
      *
      * @link https://docs.github.com/en/rest/repos/repos#list-repositories-for-the-authenticated-user
@@ -168,7 +166,6 @@ readonly class RepoResource extends BaseResource
      * Get a specific repository by full name
      *
      * @param  Repo  $repo  -- the repo value object, which handles the validation
-     *
      * @return RepoData Returns a Saloon response containing the repository details
      *
      * @link https://docs.github.com/en/rest/repos/repos#get-a-repository
@@ -200,7 +197,6 @@ readonly class RepoResource extends BaseResource
      * @param  Direction|null  $order  Sort order: asc or desc
      * @param  int|null  $per_page  Number of results per page (max 100)
      * @param  int|null  $page  Page number of the results to fetch
-     *
      * @return SearchRepositoriesData Returns a data object containing search results
      *
      * @link https://docs.github.com/en/rest/search#search-repositories

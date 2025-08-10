@@ -8,7 +8,7 @@ use JordanPartridge\GithubClient\Exceptions\ValidationException;
 
 describe('Exception Hierarchy', function () {
     it('base exception includes context', function () {
-        $exception = new class ('Test message', 123, null, ['key' => 'value']) extends GithubClientException {};
+        $exception = new class('Test message', 123, null, ['key' => 'value']) extends GithubClientException {};
 
         expect($exception->getMessage())->toBe('Test message')
             ->and($exception->getCode())->toBe(123)
@@ -16,7 +16,7 @@ describe('Exception Hierarchy', function () {
     });
 
     it('can add context to exception', function () {
-        $exception = new class ('Test') extends GithubClientException {};
+        $exception = new class('Test') extends GithubClientException {};
         $exception->addContext('request_id', '12345');
 
         expect($exception->getContext())->toBe(['request_id' => '12345']);

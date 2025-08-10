@@ -19,7 +19,7 @@ class CommentMetadata
 
     public static function extract(string $body, ?string $path = null, ?int $position = null, ?string $author = null): self
     {
-        $metadata = new self();
+        $metadata = new self;
 
         return new self(
             severity: $metadata->extractSeverity($body),

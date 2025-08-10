@@ -2,7 +2,7 @@
 
 namespace JordanPartridge\GithubClient;
 
-use ConduitUi\GitHubConnector\GithubConnector;
+use JordanPartridge\GithubClient\Connectors\GithubConnector;
 use JordanPartridge\GithubClient\Data\RateLimitDTO;
 use JordanPartridge\GithubClient\Data\Repos\RepoData;
 use JordanPartridge\GithubClient\Exceptions\ApiException;
@@ -83,7 +83,7 @@ class Github
     public function getRateLimitStatus(): array
     {
         try {
-            $request = new Get();
+            $request = new Get;
             $response = $this->connector->send($request);
 
             if (! $response->successful()) {
@@ -103,7 +103,6 @@ class Github
      * Get rate limit status for a specific resource type.
      *
      * @param  string  $resource  The resource type (core, search, graphql, etc.)
-     *
      * @return RateLimitDTO The rate limit information for the specified resource
      *
      * @throws ApiException When the API request fails or resource not found
@@ -114,7 +113,7 @@ class Github
 
         if (! isset($rateLimits[$resource])) {
             throw new ApiException(
-                response: $this->connector->send(new Get()),
+                response: $this->connector->send(new Get),
                 message: "Rate limit resource '{$resource}' not found",
             );
         }
@@ -147,7 +146,6 @@ class Github
      * Get a repository by full name with automatic validation.
      *
      * @param  string  $fullName  The full repository name (owner/repo)
-     *
      * @return RepoData The repository data
      */
     public function getRepo(string $fullName): RepoData
@@ -161,7 +159,6 @@ class Github
      * Delete a repository by full name with automatic validation.
      *
      * @param  string  $fullName  The full repository name (owner/repo)
-     *
      * @return Response The deletion response
      */
     public function deleteRepo(string $fullName): Response

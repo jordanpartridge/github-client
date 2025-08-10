@@ -32,7 +32,7 @@ class Index extends Request
 
     public function resolveEndpoint(): string
     {
-        return '/repos/' . $this->repo_name . '/commits';
+        return '/repos/'.$this->repo_name.'/commits';
     }
 
     public function createDtoFromResponse(Response $response): array

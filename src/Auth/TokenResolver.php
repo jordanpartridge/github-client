@@ -2,109 +2,70 @@
 
 namespace JordanPartridge\GithubClient\Auth;
 
-use JordanPartridge\GithubClient\Exceptions\AuthenticationException;
-use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Process\Process;
+use Illuminate\Support\Facades\Process;
 
 /**
- * Resolves GitHub authentication tokens from multiple sources in priority order:
- * 1. GitHub CLI token (gh auth token)
+ * Resolves GitHub authentication tokens from multiple sources.
+ *
+ * Priority order:
+ * 1. GitHub CLI (gh auth token)
  * 2. Environment variables (GITHUB_TOKEN, GH_TOKEN)
- * 3. Config file
- * 4. Returns null if no token found (for public access)
+ * 3. Laravel config
+ * 4. Return null for optional auth (public repos)
  */
 class TokenResolver
 {
-    private const GITHUB_TOKEN_ENV_VARS = ['GITHUB_TOKEN', 'GH_TOKEN'];
-
+    protected static ?string $lastSource = null;
     /**
-     * Resolve a GitHub token from available sources.
-     *
-     * @param  bool  $required  Whether authentication is required for the operation
-     *
-     * @return string|null The resolved token, or null if not required and not found
-     *
-     * @throws AuthenticationException When authentication is required but no valid token found
+     * Resolve token from all available sources.
      */
-    public function resolve(bool $required = false): ?string
+    public static function resolve(): ?string
     {
-        // Priority 1: GitHub CLI token
-        if ($token = $this->getGitHubCliToken()) {
+        // 1. Check GitHub CLI first (if available)
+        if ($token = self::getGitHubCliToken()) {
+            self::$lastSource = 'GitHub CLI';
             return $token;
         }
 
-        // Priority 2: Environment variables
-        if ($token = $this->getEnvironmentToken()) {
+        // 2. Check environment variables
+        if ($token = self::getEnvironmentToken()) {
+            self::$lastSource = env('GITHUB_TOKEN') ? 'GITHUB_TOKEN' : 'GH_TOKEN';
             return $token;
         }
 
-        // Priority 3: Config file
-        if ($token = $this->getConfigToken()) {
+        // 3. Check Laravel config
+        if ($token = self::getConfigToken()) {
+            self::$lastSource = 'config';
             return $token;
         }
 
-        // If authentication is required but no token found, throw exception
-        if ($required) {
-            throw AuthenticationException::noTokenFound($this->getAuthenticationGuidance());
-        }
-
-        // Return null for optional authentication (public access)
+        // 4. Return null - authentication is optional for public repos
+        self::$lastSource = null;
         return null;
     }
 
     /**
-     * Check if GitHub CLI is authenticated.
+     * Get token from GitHub CLI if available.
      */
-    public function hasGitHubCliAuth(): bool
+    private static function getGitHubCliToken(): ?string
     {
-        return $this->getGitHubCliToken() !== null;
-    }
-
-    /**
-     * Get authentication guidance for users.
-     */
-    public function getAuthenticationGuidance(): string
-    {
-        $guidance = "No GitHub authentication found. To authenticate, use one of these methods:\n\n";
-
-        if ($this->isGitHubCliAvailable()) {
-            $guidance .= "1. GitHub CLI (recommended): Run 'gh auth login'\n";
-        } else {
-            $guidance .= "1. Install GitHub CLI and run 'gh auth login' (recommended)\n";
-        }
-
-        $guidance .= "2. Set GITHUB_TOKEN environment variable\n";
-        $guidance .= "3. Set GH_TOKEN environment variable\n";
-        $guidance .= "4. Configure token in config/github-client.php\n\n";
-        $guidance .= 'For public repositories, authentication is optional but increases rate limits.';
-
-        return $guidance;
-    }
-
-    /**
-     * Get token from GitHub CLI if available and authenticated.
-     */
-    protected function getGitHubCliToken(): ?string
-    {
-        if (! $this->isGitHubCliAvailable()) {
-            return null;
-        }
-
         try {
-            $process = new Process(['gh', 'auth', 'token']);
-            $process->run();
-
-            if ($process->isSuccessful()) {
-                $token = trim($process->getOutput());
-
-                return ! empty($token) ? $token : null;
+            // Check if gh CLI is available
+            $result = Process::run('which gh');
+            if (! $result->successful()) {
+                return null;
             }
-        } catch (ProcessFailedException $e) {
-            // GitHub CLI not authenticated or other error
-            return null;
-        } catch (\Exception $e) {
-            // Any other error (process not found, etc.)
-            return null;
+
+            // Get token from gh CLI
+            $result = Process::run('gh auth token');
+            if ($result->successful()) {
+                $token = trim($result->output());
+                if (! empty($token)) {
+                    return $token;
+                }
+            }
+        } catch (\Exception) {
+            // gh CLI not available or not authenticated
         }
 
         return null;
@@ -113,44 +74,97 @@ class TokenResolver
     /**
      * Get token from environment variables.
      */
-    protected function getEnvironmentToken(): ?string
+    private static function getEnvironmentToken(): ?string
     {
-        foreach (self::GITHUB_TOKEN_ENV_VARS as $envVar) {
-            $token = getenv($envVar) ?: null;
-            if (! empty($token)) {
-                return $token;
-            }
+        // Check GITHUB_TOKEN first (standard)
+        $token = env('GITHUB_TOKEN');
+        if (! empty($token)) {
+            return $token;
+        }
+
+        // Check GH_TOKEN (GitHub CLI convention)
+        $token = env('GH_TOKEN');
+        if (! empty($token)) {
+            return $token;
         }
 
         return null;
     }
 
     /**
-     * Get token from config file.
+     * Get token from Laravel config.
      */
-    protected function getConfigToken(): ?string
+    private static function getConfigToken(): ?string
     {
-        if (! function_exists('config')) {
-            return null;
-        }
-
         $token = config('github-client.token');
 
-        return ! empty($token) ? $token : null;
+        // Only return if not empty and not a placeholder
+        if (! empty($token) && $token !== 'your-github-token-here') {
+            return $token;
+        }
+
+        return null;
     }
 
     /**
-     * Check if GitHub CLI is available on the system.
+     * Check if any authentication is available.
      */
-    protected function isGitHubCliAvailable(): bool
+    public static function hasAuthentication(): bool
     {
-        try {
-            $process = new Process(['gh', '--version']);
-            $process->run();
+        return self::resolve() !== null;
+    }
 
-            return $process->isSuccessful();
-        } catch (\Exception $e) {
-            return false;
+    /**
+     * Get a descriptive message about authentication status.
+     */
+    public static function getAuthenticationStatus(): string
+    {
+        if ($token = self::getGitHubCliToken()) {
+            return 'Authenticated via GitHub CLI';
         }
+
+        if ($token = self::getEnvironmentToken()) {
+            $source = env('GITHUB_TOKEN') ? 'GITHUB_TOKEN' : 'GH_TOKEN';
+
+            return "Authenticated via environment variable ({$source})";
+        }
+
+        if ($token = self::getConfigToken()) {
+            return 'Authenticated via config file';
+        }
+
+        return 'No authentication (public access only)';
+    }
+
+    /**
+     * Get helpful error message for authentication issues.
+     */
+    public static function getAuthenticationHelp(): string
+    {
+        return <<<'HELP'
+        GitHub authentication is recommended for better rate limits.
+        
+        You can authenticate using one of these methods:
+        
+        1. GitHub CLI (recommended):
+           gh auth login
+        
+        2. Environment variable:
+           export GITHUB_TOKEN=your_token_here
+        
+        3. Laravel config:
+           Set token in config/github-client.php
+        
+        Note: Public repositories can be accessed without authentication,
+        but rate limits are much lower (60 requests/hour vs 5000 with auth).
+        HELP;
+    }
+    
+    /**
+     * Get the last resolved authentication source.
+     */
+    public static function getLastSource(): ?string
+    {
+        return self::$lastSource;
     }
 }

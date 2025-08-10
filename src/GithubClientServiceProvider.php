@@ -2,10 +2,9 @@
 
 namespace JordanPartridge\GithubClient;
 
-use ConduitUi\GitHubConnector\GithubConnector;
 use JordanPartridge\GithubClient\Auth\GithubOAuth;
-use JordanPartridge\GithubClient\Auth\TokenResolver;
 use JordanPartridge\GithubClient\Commands\GithubClientCommand;
+use JordanPartridge\GithubClient\Connectors\GithubConnector;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -20,18 +19,10 @@ class GithubClientServiceProvider extends PackageServiceProvider
             ->hasMigration('create_github_client_table')
             ->hasCommand(GithubClientCommand::class);
 
-        // Register TokenResolver as singleton
-        $this->app->singleton(TokenResolver::class, function () {
-            return new TokenResolver();
-        });
-
-        $this->app->singleton(GithubConnector::class, function ($app) {
-            $tokenResolver = $app->make(TokenResolver::class);
-
-            // Try to resolve a token (not required - allows public access)
-            $token = $tokenResolver->resolve(required: false);
-
-            return new GithubConnector($token);
+        $this->app->singleton(GithubConnector::class, function () {
+            // Connector handles its own token resolution from multiple sources
+            // Supports optional authentication for public repos
+            return new GithubConnector();
         });
 
         $this->app->bind(Github::class, function ($app) {
