@@ -14,8 +14,8 @@ readonly class CommitResource extends BaseResource
     public function all(
         string $repo_name,
         ?int $per_page = 100,
-        ?int $page = 1): array
-    {
+        ?int $page = 1,
+    ): array {
         return $this->validateRepo($repo_name)
             ->github()->connector()
             ->send(new Index(repo_name: $repo_name, per_page: $per_page, page: $page))->dto();

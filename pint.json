@@ -1,0 +1,56 @@
+{
+    "preset": "laravel",
+    "rules": {
+        "@PSR12": true,
+        "array_syntax": {
+            "syntax": "short"
+        },
+        "ordered_imports": {
+            "sort_algorithm": "alpha"
+        },
+        "no_unused_imports": true,
+        "not_operator_with_successor_space": true,
+        "trailing_comma_in_multiline": {
+            "elements": [
+                "arrays",
+                "arguments",
+                "parameters"
+            ]
+        },
+        "phpdoc_scalar": true,
+        "unary_operator_spaces": true,
+        "binary_operator_spaces": true,
+        "blank_line_before_statement": {
+            "statements": [
+                "return"
+            ]
+        },
+        "method_chaining_indentation": true,
+        "multiline_whitespace_before_semicolons": {
+            "strategy": "no_multi_line"
+        },
+        "single_trait_insert_per_statement": true,
+        "declare_strict_types": false,
+        "concat_space": {
+            "spacing": "one"
+        },
+        "single_quote": true,
+        "phpdoc_separation": true,
+        "phpdoc_single_line_var_spacing": true,
+        "phpdoc_var_without_name": true,
+        "class_attributes_separation": {
+            "elements": {
+                "method": "one"
+            }
+        }
+    },
+    "exclude": [
+        "bootstrap",
+        "storage",
+        "resources/view/mail",
+        "node_modules",
+        "vendor",
+        "workbench/bootstrap",
+        "workbench/storage"
+    ]
+}

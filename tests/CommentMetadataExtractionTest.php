@@ -131,7 +131,7 @@ $query = "SELECT * FROM users WHERE id = " . $userId;
             '🔴 **Critical**: SQL injection at line 42',
             'app/Models/User.php',
             42,
-            'coderabbitai'
+            'coderabbitai',
         );
 
         $array = $metadata->toArray();

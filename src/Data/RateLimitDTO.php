@@ -25,7 +25,7 @@ class RateLimitDTO
         return new self(
             limit: $data['limit'],
             remaining: $data['remaining'],
-            reset: new DateTimeImmutable('@'.$data['reset']),
+            reset: new DateTimeImmutable('@' . $data['reset']),
             used: $data['used'],
             resource: $resource,
         );

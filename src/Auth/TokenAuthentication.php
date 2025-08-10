@@ -10,7 +10,7 @@ use JordanPartridge\GithubClient\Exceptions\AuthenticationException;
 class TokenAuthentication implements AuthenticationStrategy
 {
     public function __construct(
-        private readonly string $token
+        private readonly string $token,
     ) {}
 
     public function getAuthorizationHeader(): string

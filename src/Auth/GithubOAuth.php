@@ -10,7 +10,7 @@ class GithubOAuth
     public function __construct(
         protected string $clientId,
         protected string $clientSecret,
-        protected string $redirectUrl
+        protected string $redirectUrl,
     ) {}
 
     public function getAuthorizationUrl(array $scopes = ['repo']): string

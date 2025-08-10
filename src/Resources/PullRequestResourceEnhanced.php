@@ -21,13 +21,14 @@ readonly class PullRequestResourceEnhanced extends PullRequestResource
      * @param  string  $repo  Repository name
      * @param  array  $parameters  Query parameters for filtering
      * @param  int  $maxPRs  Maximum number of PRs to fetch detailed data for (default: 10)
+     *
      * @return array<PullRequestDTO> PRs with complete data including comment counts
      */
     public function allWithCommentCounts(
         string $owner,
         string $repo,
         array $parameters = [],
-        int $maxPRs = 10
+        int $maxPRs = 10,
     ): array {
         // First get the list of PRs (without comment counts)
         $listResponse = $this->github()->connector()->send(new Index("{$owner}/{$repo}", $parameters));
@@ -52,12 +53,13 @@ readonly class PullRequestResourceEnhanced extends PullRequestResource
      * @param  string  $owner  Repository owner
      * @param  string  $repo  Repository name
      * @param  array  $prNumbers  Array of PR numbers to fetch
+     *
      * @return array<PullRequestDTO> PRs with complete data including comment counts
      */
     public function getMultipleWithCommentCounts(
         string $owner,
         string $repo,
-        array $prNumbers
+        array $prNumbers,
     ): array {
         $detailedPRs = [];
 
@@ -81,13 +83,14 @@ readonly class PullRequestResourceEnhanced extends PullRequestResource
      * @param  string  $repo  Repository name
      * @param  int  $limit  Number of recent PRs to fetch (default: 5, max: 20)
      * @param  string  $state  PR state: 'open', 'closed', 'all' (default: 'open')
+     *
      * @return array<PullRequestDTO> Recent PRs with complete data including comment counts
      */
     public function recentWithCommentCounts(
         string $owner,
         string $repo,
         int $limit = 5,
-        string $state = 'open'
+        string $state = 'open',
     ): array {
         // Ensure reasonable limits to avoid rate limit issues
         $limit = min($limit, 20);

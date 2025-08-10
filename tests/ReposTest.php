@@ -25,7 +25,7 @@ describe('visibility parameter validation', function () {
         expect(fn () => Github::repos()->all(
             per_page: 30,
             page: 2,
-            visibility: 'public'
+            visibility: 'public',
         ))->toThrow(TypeError::class);
     });
 
@@ -33,7 +33,7 @@ describe('visibility parameter validation', function () {
         $response = Github::repos()->all(
             per_page: 30,
             page: 2,
-            visibility: Visibility::PUBLIC
+            visibility: Visibility::PUBLIC,
         );
 
         $repos = $response->json();
@@ -51,7 +51,7 @@ describe('sort parameter validation', function () {
             per_page: 30,
             page: 2,
             visibility: Visibility::PUBLIC,
-            sort: 'invalid'
+            sort: 'invalid',
         ))->toThrow(TypeError::class);
     });
 
@@ -71,7 +71,7 @@ describe('sort parameter validation', function () {
             per_page: 30,
             page: 2,
             visibility: Visibility::PUBLIC,
-            sort: Sort::CREATED
+            sort: Sort::CREATED,
         );
 
         $repos = $response->json();
@@ -90,7 +90,7 @@ describe('direction parameter validation', function () {
             page: 2,
             visibility: Visibility::PUBLIC,
             sort: Sort::CREATED,
-            direction: 'invalid'
+            direction: 'invalid',
         ))->toThrow(TypeError::class);
     });
 
@@ -100,7 +100,7 @@ describe('direction parameter validation', function () {
             page: 2,
             visibility: Visibility::PUBLIC,
             sort: Sort::CREATED,
-            direction: Direction::DESC
+            direction: Direction::DESC,
         );
 
         expect($response->json())
@@ -114,7 +114,7 @@ describe('per_page parameter validation', function () {
         expect(fn () => Github::repos()->all(
             per_page: 101,
             page: 2,
-            visibility: Visibility::PUBLIC
+            visibility: Visibility::PUBLIC,
         ))->toThrow(InvalidArgumentException::class, 'Per page must be between 1 and 100');
     });
 
@@ -122,7 +122,7 @@ describe('per_page parameter validation', function () {
         expect(fn () => Github::repos()->all(
             per_page: 0,
             page: 1,
-            visibility: Visibility::PUBLIC
+            visibility: Visibility::PUBLIC,
         ))->toThrow(InvalidArgumentException::class, 'Per page must be between 1 and 100');
     });
 
@@ -130,7 +130,7 @@ describe('per_page parameter validation', function () {
         expect(fn () => Github::repos()->all(
             per_page: -1,
             page: 1,
-            visibility: Visibility::PUBLIC
+            visibility: Visibility::PUBLIC,
         ))->toThrow(InvalidArgumentException::class, 'Per page must be between 1 and 100');
     });
 
@@ -140,7 +140,7 @@ describe('per_page parameter validation', function () {
             page: 2,
             visibility: Visibility::PUBLIC,
             sort: Sort::CREATED,
-            direction: Direction::DESC
+            direction: Direction::DESC,
         );
 
         expect($response->json())
@@ -165,7 +165,7 @@ describe('auto-pagination functionality', function () {
             'Link' => '</user/repos?page=1>; rel="first", </user/repos?page=1>; rel="prev"',
         ]);
 
-        $mockClient = new MockClient;
+        $mockClient = new MockClient();
         $mockClient->addResponse($page1Response);
         $mockClient->addResponse($page2Response);
 
@@ -223,7 +223,7 @@ describe('auto-pagination functionality', function () {
         $allRepos = Github::repos()->allWithPagination(
             visibility: Visibility::PUBLIC,
             sort: Sort::CREATED,
-            direction: Direction::DESC
+            direction: Direction::DESC,
         );
 
         expect($allRepos)

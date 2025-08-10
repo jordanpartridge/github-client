@@ -59,7 +59,7 @@ class Index extends Request
     {
         return array_map(
             fn (array $pullRequest) => PullRequestDTO::fromApiResponse($pullRequest),
-            $response->json()
+            $response->json(),
         );
     }
 

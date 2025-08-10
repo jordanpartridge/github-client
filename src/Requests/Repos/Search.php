@@ -55,7 +55,7 @@ class Search extends Request
         return new SearchRepositoriesData(
             total_count: $data['total_count'],
             incomplete_results: $data['incomplete_results'],
-            items: array_map(fn ($repo) => RepoData::fromArray($repo), $data['items'])
+            items: array_map(fn ($repo) => RepoData::fromArray($repo), $data['items']),
         );
     }
 

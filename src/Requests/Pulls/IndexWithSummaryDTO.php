@@ -53,7 +53,7 @@ class IndexWithSummaryDTO extends Request
     {
         return array_map(
             fn (array $pullRequest) => PullRequestDTOFactory::createSummary($pullRequest),
-            $response->json()
+            $response->json(),
         );
     }
 

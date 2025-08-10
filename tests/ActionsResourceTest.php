@@ -53,7 +53,7 @@ describe('ActionsResource', function () {
             expect(fn () => Github::actions()->listWorkflows(
                 'owner',
                 'repo',
-                per_page: 101
+                per_page: 101,
             ))->toThrow(InvalidArgumentException::class, 'Per page must be between 1 and 100');
         });
 
@@ -68,7 +68,7 @@ describe('ActionsResource', function () {
                 'owner',
                 'repo',
                 per_page: 50,
-                page: 2
+                page: 2,
             );
 
             expect($response->status())->toBe(200);
@@ -115,7 +115,7 @@ describe('ActionsResource', function () {
                 'owner',
                 'repo',
                 161335,
-                per_page: 0
+                per_page: 0,
             ))->toThrow(InvalidArgumentException::class, 'Per page must be between 1 and 100');
         });
 
@@ -124,7 +124,7 @@ describe('ActionsResource', function () {
                 'owner',
                 'repo',
                 161335,
-                status: 'invalid_status'
+                status: 'invalid_status',
             ))->toThrow(InvalidArgumentException::class, 'Invalid status provided');
         });
 
@@ -133,7 +133,7 @@ describe('ActionsResource', function () {
                 'owner',
                 'repo',
                 161335,
-                conclusion: 'invalid_conclusion'
+                conclusion: 'invalid_conclusion',
             ))->toThrow(InvalidArgumentException::class, 'Invalid conclusion provided');
         });
 
@@ -152,7 +152,7 @@ describe('ActionsResource', function () {
                 page: 1,
                 status: 'completed',
                 conclusion: 'success',
-                branch: 'main'
+                branch: 'main',
             );
 
             expect($response->status())->toBe(200);
@@ -177,7 +177,7 @@ describe('ActionsResource', function () {
                         'environment' => 'production',
                         'debug' => 'false',
                     ],
-                ]
+                ],
             );
 
             expect($response->status())->toBe(204);
@@ -188,7 +188,7 @@ describe('ActionsResource', function () {
                 'owner',
                 'repo',
                 161335,
-                []
+                [],
             ))->toThrow(InvalidArgumentException::class, 'The "ref" field is required for workflow dispatch');
         });
 
@@ -200,7 +200,7 @@ describe('ActionsResource', function () {
                 [
                     'ref' => 'main',
                     'inputs' => 'invalid',
-                ]
+                ],
             ))->toThrow(InvalidArgumentException::class, 'The "inputs" field must be an array');
         });
 
@@ -215,7 +215,7 @@ describe('ActionsResource', function () {
                 'owner',
                 'repo',
                 161335,
-                ['ref' => 'main']
+                ['ref' => 'main'],
             );
 
             expect($response->status())->toBe(204);

@@ -41,7 +41,7 @@ class Comments extends Request
     {
         return array_map(
             fn (array $comment) => IssueCommentDTO::fromApiResponse($comment),
-            $response->json()
+            $response->json(),
         );
     }
 

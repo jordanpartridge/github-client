@@ -104,7 +104,7 @@ describe('pull request operations', function () {
             'feature-branch',
             'main',
             'Adding a new feature',
-            false
+            false,
         );
 
         expect($pullRequest)
@@ -132,7 +132,7 @@ describe('pull request operations', function () {
             1,
             'Merging feature',
             null,
-            MergeMethod::Squash
+            MergeMethod::Squash,
         );
 
         expect($merged)->toBeTrue();
@@ -190,7 +190,7 @@ describe('pull request reviews', function () {
             'repo',
             1,
             'Great work!',
-            'APPROVE'
+            'APPROVE',
         );
 
         expect($review)
@@ -259,7 +259,7 @@ describe('pull request comments', function () {
             'This could be improved',
             'abc123def456',
             'src/test.php',
-            5
+            5,
         );
 
         expect($comment)

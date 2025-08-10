@@ -32,18 +32,18 @@ trait ValidatesRepoName
         // Validate owner name
         if (! preg_match('/^[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]$/', $owner)) {
             throw new InvalidArgumentException(
-                'Invalid owner name. Owner names must:'.PHP_EOL.
-                '- Start and end with an alphanumeric character'.PHP_EOL.
-                '- Contain only alphanumeric characters or hyphens'
+                'Invalid owner name. Owner names must:' . PHP_EOL .
+                '- Start and end with an alphanumeric character' . PHP_EOL .
+                '- Contain only alphanumeric characters or hyphens',
             );
         }
 
         // Validate repository name
         if (! preg_match('/^[a-zA-Z0-9][a-zA-Z0-9._-]*[a-zA-Z0-9]$/', $repository)) {
             throw new InvalidArgumentException(
-                'Invalid repository name. Repository names must:'.PHP_EOL.
-                '- Start and end with an alphanumeric character'.PHP_EOL.
-                '- Contain only alphanumeric characters, dots, dashes, or underscores'
+                'Invalid repository name. Repository names must:' . PHP_EOL .
+                '- Start and end with an alphanumeric character' . PHP_EOL .
+                '- Contain only alphanumeric characters, dots, dashes, or underscores',
             );
         }
 

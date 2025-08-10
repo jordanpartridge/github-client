@@ -43,7 +43,7 @@ class PullRequestCommentDTO
                 $data['body'],
                 $data['path'],
                 $data['position'] ?? null,
-                $data['user']['login'] ?? null
+                $data['user']['login'] ?? null,
             ),
         );
     }

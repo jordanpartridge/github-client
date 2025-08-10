@@ -33,13 +33,14 @@ class PullRequestDTOFactory
      * Create DTOs from an array of response data (for list endpoints).
      *
      * @param  array  $dataArray  Array of PR response data
+     *
      * @return array<PullRequestSummaryDTO|PullRequestDetailDTO>
      */
     public static function fromResponseArray(array $dataArray): array
     {
         return array_map(
             fn (array $data) => self::fromResponse($data),
-            $dataArray
+            $dataArray,
         );
     }
 
