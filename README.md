@@ -5,7 +5,7 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/jordanpartridge/github-client/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/jordanpartridge/github-client/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/jordanpartridge/github-client.svg?style=flat-square)](https://packagist.org/packages/jordanpartridge/github-client)
 [![PHP Version](https://img.shields.io/packagist/php-v/jordanpartridge/github-client.svg?style=flat-square)](https://packagist.org/packages/jordanpartridge/github-client)
-[![Laravel Version](https://img.shields.io/badge/Laravel-10%2B%2C%2011%2B%2C%2012%2B-red?style=flat-square)](https://packagist.org/packages/jordanpartridge/github-client)
+[![Laravel Version](https://img.shields.io/badge/Laravel-11%2B%2C%2012%2B-red?style=flat-square)](https://packagist.org/packages/jordanpartridge/github-client)
 
 A powerful, Laravel-first GitHub API client built on Saloon that makes integrating with GitHub's API simple and intuitive. This package provides strongly-typed responses, resource-based architecture, and an elegant developer experience.
 
@@ -19,7 +19,7 @@ A powerful, Laravel-first GitHub API client built on Saloon that makes integrati
 - **Multiple Access Methods**: Support for facades and dependency injection
 - **Modern Codebase**: PHP 8.2+ with modern features like enums and readonly properties
 - **Extensive Test Coverage**: Complete test suite using Pest PHP
-- **Laravel Compatibility**: Support for Laravel 10, 11, and 12
+- **Laravel Compatibility**: Support for Laravel 11 and 12
 
 ## 📦 Installation
 
