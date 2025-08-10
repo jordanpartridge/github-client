@@ -31,7 +31,7 @@ class CommitDetailsData
             verification: VerificationData::fromArray($data['verification']),
             files: isset($data['files']) ? array_map(
                 fn (array $file) => FileDTO::fromArray($file),
-                $data['files']
+                $data['files'],
             ) : null,
         );
     }

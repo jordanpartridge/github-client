@@ -43,7 +43,7 @@ class GithubClientCommand extends Command
 
             return self::SUCCESS;
         } catch (\Exception $e) {
-            $this->error('❌ Connection failed: '.$e->getMessage());
+            $this->error('❌ Connection failed: ' . $e->getMessage());
 
             if (str_contains($e->getMessage(), 'token')) {
                 $this->warn('💡 Make sure GITHUB_TOKEN is set in your .env file');
@@ -81,7 +81,7 @@ class GithubClientCommand extends Command
 
             return self::SUCCESS;
         } catch (\Exception $e) {
-            $this->error('Failed to fetch repository: '.$e->getMessage());
+            $this->error('Failed to fetch repository: ' . $e->getMessage());
 
             return self::FAILURE;
         }
@@ -117,7 +117,7 @@ class GithubClientCommand extends Command
 
             return self::SUCCESS;
         } catch (\Exception $e) {
-            $this->error('Failed to fetch commits: '.$e->getMessage());
+            $this->error('Failed to fetch commits: ' . $e->getMessage());
 
             return self::FAILURE;
         }

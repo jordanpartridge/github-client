@@ -37,9 +37,9 @@ it('can fetch a specific commit by SHA', function () {
         '*' => MockResponse::make([
             'sha' => $sha,
             'node_id' => 'MDQ6QmxvYjE0ODMzNDY0NjpkZjE5N2EzZTgwMjhmN2E5ODM3MDc2M2ZlN2EzNWFlYjYzOTMxOGExOg==',
-            'url' => 'https://api.github.com/repos/jordanpartridge/github-client/git/commits/'.$sha,
-            'html_url' => 'https://github.com/jordanpartridge/github-client/commit/'.$sha,
-            'comments_url' => 'https://api.github.com/repos/jordanpartridge/github-client/commits/'.$sha.'/comments',
+            'url' => 'https://api.github.com/repos/jordanpartridge/github-client/git/commits/' . $sha,
+            'html_url' => 'https://github.com/jordanpartridge/github-client/commit/' . $sha,
+            'comments_url' => 'https://api.github.com/repos/jordanpartridge/github-client/commits/' . $sha . '/comments',
             'commit' => [
                 'author' => [
                     'name' => 'John Doe',
@@ -56,7 +56,7 @@ it('can fetch a specific commit by SHA', function () {
                     'sha' => '1234567890123456789012345678901234567890',
                     'url' => 'https://api.github.com/repos/jordanpartridge/github-client/git/trees/1234567890123456789012345678901234567890',
                 ],
-                'url' => 'https://api.github.com/repos/jordanpartridge/github-client/git/commits/'.$sha,
+                'url' => 'https://api.github.com/repos/jordanpartridge/github-client/git/commits/' . $sha,
                 'comment_count' => 0,
                 'verification' => [
                     'verified' => true,

@@ -57,7 +57,7 @@ readonly class PullRequestResource extends BaseResource
             $head,
             $base,
             $body,
-            $draft
+            $draft,
         ));
 
         return $response->dto();
@@ -87,7 +87,7 @@ readonly class PullRequestResource extends BaseResource
             $number,
             $commitMessage,
             $sha,
-            $mergeMethod
+            $mergeMethod,
         ));
 
         $result = $response->dto();
@@ -118,7 +118,7 @@ readonly class PullRequestResource extends BaseResource
             $number,
             $body,
             $event,
-            $comments
+            $comments,
         ));
 
         return $response->dto();
@@ -149,7 +149,7 @@ readonly class PullRequestResource extends BaseResource
             $body,
             $commitId,
             $path,
-            $position
+            $position,
         ));
 
         return $response->dto();
@@ -162,6 +162,7 @@ readonly class PullRequestResource extends BaseResource
      * @param  string  $repo  Repository name
      * @param  int  $number  Pull request number
      * @param  array  $filters  Filtering options
+     *
      * @return array<PullRequestCommentDTO>
      *
      * @example
@@ -190,7 +191,7 @@ readonly class PullRequestResource extends BaseResource
         $response = $this->github()->connector()->send(new CommentsWithFilters(
             "{$owner}/{$repo}",
             $number,
-            $filters
+            $filters,
         ));
 
         return $response->dto();
@@ -204,6 +205,7 @@ readonly class PullRequestResource extends BaseResource
      * @param  string  $repo  Repository name
      * @param  int  $number  Pull request number
      * @param  array  $filters  Filtering options
+     *
      * @return array<PullRequestCommentDTO>
      */
     public function forPullRequest(
@@ -276,6 +278,7 @@ readonly class PullRequestResource extends BaseResource
      * @param  string  $owner  Repository owner
      * @param  string  $repo  Repository name
      * @param  array  $parameters  Query parameters
+     *
      * @return array<PullRequestSummaryDTO> Lightweight PR summaries
      */
     public function summaries(string $owner, string $repo, array $parameters = []): array
@@ -291,6 +294,7 @@ readonly class PullRequestResource extends BaseResource
      * @param  string  $owner  Repository owner
      * @param  string  $repo  Repository name
      * @param  int  $number  Pull request number
+     *
      * @return PullRequestDetailDTO Complete PR data with statistics
      */
     public function detail(string $owner, string $repo, int $number): PullRequestDetailDTO
@@ -307,13 +311,14 @@ readonly class PullRequestResource extends BaseResource
      * @param  string  $repo  Repository name
      * @param  array  $prNumbers  Array of PR numbers
      * @param  int  $maxRequests  Safety limit to prevent rate limit exhaustion
+     *
      * @return array<PullRequestDetailDTO> Complete PR data with statistics
      */
     public function detailsForMultiple(
         string $owner,
         string $repo,
         array $prNumbers,
-        int $maxRequests = 20
+        int $maxRequests = 20,
     ): array {
         // Safety limit to prevent rate limit issues
         $prNumbers = array_slice($prNumbers, 0, $maxRequests);
@@ -338,13 +343,14 @@ readonly class PullRequestResource extends BaseResource
      * @param  string  $repo  Repository name
      * @param  int  $limit  Number of recent PRs (max 10 for rate limit protection)
      * @param  string  $state  PR state filter
+     *
      * @return array<PullRequestDetailDTO> Recent PRs with complete data
      */
     public function recentDetails(
         string $owner,
         string $repo,
         int $limit = 5,
-        string $state = 'open'
+        string $state = 'open',
     ): array {
         // First get PR list
         $summaries = $this->summaries($owner, $repo, [
@@ -368,6 +374,7 @@ readonly class PullRequestResource extends BaseResource
      * @param  string  $owner  Repository owner
      * @param  string  $repo  Repository name
      * @param  int  $number  Pull request number
+     *
      * @return array<PullRequestFileDTO> Array of file changes with diff data
      *
      * @example
@@ -394,6 +401,7 @@ readonly class PullRequestResource extends BaseResource
      * @param  string  $owner  Repository owner
      * @param  string  $repo  Repository name
      * @param  int  $number  Pull request number
+     *
      * @return array Analysis data with categorized files and statistics
      *
      * @example

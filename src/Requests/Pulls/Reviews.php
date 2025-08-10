@@ -33,7 +33,7 @@ class Reviews extends Request
             function (array $review) {
                 return PullRequestReviewDTO::fromApiResponse($review);
             },
-            $response->json()
+            $response->json(),
         );
 
         return collect($reviews);

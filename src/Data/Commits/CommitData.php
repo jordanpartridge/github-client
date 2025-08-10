@@ -35,7 +35,7 @@ class CommitData
             stats: isset($data['stats']) ? CommitStatsData::fromArray($data['stats']) : null,
             files: isset($data['files']) ? array_map(
                 fn (array $file) => CommitFileData::fromArray($file),
-                $data['files']
+                $data['files'],
             ) : null,
         );
     }

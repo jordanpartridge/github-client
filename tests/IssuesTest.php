@@ -101,7 +101,7 @@ describe('Issue listing', function () {
             'test',
             'repo',
             sort: Sort::CREATED,
-            direction: Direction::ASC
+            direction: Direction::ASC,
         );
 
         $issues = $response->dto();
@@ -149,7 +149,7 @@ describe('Issue auto-pagination', function () {
             'Link' => '</repos/test/repo/issues?page=1>; rel="first", </repos/test/repo/issues?page=1>; rel="prev"',
         ]);
 
-        $mockClient = new MockClient;
+        $mockClient = new MockClient();
         $mockClient->addResponse($page1Response);
         $mockClient->addResponse($page2Response);
 
@@ -210,7 +210,7 @@ describe('Individual issue operations', function () {
             owner: 'test',
             repo: 'repo',
             title: 'New Issue',
-            body: 'Issue description'
+            body: 'Issue description',
         );
 
         expect($issue->title)->toBe('New Issue')
@@ -232,7 +232,7 @@ describe('Individual issue operations', function () {
             repo: 'repo',
             issue_number: 1,
             title: 'Updated Issue',
-            state: State::CLOSED
+            state: State::CLOSED,
         );
 
         expect($issue->title)->toBe('Updated Issue')
@@ -311,7 +311,7 @@ describe('Parameter validation', function () {
             'repo',
             state: State::OPEN,
             sort: Sort::CREATED,
-            direction: Direction::DESC
+            direction: Direction::DESC,
         );
 
         expect($response->status())->toBe(200);

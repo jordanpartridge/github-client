@@ -8,7 +8,7 @@ use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
 
 beforeEach(function () {
-    $this->mockClient = new MockClient;
+    $this->mockClient = new MockClient();
     Github::connector()->withMockClient($this->mockClient);
 });
 
@@ -157,7 +157,7 @@ describe('Search functionality', function () {
             sort: 'stars',
             order: Direction::DESC,
             per_page: 10,
-            page: 2
+            page: 2,
         );
 
         expect($result)->toBeInstanceOf(SearchRepositoriesData::class);
@@ -187,7 +187,7 @@ describe('Search functionality', function () {
             sort: 'stars',
             order: Direction::DESC,
             per_page: 20,
-            page: 1
+            page: 1,
         );
 
         $reflector = new ReflectionClass($search);

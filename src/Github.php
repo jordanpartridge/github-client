@@ -14,6 +14,7 @@ use JordanPartridge\GithubClient\Resources\CommitResource;
 use JordanPartridge\GithubClient\Resources\FileResource;
 use JordanPartridge\GithubClient\Resources\IssuesResource;
 use JordanPartridge\GithubClient\Resources\PullRequestResource;
+use JordanPartridge\GithubClient\Resources\ReleasesResource;
 use JordanPartridge\GithubClient\Resources\RepoResource;
 use JordanPartridge\GithubClient\ValueObjects\Repo;
 use Saloon\Http\Response;
@@ -66,6 +67,11 @@ class Github
         return new CommentsResource($this);
     }
 
+    public function releases(): ReleasesResource
+    {
+        return new ReleasesResource($this);
+    }
+
     /**
      * Get the current rate limit status for all resources.
      *
@@ -77,7 +83,7 @@ class Github
     public function getRateLimitStatus(): array
     {
         try {
-            $request = new Get;
+            $request = new Get();
             $response = $this->connector->send($request);
 
             if (! $response->successful()) {
@@ -97,6 +103,7 @@ class Github
      * Get rate limit status for a specific resource type.
      *
      * @param  string  $resource  The resource type (core, search, graphql, etc.)
+     *
      * @return RateLimitDTO The rate limit information for the specified resource
      *
      * @throws ApiException When the API request fails or resource not found
@@ -107,8 +114,8 @@ class Github
 
         if (! isset($rateLimits[$resource])) {
             throw new ApiException(
-                response: $this->connector->send(new Get),
-                message: "Rate limit resource '{$resource}' not found"
+                response: $this->connector->send(new Get()),
+                message: "Rate limit resource '{$resource}' not found",
             );
         }
 
@@ -140,6 +147,7 @@ class Github
      * Get a repository by full name with automatic validation.
      *
      * @param  string  $fullName  The full repository name (owner/repo)
+     *
      * @return RepoData The repository data
      */
     public function getRepo(string $fullName): RepoData
@@ -153,6 +161,7 @@ class Github
      * Delete a repository by full name with automatic validation.
      *
      * @param  string  $fullName  The full repository name (owner/repo)
+     *
      * @return Response The deletion response
      */
     public function deleteRepo(string $fullName): Response

@@ -13,7 +13,7 @@ class AuthenticationException extends GithubClientException
         string $message,
         string $authenticationType = 'token',
         int $code = 401,
-        ?\Throwable $previous = null
+        ?\Throwable $previous = null,
     ) {
         $this->authenticationType = $authenticationType;
 
@@ -40,5 +40,10 @@ class AuthenticationException extends GithubClientException
     public static function githubAppAuthFailed(string $message = 'GitHub App authentication failed'): self
     {
         return new self($message, 'github_app');
+    }
+
+    public static function noTokenFound(string $guidance = 'No GitHub token found'): self
+    {
+        return new self("Authentication required: {$guidance}", 'token', 400);
     }
 }

@@ -21,7 +21,7 @@ class RateLimitException extends GithubClientException
         int $totalLimit,
         string $message = '',
         int $code = 429,
-        ?\Throwable $previous = null
+        ?\Throwable $previous = null,
     ) {
         $this->remainingRequests = $remainingRequests;
         $this->resetTime = $resetTime;
@@ -32,7 +32,7 @@ class RateLimitException extends GithubClientException
                 'GitHub API rate limit exceeded. %d/%d requests remaining. Reset at %s',
                 $remainingRequests,
                 $totalLimit,
-                $resetTime->format('Y-m-d H:i:s T')
+                $resetTime->format('Y-m-d H:i:s T'),
             );
         }
 

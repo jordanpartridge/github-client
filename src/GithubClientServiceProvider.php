@@ -4,6 +4,7 @@ namespace JordanPartridge\GithubClient;
 
 use ConduitUi\GitHubConnector\GithubConnector;
 use JordanPartridge\GithubClient\Auth\GithubOAuth;
+use JordanPartridge\GithubClient\Auth\TokenResolver;
 use JordanPartridge\GithubClient\Commands\GithubClientCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -19,12 +20,16 @@ class GithubClientServiceProvider extends PackageServiceProvider
             ->hasMigration('create_github_client_table')
             ->hasCommand(GithubClientCommand::class);
 
-        $this->app->singleton(GithubConnector::class, function () {
-            $token = config('github-client.token');
+        // Register TokenResolver as singleton
+        $this->app->singleton(TokenResolver::class, function () {
+            return new TokenResolver();
+        });
 
-            if (empty($token)) {
-                throw new \InvalidArgumentException('GitHub token is required. Please set GITHUB_TOKEN environment variable.');
-            }
+        $this->app->singleton(GithubConnector::class, function ($app) {
+            $tokenResolver = $app->make(TokenResolver::class);
+
+            // Try to resolve a token (not required - allows public access)
+            $token = $tokenResolver->resolve(required: false);
 
             return new GithubConnector($token);
         });
@@ -37,7 +42,7 @@ class GithubClientServiceProvider extends PackageServiceProvider
             return new GithubOAuth(
                 config('github-client.oauth.client_id'),
                 config('github-client.oauth.client_secret'),
-                config('github-client.oauth.redirect_url')
+                config('github-client.oauth.redirect_url'),
             );
         });
     }

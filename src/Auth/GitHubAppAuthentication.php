@@ -19,7 +19,7 @@ class GitHubAppAuthentication implements AuthenticationStrategy
     public function __construct(
         private readonly string $appId,
         private readonly string $privateKey,
-        private readonly ?string $installationId = null
+        private readonly ?string $installationId = null,
     ) {}
 
     public function getAuthorizationHeader(): string
@@ -78,7 +78,7 @@ class GitHubAppAuthentication implements AuthenticationStrategy
      */
     private function generateJwtToken(): string
     {
-        $now = new DateTimeImmutable;
+        $now = new DateTimeImmutable();
         $expiry = $now->modify('+10 minutes'); // GitHub recommends max 10 minutes
 
         $payload = [
@@ -102,7 +102,7 @@ class GitHubAppAuthentication implements AuthenticationStrategy
         // Add 5-minute buffer before expiry
         $bufferTime = $this->installationTokenExpiry->modify('-5 minutes');
 
-        return new DateTimeImmutable < $bufferTime;
+        return new DateTimeImmutable() < $bufferTime;
     }
 
     /**
@@ -117,7 +117,7 @@ class GitHubAppAuthentication implements AuthenticationStrategy
         // This would typically make an API call to GitHub to get an installation token
         // For now, we'll throw an exception indicating this needs to be implemented
         throw AuthenticationException::githubAppAuthFailed(
-            'Installation token refresh not yet implemented. Use GitHub client to fetch installation tokens.'
+            'Installation token refresh not yet implemented. Use GitHub client to fetch installation tokens.',
         );
     }
 

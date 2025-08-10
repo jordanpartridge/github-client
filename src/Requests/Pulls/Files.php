@@ -34,7 +34,7 @@ class Files extends Request
             function (array $file) {
                 return PullRequestFileDTO::fromApiResponse($file);
             },
-            $data
+            $data,
         );
     }
 

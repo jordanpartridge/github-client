@@ -18,6 +18,28 @@ readonly class Repo
         return new self($owner, $name);
     }
 
+    public static function fromOwnerAndRepo(string $owner, string $repo): self
+    {
+        if (empty($owner)) {
+            throw new InvalidArgumentException('Owner cannot be empty.');
+        }
+
+        if (empty($repo)) {
+            throw new InvalidArgumentException('Repository name cannot be empty.');
+        }
+
+        // Validate owner and repo names using same regex as validateAndParseRepoName
+        if (! preg_match('/^[a-zA-Z0-9._-]+$/', $owner)) {
+            throw new InvalidArgumentException("Invalid characters in owner name '{$owner}'.");
+        }
+
+        if (! preg_match('/^[a-zA-Z0-9._-]+$/', $repo)) {
+            throw new InvalidArgumentException("Invalid characters in repository name '{$repo}'.");
+        }
+
+        return new self($owner, $repo);
+    }
+
     private static function validateAndParseRepoName(string $full_name): array
     {
         /**

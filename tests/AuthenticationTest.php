@@ -110,4 +110,13 @@ describe('Authentication Exception Factory Methods', function () {
         expect($exception->getMessage())->toBe('JWT generation failed')
             ->and($exception->getAuthenticationType())->toBe('github_app');
     });
+
+    it('creates no token found exception', function () {
+        $guidance = 'Please authenticate with GitHub';
+        $exception = AuthenticationException::noTokenFound($guidance);
+
+        expect($exception->getMessage())->toBe("Authentication required: {$guidance}")
+            ->and($exception->getCode())->toBe(400)
+            ->and($exception->getAuthenticationType())->toBe('token');
+    });
 });

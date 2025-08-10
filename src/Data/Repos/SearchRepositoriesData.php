@@ -22,7 +22,7 @@ class SearchRepositoriesData
             incomplete_results: $data['incomplete_results'],
             items: array_map(
                 fn (array $item) => RepoData::fromArray($item),
-                $data['items'] ?? []
+                $data['items'] ?? [],
             ),
         );
     }

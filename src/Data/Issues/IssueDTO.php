@@ -39,11 +39,11 @@ class IssueDTO
             assignee: isset($data['assignee']) ? GitUserData::fromArray($data['assignee']) : null,
             assignees: array_map(
                 fn (array $assignee) => GitUserData::fromArray($assignee),
-                $data['assignees'] ?? []
+                $data['assignees'] ?? [],
             ),
             labels: array_map(
                 fn (array $label) => LabelDTO::fromApiResponse($label),
-                $data['labels'] ?? []
+                $data['labels'] ?? [],
             ),
             comments: $data['comments'],
             html_url: $data['html_url'],

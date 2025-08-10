@@ -13,7 +13,7 @@ class NetworkException extends GithubClientException
         string $operation,
         string $message,
         int $code = 0,
-        ?\Throwable $previous = null
+        ?\Throwable $previous = null,
     ) {
         $this->operation = $operation;
 
@@ -35,7 +35,7 @@ class NetworkException extends GithubClientException
         return new self(
             $operation,
             "Request timed out after {$timeoutSeconds} seconds",
-            408
+            408,
         );
     }
 

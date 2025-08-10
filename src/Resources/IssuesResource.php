@@ -216,7 +216,7 @@ readonly class IssuesResource extends BaseResource
             owner: $owner,
             repo: $repo,
             issue_number: $issue_number,
-            state: State::CLOSED
+            state: State::CLOSED,
         );
     }
 
@@ -229,7 +229,7 @@ readonly class IssuesResource extends BaseResource
             owner: $owner,
             repo: $repo,
             issue_number: $issue_number,
-            state: State::OPEN
+            state: State::OPEN,
         );
     }
 

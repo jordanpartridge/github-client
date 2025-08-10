@@ -16,7 +16,7 @@ class ValidationException extends GithubClientException
         mixed $value,
         string $message,
         int $code = 422,
-        ?\Throwable $previous = null
+        ?\Throwable $previous = null,
     ) {
         $this->field = $field;
         $this->value = $value;

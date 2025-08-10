@@ -38,18 +38,18 @@ it('rejects repository names with consecutive dots', function () {
 });
 
 it('rejects paths that exceed maximum length', function () {
-    $longName = str_repeat('a', 40).'/repo';
+    $longName = str_repeat('a', 40) . '/repo';
     expect(fn () => $this->validateRepoName($longName))
         ->toThrow(InvalidArgumentException::class);
 });
 
 it('accepts paths that are exactly the maximum length', function () {
-    $maxLength = str_repeat('a', 39).'/repo';
+    $maxLength = str_repeat('a', 39) . '/repo';
     expect($this->validateRepoName($maxLength))->not()->toThrow(InvalidArgumentException::class);
 });
 
 it('will not allow repository names that are too long', function () {
     $longName = str_repeat('a', 101);
-    expect(fn () => $this->validateRepoName('org/'.$longName))
+    expect(fn () => $this->validateRepoName('org/' . $longName))
         ->toThrow(InvalidArgumentException::class);
 });

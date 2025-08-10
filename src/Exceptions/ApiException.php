@@ -16,7 +16,7 @@ class ApiException extends GithubClientException
     public function __construct(
         Response $response,
         string $message = '',
-        ?\Throwable $previous = null
+        ?\Throwable $previous = null,
     ) {
         $this->response = $response;
         $this->errorDetails = $this->parseErrorResponse($response);
