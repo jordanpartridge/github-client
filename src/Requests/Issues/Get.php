@@ -34,6 +34,7 @@ class Get extends Request
      * Convert the API response to an IssueDTO.
      *
      * @param  Response  $response  The HTTP response from GitHub API
+     *
      * @return IssueDTO The issue data transfer object
      */
     public function createDtoFromResponse(Response $response): IssueDTO

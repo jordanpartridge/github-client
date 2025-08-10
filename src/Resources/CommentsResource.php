@@ -15,6 +15,7 @@ readonly class CommentsResource extends BaseResource
      *
      * @param  int  $prNumber  Pull request number
      * @param  array  $filters  Filtering options
+     *
      * @return array<PullRequestCommentDTO>
      *
      * @example
@@ -55,6 +56,7 @@ readonly class CommentsResource extends BaseResource
      * @param  int  $prNumber  Pull request number
      * @param  string  $author  Author username to filter by
      * @param  array  $additionalFilters  Additional filtering options
+     *
      * @return array<PullRequestCommentDTO>
      */
     public function byAuthor(int $prNumber, string $author, array $additionalFilters = []): array
@@ -70,6 +72,7 @@ readonly class CommentsResource extends BaseResource
      * @param  int  $prNumber  Pull request number
      * @param  string  $authorType  'bot' or 'human'
      * @param  array  $additionalFilters  Additional filtering options
+     *
      * @return array<PullRequestCommentDTO>
      */
     public function byAuthorType(int $prNumber, string $authorType, array $additionalFilters = []): array
@@ -85,6 +88,7 @@ readonly class CommentsResource extends BaseResource
      * @param  int  $prNumber  Pull request number
      * @param  string  $severity  'high', 'medium', or 'low'
      * @param  array  $additionalFilters  Additional filtering options
+     *
      * @return array<PullRequestCommentDTO>
      */
     public function bySeverity(int $prNumber, string $severity, array $additionalFilters = []): array
@@ -100,6 +104,7 @@ readonly class CommentsResource extends BaseResource
      * @param  int  $prNumber  Pull request number
      * @param  string  $filePath  File path to filter by
      * @param  array  $additionalFilters  Additional filtering options
+     *
      * @return array<PullRequestCommentDTO>
      */
     public function forFile(int $prNumber, string $filePath, array $additionalFilters = []): array
@@ -114,6 +119,7 @@ readonly class CommentsResource extends BaseResource
      *
      * @param  int  $prNumber  Pull request number
      * @param  array  $additionalFilters  Additional filtering options
+     *
      * @return array<PullRequestCommentDTO>
      */
     public function codeRabbit(int $prNumber, array $additionalFilters = []): array
@@ -126,6 +132,7 @@ readonly class CommentsResource extends BaseResource
      *
      * @param  int  $prNumber  Pull request number
      * @param  array  $additionalFilters  Additional filtering options
+     *
      * @return array<PullRequestCommentDTO>
      */
     public function bots(int $prNumber, array $additionalFilters = []): array
@@ -138,6 +145,7 @@ readonly class CommentsResource extends BaseResource
      *
      * @param  int  $prNumber  Pull request number
      * @param  array  $additionalFilters  Additional filtering options
+     *
      * @return array<PullRequestCommentDTO>
      */
     public function humans(int $prNumber, array $additionalFilters = []): array

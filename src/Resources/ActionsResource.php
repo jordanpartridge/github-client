@@ -43,6 +43,7 @@ readonly class ActionsResource extends BaseResource
      * @param  string  $repo  The name of the repository
      * @param  int|null  $per_page  Number of results per page (max 100)
      * @param  int|null  $page  Page number of the results to fetch
+     *
      * @return Response Returns a Saloon response containing workflow data
      *
      * @link https://docs.github.com/en/rest/actions/workflows#list-repository-workflows
@@ -72,6 +73,7 @@ readonly class ActionsResource extends BaseResource
      * @param  string|null  $status  Filter by status (completed, action_required, cancelled, failure, neutral, skipped, stale, success, timed_out, in_progress, queued, requested, waiting)
      * @param  string|null  $conclusion  Filter by conclusion (action_required, cancelled, failure, neutral, success, skipped, stale, timed_out)
      * @param  string|null  $branch  Filter by branch name
+     *
      * @return Response Returns a Saloon response containing workflow run data
      *
      * @link https://docs.github.com/en/rest/actions/workflow-runs#list-workflow-runs-for-a-workflow
@@ -105,6 +107,7 @@ readonly class ActionsResource extends BaseResource
      * @param  string  $repo  The name of the repository
      * @param  int  $workflow_id  The ID of the workflow
      * @param  array  $data  The workflow dispatch data including 'ref' and optional 'inputs'
+     *
      * @return Response Returns a Saloon response
      *
      * @link https://docs.github.com/en/rest/actions/workflows#create-a-workflow-dispatch-event

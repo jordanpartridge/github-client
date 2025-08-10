@@ -78,7 +78,7 @@ class GitHubAppAuthentication implements AuthenticationStrategy
      */
     private function generateJwtToken(): string
     {
-        $now = new DateTimeImmutable;
+        $now = new DateTimeImmutable();
         $expiry = $now->modify('+10 minutes'); // GitHub recommends max 10 minutes
 
         $payload = [
@@ -102,7 +102,7 @@ class GitHubAppAuthentication implements AuthenticationStrategy
         // Add 5-minute buffer before expiry
         $bufferTime = $this->installationTokenExpiry->modify('-5 minutes');
 
-        return new DateTimeImmutable < $bufferTime;
+        return new DateTimeImmutable() < $bufferTime;
     }
 
     /**

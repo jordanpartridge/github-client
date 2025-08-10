@@ -56,6 +56,7 @@ class Create extends Request implements HasBody
      * Convert the API response to an IssueDTO.
      *
      * @param  Response  $response  The HTTP response from GitHub API
+     *
      * @return IssueDTO The created issue data transfer object
      */
     public function createDtoFromResponse(Response $response): IssueDTO

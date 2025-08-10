@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Process;
 class TokenResolver
 {
     protected static ?string $lastSource = null;
+
     /**
      * Resolve token from all available sources.
      */
@@ -24,23 +25,27 @@ class TokenResolver
         // 1. Check GitHub CLI first (if available)
         if ($token = self::getGitHubCliToken()) {
             self::$lastSource = 'GitHub CLI';
+
             return $token;
         }
 
         // 2. Check environment variables
         if ($token = self::getEnvironmentToken()) {
             self::$lastSource = env('GITHUB_TOKEN') ? 'GITHUB_TOKEN' : 'GH_TOKEN';
+
             return $token;
         }
 
         // 3. Check Laravel config
         if ($token = self::getConfigToken()) {
             self::$lastSource = 'config';
+
             return $token;
         }
 
         // 4. Return null - authentication is optional for public repos
         self::$lastSource = null;
+
         return null;
     }
 
@@ -159,7 +164,7 @@ class TokenResolver
         but rate limits are much lower (60 requests/hour vs 5000 with auth).
         HELP;
     }
-    
+
     /**
      * Get the last resolved authentication source.
      */

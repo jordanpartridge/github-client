@@ -21,6 +21,7 @@ readonly class PullRequestResourceEnhanced extends PullRequestResource
      * @param  string  $repo  Repository name
      * @param  array  $parameters  Query parameters for filtering
      * @param  int  $maxPRs  Maximum number of PRs to fetch detailed data for (default: 10)
+     *
      * @return array<PullRequestDTO> PRs with complete data including comment counts
      */
     public function allWithCommentCounts(
@@ -52,6 +53,7 @@ readonly class PullRequestResourceEnhanced extends PullRequestResource
      * @param  string  $owner  Repository owner
      * @param  string  $repo  Repository name
      * @param  array  $prNumbers  Array of PR numbers to fetch
+     *
      * @return array<PullRequestDTO> PRs with complete data including comment counts
      */
     public function getMultipleWithCommentCounts(
@@ -81,6 +83,7 @@ readonly class PullRequestResourceEnhanced extends PullRequestResource
      * @param  string  $repo  Repository name
      * @param  int  $limit  Number of recent PRs to fetch (default: 5, max: 20)
      * @param  string  $state  PR state: 'open', 'closed', 'all' (default: 'open')
+     *
      * @return array<PullRequestDTO> Recent PRs with complete data including comment counts
      */
     public function recentWithCommentCounts(

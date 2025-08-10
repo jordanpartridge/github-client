@@ -42,6 +42,7 @@ readonly class ReleasesResource extends BaseResource
      * @param  string  $repo  The name of the repository
      * @param  int|null  $per_page  Number of results per page (max 100)
      * @param  int|null  $page  Page number of the results to fetch
+     *
      * @return array<ReleaseData> Returns an array of release data objects
      *
      * @link https://docs.github.com/en/rest/releases/releases#list-releases
@@ -77,6 +78,7 @@ readonly class ReleasesResource extends BaseResource
      * @param  string  $owner  The account owner of the repository
      * @param  string  $repo  The name of the repository
      * @param  int  $releaseId  The unique identifier of the release
+     *
      * @return ReleaseData Returns the release data
      *
      * @link https://docs.github.com/en/rest/releases/releases#get-a-release
@@ -105,6 +107,7 @@ readonly class ReleasesResource extends BaseResource
      *
      * @param  string  $owner  The account owner of the repository
      * @param  string  $repo  The name of the repository
+     *
      * @return ReleaseData Returns the latest release data
      *
      * @link https://docs.github.com/en/rest/releases/releases#get-the-latest-release

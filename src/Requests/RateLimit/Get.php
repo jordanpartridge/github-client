@@ -26,6 +26,7 @@ class Get extends Request
      * Convert the API response to rate limit DTOs.
      *
      * @param  Response  $response  The HTTP response from GitHub API
+     *
      * @return array<string, RateLimitDTO> Array of rate limit DTOs keyed by resource type
      */
     public function createDtoFromResponse(Response $response): array

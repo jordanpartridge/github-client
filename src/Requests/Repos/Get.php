@@ -23,6 +23,6 @@ class Get extends Request
 
     public function resolveEndpoint(): string
     {
-        return '/repos/'.$this->repo->fullName();
+        return '/repos/' . $this->repo->fullName();
     }
 }

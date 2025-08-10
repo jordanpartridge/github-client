@@ -8,7 +8,7 @@ use Saloon\Http\Faking\MockResponse;
 
 describe('Rate Limit Functionality', function () {
     beforeEach(function () {
-        $this->mockClient = new MockClient;
+        $this->mockClient = new MockClient();
         $this->github = app(Github::class);
         $this->github->connector()->withMockClient($this->mockClient);
     });

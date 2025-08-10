@@ -20,6 +20,7 @@ trait HandlesIssueResponses
      * Also handles invalid or incomplete data gracefully by skipping problematic items.
      *
      * @param  Response  $response  The HTTP response from GitHub Issues API
+     *
      * @return IssueDTO[] Array of issue data transfer objects
      */
     public function createDtoFromResponse(Response $response): array

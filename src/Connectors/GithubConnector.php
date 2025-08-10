@@ -17,7 +17,7 @@ use Saloon\Traits\Plugins\AcceptsJson;
 
 /**
  * GitHub API connector with optional authentication support.
- * 
+ *
  * This connector supports:
  * - Optional authentication (public repos don't need auth)
  * - Multiple authentication sources (CLI, env, config)
@@ -27,14 +27,14 @@ use Saloon\Traits\Plugins\AcceptsJson;
 class GithubConnector extends Connector
 {
     use AcceptsJson;
-    
+
     protected ?string $token;
     protected ?string $tokenSource;
-    
+
     /**
      * Create a new GitHub connector.
-     * 
-     * @param string|null $token Optional GitHub token. If null, will attempt to resolve from multiple sources.
+     *
+     * @param  string|null  $token  Optional GitHub token. If null, will attempt to resolve from multiple sources.
      */
     public function __construct(?string $token = null)
     {
@@ -47,7 +47,7 @@ class GithubConnector extends Connector
             $this->tokenSource = $this->token ? TokenResolver::getLastSource() : null;
         }
     }
-    
+
     /**
      * The GitHub API base URL.
      */
@@ -55,7 +55,7 @@ class GithubConnector extends Connector
     {
         return 'https://api.github.com';
     }
-    
+
     /**
      * Default headers for all requests.
      */
@@ -66,28 +66,28 @@ class GithubConnector extends Connector
             'X-GitHub-Api-Version' => '2022-11-28',
         ];
     }
-    
+
     /**
      * Configure authentication if available.
      * Returns null for unauthenticated requests (public repos).
      */
     protected function defaultAuth(): ?Authenticator
     {
-        if (!$this->token || $this->token === '') {
+        if (! $this->token || $this->token === '') {
             return null;
         }
-        
+
         return new TokenAuthenticator($this->token);
     }
-    
+
     /**
      * Check if the connector is authenticated.
      */
     public function isAuthenticated(): bool
     {
-        return !empty($this->token);
+        return ! empty($this->token);
     }
-    
+
     /**
      * Get the authentication source.
      */
@@ -95,20 +95,20 @@ class GithubConnector extends Connector
     {
         return $this->tokenSource;
     }
-    
+
     /**
      * Get authentication status for debugging.
      */
     public function getAuthenticationStatus(): array
     {
-        if (!$this->token) {
+        if (! $this->token) {
             return [
                 'authenticated' => false,
                 'source' => null,
                 'message' => 'No authentication configured. Using public API access (60 requests/hour).',
             ];
         }
-        
+
         return [
             'authenticated' => true,
             'source' => $this->tokenSource,
@@ -116,7 +116,7 @@ class GithubConnector extends Connector
             'message' => "Authenticated via {$this->tokenSource} (5,000 requests/hour).",
         ];
     }
-    
+
     /**
      * Determine if a request has failed.
      */
@@ -124,7 +124,7 @@ class GithubConnector extends Connector
     {
         return $response->failed();
     }
-    
+
     /**
      * Map response status codes to appropriate exceptions.
      */
@@ -133,50 +133,50 @@ class GithubConnector extends Connector
         $status = $response->status();
         $data = $response->json();
         $message = $data['message'] ?? '';
-        
+
         return match ($status) {
             401 => $this->handleAuthenticationError($response, $message),
             403 => $this->handleForbiddenError($response, $message),
             404 => new ResourceNotFoundException(
                 message: $message ?: 'GitHub resource not found',
-                response: $response
+                response: $response,
             ),
             422 => $this->handleValidationError($response, $data),
             429 => $this->handleRateLimitError($response, $message),
             500, 502, 503, 504 => new NetworkException(
                 operation: 'GitHub API request',
                 reason: "Server error ({$status}): {$message}",
-                previous: $senderException
+                previous: $senderException,
             ),
             default => new ApiException(
                 response: $response,
                 message: $message ?: "Unexpected error (HTTP {$status})",
-                previous: $senderException
+                previous: $senderException,
             ),
         };
     }
-    
+
     /**
      * Handle 401 authentication errors.
      */
     protected function handleAuthenticationError(Response $response, string $message): AuthenticationException
     {
         $helpMessage = $message ?: 'GitHub authentication failed';
-        
-        if (!$this->token) {
+
+        if (! $this->token) {
             $helpMessage .= "\n\nThis endpoint requires authentication. ";
             $helpMessage .= TokenResolver::getAuthenticationHelp();
         } else {
             $helpMessage .= "\n\nYour token may be invalid or expired.";
             $helpMessage .= "\nCurrent auth source: {$this->tokenSource}";
         }
-        
+
         return new AuthenticationException(
             message: $helpMessage,
-            authenticationType: $this->tokenSource ?? 'none'
+            authenticationType: $this->tokenSource ?? 'none',
         );
     }
-    
+
     /**
      * Handle 403 forbidden errors (could be rate limit or permissions).
      */
@@ -186,10 +186,10 @@ class GithubConnector extends Connector
         if ($this->isRateLimited($response, $message)) {
             return $this->handleRateLimitError($response, $message);
         }
-        
+
         // Otherwise it's a permissions issue
         $helpMessage = $message ?: 'Access to this GitHub resource is forbidden';
-        
+
         if ($this->token) {
             $helpMessage .= "\n\nYour token may not have the required scopes for this operation.";
             $helpMessage .= "\nCheck that your token has the necessary permissions.";
@@ -197,13 +197,13 @@ class GithubConnector extends Connector
             $helpMessage .= "\n\nThis resource may require authentication.";
             $helpMessage .= "\n" . TokenResolver::getAuthenticationHelp();
         }
-        
+
         return new ApiException(
             response: $response,
-            message: $helpMessage
+            message: $helpMessage,
         );
     }
-    
+
     /**
      * Check if a 403 response is due to rate limiting.
      */
@@ -213,16 +213,16 @@ class GithubConnector extends Connector
         if (stripos($message, 'rate limit') !== false) {
             return true;
         }
-        
+
         // Check headers for rate limit
         $remaining = $response->header('X-RateLimit-Remaining');
         if ($remaining !== null && (int) $remaining === 0) {
             return true;
         }
-        
+
         return false;
     }
-    
+
     /**
      * Handle rate limit errors with helpful context.
      */
@@ -233,11 +233,11 @@ class GithubConnector extends Connector
         $limit = (int) ($headers->get('X-RateLimit-Limit') ?? ($this->token ? 5000 : 60));
         $reset = $headers->get('X-RateLimit-Reset');
         $resetTime = $reset ? new \DateTimeImmutable('@' . $reset) : new \DateTimeImmutable('+1 hour');
-        
+
         // Build helpful message
         $helpMessage = $message ?: 'GitHub API rate limit exceeded';
-        
-        if (!$this->token) {
+
+        if (! $this->token) {
             $helpMessage .= "\n\nYou're using unauthenticated requests (60/hour limit).";
             $helpMessage .= "\n" . TokenResolver::getAuthenticationHelp();
         } else {
@@ -246,15 +246,15 @@ class GithubConnector extends Connector
             $helpMessage .= "\nResets at: " . $resetTime->format('Y-m-d H:i:s T');
             $helpMessage .= "\n\nConsider implementing caching or reducing API calls.";
         }
-        
+
         return new RateLimitException(
             remainingRequests: $remaining,
             resetTime: $resetTime,
             totalLimit: $limit,
-            message: $helpMessage
+            message: $helpMessage,
         );
     }
-    
+
     /**
      * Handle validation errors with field-specific details.
      */
@@ -262,9 +262,9 @@ class GithubConnector extends Connector
     {
         $message = $data['message'] ?? 'Validation failed';
         $errors = $data['errors'] ?? [];
-        
+
         // Build detailed error message
-        if (!empty($errors)) {
+        if (! empty($errors)) {
             $message .= "\n\nValidation errors:";
             foreach ($errors as $error) {
                 $field = $error['field'] ?? 'unknown';
@@ -276,11 +276,11 @@ class GithubConnector extends Connector
                 }
             }
         }
-        
+
         return new ValidationException(
             message: $message,
             field: $errors[0]['field'] ?? null,
-            value: $errors[0]['value'] ?? null
+            value: $errors[0]['value'] ?? null,
         );
     }
 }

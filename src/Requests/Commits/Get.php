@@ -26,7 +26,7 @@ class Get extends Request
 
     public function resolveEndpoint(): string
     {
-        return '/repos/'.$this->repo->fullName().'/commits/'.$this->commit_sha;
+        return '/repos/' . $this->repo->fullName() . '/commits/' . $this->commit_sha;
     }
 
     private function validateSHA(string $commit_sha): void

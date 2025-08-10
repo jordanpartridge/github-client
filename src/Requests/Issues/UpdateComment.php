@@ -58,6 +58,7 @@ class UpdateComment extends Request implements HasBody
      * Convert the API response to an IssueCommentDTO.
      *
      * @param  Response  $response  The HTTP response from GitHub API
+     *
      * @return IssueCommentDTO The updated issue comment data transfer object
      */
     public function createDtoFromResponse(Response $response): IssueCommentDTO
