@@ -54,6 +54,11 @@ class TokenResolver
      */
     private static function getGitHubCliToken(): ?string
     {
+        // Skip CLI calls in test environment to prevent hanging
+        if (app()->runningUnitTests()) {
+            return null;
+        }
+
         try {
             // Check if gh CLI is available (with timeout to prevent hanging in CI)
             $result = Process::timeout(2)->run('which gh');
