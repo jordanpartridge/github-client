@@ -16,6 +16,8 @@ class GitHubAppAuthentication implements AuthenticationStrategy
 
     private ?DateTimeImmutable $installationTokenExpiry = null;
 
+    private ?object $connector = null;
+
     public function __construct(
         private readonly string $appId,
         private readonly string $privateKey,
@@ -107,6 +109,10 @@ class GitHubAppAuthentication implements AuthenticationStrategy
 
     /**
      * Refresh the installation token.
+     *
+     * Note: This method requires the connector to be set via setConnector()
+     * before calling refresh(). The connector is typically injected when
+     * used with GithubConnector.
      */
     private function refreshInstallationToken(): void
     {
@@ -114,11 +120,54 @@ class GitHubAppAuthentication implements AuthenticationStrategy
             throw AuthenticationException::githubAppAuthFailed('Installation ID required for installation token');
         }
 
-        // This would typically make an API call to GitHub to get an installation token
-        // For now, we'll throw an exception indicating this needs to be implemented
-        throw AuthenticationException::githubAppAuthFailed(
-            'Installation token refresh not yet implemented. Use GitHub client to fetch installation tokens.',
+        // Import the required classes
+        $createTokenRequest = new \JordanPartridge\GithubClient\Requests\Installations\CreateAccessToken(
+            (int) $this->installationId,
         );
+
+        // Make the API call to get the installation token
+        // This will use JWT authentication (app-level) to get the installation token
+        try {
+            $response = $this->makeApiRequest($createTokenRequest);
+
+            if (! $response->successful()) {
+                throw AuthenticationException::githubAppAuthFailed(
+                    'Failed to refresh installation token: ' . ($response->json('message') ?? 'Unknown error'),
+                );
+            }
+
+            $data = $response->json();
+            $this->installationToken = $data['token'];
+            $this->installationTokenExpiry = new DateTimeImmutable($data['expires_at']);
+        } catch (\Exception $e) {
+            throw AuthenticationException::githubAppAuthFailed(
+                'Failed to refresh installation token: ' . $e->getMessage(),
+            );
+        }
+    }
+
+    /**
+     * Make an API request (to be implemented by connector integration).
+     *
+     * @throws AuthenticationException
+     */
+    private function makeApiRequest(object $request): mixed
+    {
+        if (! isset($this->connector)) {
+            throw AuthenticationException::githubAppAuthFailed(
+                'Connector not set. Cannot refresh installation token without connector.',
+            );
+        }
+
+        return $this->connector->send($request);
+    }
+
+    /**
+     * Set the connector for making API requests.
+     */
+    public function setConnector(object $connector): void
+    {
+        $this->connector = $connector;
     }
 
     /**

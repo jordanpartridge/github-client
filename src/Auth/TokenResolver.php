@@ -22,23 +22,23 @@ class TokenResolver
      */
     public static function resolve(): ?string
     {
-        // 1. Check GitHub CLI first (if available)
-        if ($token = self::getGitHubCliToken()) {
-            self::$lastSource = 'GitHub CLI';
-
-            return $token;
-        }
-
-        // 2. Check environment variables
+        // 1. Check environment variables first (fast, no external process)
         if ($token = self::getEnvironmentToken()) {
             self::$lastSource = env('GITHUB_TOKEN') ? 'GITHUB_TOKEN' : 'GH_TOKEN';
 
             return $token;
         }
 
-        // 3. Check Laravel config
+        // 2. Check Laravel config
         if ($token = self::getConfigToken()) {
             self::$lastSource = 'config';
+
+            return $token;
+        }
+
+        // 3. Check GitHub CLI last (slower, spawns external process)
+        if ($token = self::getGitHubCliToken()) {
+            self::$lastSource = 'GitHub CLI';
 
             return $token;
         }
@@ -55,14 +55,14 @@ class TokenResolver
     private static function getGitHubCliToken(): ?string
     {
         try {
-            // Check if gh CLI is available
-            $result = Process::run('which gh');
+            // Check if gh CLI is available (with timeout to prevent hanging in CI)
+            $result = Process::timeout(2)->run('which gh');
             if (! $result->successful()) {
                 return null;
             }
 
-            // Get token from gh CLI
-            $result = Process::run('gh auth token');
+            // Get token from gh CLI (with timeout to prevent hanging if not authenticated)
+            $result = Process::timeout(3)->run('gh auth token');
             if ($result->successful()) {
                 $token = trim($result->output());
                 if (! empty($token)) {
@@ -70,7 +70,7 @@ class TokenResolver
                 }
             }
         } catch (\Exception) {
-            // gh CLI not available or not authenticated
+            // gh CLI not available, not authenticated, or timed out
         }
 
         return null;
@@ -124,10 +124,7 @@ class TokenResolver
      */
     public static function getAuthenticationStatus(): string
     {
-        if ($token = self::getGitHubCliToken()) {
-            return 'Authenticated via GitHub CLI';
-        }
-
+        // Check in same order as resolve() for consistency
         if ($token = self::getEnvironmentToken()) {
             $source = env('GITHUB_TOKEN') ? 'GITHUB_TOKEN' : 'GH_TOKEN';
 
@@ -136,6 +133,10 @@ class TokenResolver
 
         if ($token = self::getConfigToken()) {
             return 'Authenticated via config file';
+        }
+
+        if ($token = self::getGitHubCliToken()) {
+            return 'Authenticated via GitHub CLI';
         }
 
         return 'No authentication (public access only)';
