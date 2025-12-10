@@ -102,7 +102,7 @@ class GithubConnector extends Connector
         }
 
         // Fall back to simple token authentication
-        if (! $this->token || $this->token === '') {
+        if (! $this->token) {
             return null;
         }
 
@@ -174,7 +174,7 @@ class GithubConnector extends Connector
             429 => $this->handleRateLimitError($response, $message),
             500, 502, 503, 504 => new NetworkException(
                 operation: 'GitHub API request',
-                reason: "Server error ({$status}): {$message}",
+                message: "Server error ({$status}): {$message}",
                 previous: $senderException,
             ),
             default => new ApiException(

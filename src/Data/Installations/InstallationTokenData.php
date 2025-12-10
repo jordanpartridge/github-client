@@ -40,6 +40,6 @@ class InstallationTokenData
 
     public function expiresIn(): int
     {
-        return Carbon::now()->diffInSeconds($this->expires_at, false);
+        return (int) Carbon::now()->diffInSeconds($this->expires_at, false);
     }
 }
