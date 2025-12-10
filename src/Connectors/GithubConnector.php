@@ -2,6 +2,8 @@
 
 namespace JordanPartridge\GithubClient\Connectors;
 
+use JordanPartridge\GithubClient\Auth\AuthenticationStrategy;
+use JordanPartridge\GithubClient\Auth\GitHubAppAuthentication;
 use JordanPartridge\GithubClient\Auth\TokenResolver;
 use JordanPartridge\GithubClient\Exceptions\ApiException;
 use JordanPartridge\GithubClient\Exceptions\AuthenticationException;
@@ -30,15 +32,25 @@ class GithubConnector extends Connector
 
     protected ?string $token;
     protected ?string $tokenSource;
+    protected ?AuthenticationStrategy $authStrategy = null;
 
     /**
      * Create a new GitHub connector.
      *
-     * @param  string|null  $token  Optional GitHub token. If null, will attempt to resolve from multiple sources.
+     * @param  string|AuthenticationStrategy|null  $token  Token, auth strategy, or null to auto-resolve
      */
-    public function __construct(?string $token = null)
+    public function __construct(string|AuthenticationStrategy|null $token = null)
     {
-        if ($token !== null) {
+        if ($token instanceof AuthenticationStrategy) {
+            $this->authStrategy = $token;
+            $this->token = null;
+            $this->tokenSource = $token->getType();
+
+            // Inject connector into auth strategy if it's a GitHub App
+            if ($token instanceof GitHubAppAuthentication) {
+                $token->setConnector($this);
+            }
+        } elseif ($token !== null) {
             $this->token = $token;
             $this->tokenSource = 'explicit';
         } else {
@@ -73,6 +85,23 @@ class GithubConnector extends Connector
      */
     protected function defaultAuth(): ?Authenticator
     {
+        // Use auth strategy if set
+        if ($this->authStrategy) {
+            // Check if token needs refresh
+            if ($this->authStrategy->needsRefresh()) {
+                $this->authStrategy->refresh();
+            }
+
+            // Get the authorization header value
+            $authHeader = $this->authStrategy->getAuthorizationHeader();
+
+            // Extract token from "Bearer <token>" format
+            $token = str_replace('Bearer ', '', $authHeader);
+
+            return new TokenAuthenticator($token);
+        }
+
+        // Fall back to simple token authentication
         if (! $this->token || $this->token === '') {
             return null;
         }
@@ -85,7 +114,7 @@ class GithubConnector extends Connector
      */
     public function isAuthenticated(): bool
     {
-        return ! empty($this->token);
+        return $this->authStrategy !== null || ! empty($this->token);
     }
 
     /**
