@@ -183,23 +183,22 @@ describe('Authentication improvements', function () {
         expect(true)->toBeTrue();
     })->skip('Mock client exception handling needs investigation');
 
-    it('checks GitHub CLI token first if available', function () {
-        // This test verifies priority - if gh CLI is authenticated,
-        // that token should be used even if env vars exist
-
-        // Note: This is more of an integration test
-        // In a real scenario, we'd mock the Process facade
+    it('provides authentication status from available sources', function () {
+        // This test verifies that TokenResolver returns a valid authentication status
+        // Priority order: env vars -> config -> GitHub CLI -> none
+        // (env vars and config are checked first for speed, CLI last due to process overhead)
 
         $status = TokenResolver::getAuthenticationStatus();
 
-        // If GitHub CLI is available and authenticated, it should be mentioned
-        if (str_contains($status, 'GitHub CLI')) {
-            expect($status)->toContain('GitHub CLI');
-        } else {
-            // Otherwise, it should use env var or config
-            expect($status)->toContain('environment variable')
-                ->or->toContain('config')
-                ->or->toContain('No authentication');
+        // Status should indicate one of the valid authentication sources
+        $validSources = ['environment variable', 'config', 'GitHub CLI', 'No authentication'];
+        $hasValidSource = false;
+        foreach ($validSources as $source) {
+            if (str_contains($status, $source)) {
+                $hasValidSource = true;
+                break;
+            }
         }
+        expect($hasValidSource)->toBeTrue();
     });
 });
