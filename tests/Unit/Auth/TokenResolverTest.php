@@ -17,13 +17,6 @@ describe('TokenResolver', function () {
     });
 
     describe('resolve', function () {
-        it('returns null when no token source available', function () {
-            config(['github-client.token' => null]);
-            $token = TokenResolver::resolve();
-            // May return token from gh CLI if available, or null
-            expect($token)->toBeString()->or->toBeNull();
-        });
-
         it('returns token from GITHUB_TOKEN env var', function () {
             putenv('GITHUB_TOKEN=test_github_token');
             $token = TokenResolver::resolve();
@@ -50,11 +43,12 @@ describe('TokenResolver', function () {
             expect($token)->toBe('config_token');
         });
 
-        it('ignores placeholder config value', function () {
+        it('ignores placeholder config value and uses env var instead', function () {
+            putenv('GITHUB_TOKEN=real_token');
             config(['github-client.token' => 'your-github-token-here']);
             $token = TokenResolver::resolve();
-            // Should return null or gh CLI token, not the placeholder
-            expect($token)->not->toBe('your-github-token-here');
+            // Should use env var since placeholder is ignored
+            expect($token)->toBe('real_token');
         });
     });
 
