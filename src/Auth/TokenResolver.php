@@ -55,14 +55,14 @@ class TokenResolver
     private static function getGitHubCliToken(): ?string
     {
         try {
-            // Check if gh CLI is available
-            $result = Process::run('which gh');
+            // Check if gh CLI is available (with timeout to prevent hanging in CI)
+            $result = Process::timeout(2)->run('which gh');
             if (! $result->successful()) {
                 return null;
             }
 
-            // Get token from gh CLI
-            $result = Process::run('gh auth token');
+            // Get token from gh CLI (with timeout to prevent hanging if not authenticated)
+            $result = Process::timeout(3)->run('gh auth token');
             if ($result->successful()) {
                 $token = trim($result->output());
                 if (! empty($token)) {
@@ -70,7 +70,7 @@ class TokenResolver
                 }
             }
         } catch (\Exception) {
-            // gh CLI not available or not authenticated
+            // gh CLI not available, not authenticated, or timed out
         }
 
         return null;
