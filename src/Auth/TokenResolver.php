@@ -22,23 +22,23 @@ class TokenResolver
      */
     public static function resolve(): ?string
     {
-        // 1. Check GitHub CLI first (if available)
-        if ($token = self::getGitHubCliToken()) {
-            self::$lastSource = 'GitHub CLI';
-
-            return $token;
-        }
-
-        // 2. Check environment variables
+        // 1. Check environment variables first (fast, no external process)
         if ($token = self::getEnvironmentToken()) {
             self::$lastSource = env('GITHUB_TOKEN') ? 'GITHUB_TOKEN' : 'GH_TOKEN';
 
             return $token;
         }
 
-        // 3. Check Laravel config
+        // 2. Check Laravel config
         if ($token = self::getConfigToken()) {
             self::$lastSource = 'config';
+
+            return $token;
+        }
+
+        // 3. Check GitHub CLI last (slower, spawns external process)
+        if ($token = self::getGitHubCliToken()) {
+            self::$lastSource = 'GitHub CLI';
 
             return $token;
         }
