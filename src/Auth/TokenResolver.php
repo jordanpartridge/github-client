@@ -124,10 +124,7 @@ class TokenResolver
      */
     public static function getAuthenticationStatus(): string
     {
-        if ($token = self::getGitHubCliToken()) {
-            return 'Authenticated via GitHub CLI';
-        }
-
+        // Check in same order as resolve() for consistency
         if ($token = self::getEnvironmentToken()) {
             $source = env('GITHUB_TOKEN') ? 'GITHUB_TOKEN' : 'GH_TOKEN';
 
@@ -136,6 +133,10 @@ class TokenResolver
 
         if ($token = self::getConfigToken()) {
             return 'Authenticated via config file';
+        }
+
+        if ($token = self::getGitHubCliToken()) {
+            return 'Authenticated via GitHub CLI';
         }
 
         return 'No authentication (public access only)';
