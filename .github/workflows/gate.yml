@@ -21,6 +21,6 @@ jobs:
         with:
           check: certify
           coverage-threshold: 100
-          auto-merge: false
+          auto-merge: true
           coverage-comment: true
           github-token: ${{ secrets.GITHUB_TOKEN }}
