@@ -1,7 +1,10 @@
 <?php
 
+use Carbon\Carbon;
 use JordanPartridge\GithubClient\Data\GitUserData;
+use JordanPartridge\GithubClient\Data\Repos\LicenseData;
 use JordanPartridge\GithubClient\Data\Repos\RepoData;
+use JordanPartridge\GithubClient\Enums\Visibility;
 
 it('can create RepoData from array', function () {
     $data = [
@@ -246,4 +249,102 @@ it('can convert RepoData to array', function () {
     expect($array['language'])->toBe('PHP');
     expect($array['owner'])->toBeArray();
     expect($array['owner']['login'])->toBe('user');
+});
+
+it('handles null description', function () {
+    $data = $this->createMockRepoData('test-repo', 1, 'testuser');
+    unset($data['description']);
+
+    $repo = RepoData::fromArray($data);
+
+    expect($repo->description)->toBeNull();
+});
+
+it('handles visibility enum', function () {
+    $data = $this->createMockRepoData('test-repo', 1, 'testuser');
+    $data['visibility'] = 'private';
+
+    $repo = RepoData::fromArray($data);
+
+    expect($repo->visibility)->toBe(Visibility::PRIVATE);
+});
+
+it('handles license data', function () {
+    $data = $this->createMockRepoData('test-repo', 1, 'testuser');
+    $data['license'] = [
+        'key' => 'mit',
+        'name' => 'MIT License',
+        'spdx_id' => 'MIT',
+        'url' => 'https://api.github.com/licenses/mit',
+        'node_id' => 'MDc6TGljZW5zZW1pdA==',
+    ];
+
+    $repo = RepoData::fromArray($data);
+
+    expect($repo->license)->toBeInstanceOf(LicenseData::class);
+    expect($repo->license->key)->toBe('mit');
+});
+
+it('handles topics array', function () {
+    $data = $this->createMockRepoData('test-repo', 1, 'testuser');
+    $data['topics'] = ['php', 'laravel', 'github-api'];
+
+    $repo = RepoData::fromArray($data);
+
+    expect($repo->topics)->toBe(['php', 'laravel', 'github-api']);
+});
+
+it('handles private repository', function () {
+    $data = $this->createMockRepoData('test-repo', 1, 'testuser');
+    $data['private'] = true;
+
+    $repo = RepoData::fromArray($data);
+
+    expect($repo->private)->toBeTrue();
+});
+
+it('handles archived repository', function () {
+    $data = $this->createMockRepoData('test-repo', 1, 'testuser');
+    $data['archived'] = true;
+
+    $repo = RepoData::fromArray($data);
+
+    expect($repo->archived)->toBeTrue();
+});
+
+it('handles fork repository', function () {
+    $data = $this->createMockRepoData('test-repo', 1, 'testuser');
+    $data['fork'] = true;
+
+    $repo = RepoData::fromArray($data);
+
+    expect($repo->fork)->toBeTrue();
+});
+
+it('parses Carbon dates correctly', function () {
+    $data = $this->createMockRepoData('test-repo', 1, 'testuser');
+
+    $repo = RepoData::fromArray($data);
+
+    expect($repo->created_at)->toBeInstanceOf(Carbon::class);
+    expect($repo->updated_at)->toBeInstanceOf(Carbon::class);
+    expect($repo->pushed_at)->toBeInstanceOf(Carbon::class);
+});
+
+it('handles missing permissions', function () {
+    $data = $this->createMockRepoData('test-repo', 1, 'testuser');
+    unset($data['permissions']);
+
+    $repo = RepoData::fromArray($data);
+
+    expect($repo->permissions)->toBe([]);
+});
+
+it('handles is_template flag', function () {
+    $data = $this->createMockRepoData('test-repo', 1, 'testuser');
+    $data['is_template'] = true;
+
+    $repo = RepoData::fromArray($data);
+
+    expect($repo->is_template)->toBeTrue();
 });
