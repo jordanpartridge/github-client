@@ -8,10 +8,12 @@ use JordanPartridge\GithubClient\Data\Repos\RepoData;
 use JordanPartridge\GithubClient\Exceptions\ApiException;
 use JordanPartridge\GithubClient\Exceptions\NetworkException;
 use JordanPartridge\GithubClient\Requests\RateLimit\Get;
+use JordanPartridge\GithubClient\Auth\GitHubAppAuthentication;
 use JordanPartridge\GithubClient\Resources\ActionsResource;
 use JordanPartridge\GithubClient\Resources\CommentsResource;
 use JordanPartridge\GithubClient\Resources\CommitResource;
 use JordanPartridge\GithubClient\Resources\FileResource;
+use JordanPartridge\GithubClient\Resources\InstallationsResource;
 use JordanPartridge\GithubClient\Resources\IssuesResource;
 use JordanPartridge\GithubClient\Resources\PullRequestResource;
 use JordanPartridge\GithubClient\Resources\ReleasesResource;
@@ -70,6 +72,11 @@ class Github
     public function releases(): ReleasesResource
     {
         return new ReleasesResource($this);
+    }
+
+    public function installations(): InstallationsResource
+    {
+        return new InstallationsResource($this);
     }
 
     /**
@@ -169,5 +176,87 @@ class Github
         $repo = Repo::fromFullName($fullName); // Ensures validation
 
         return $this->repos()->delete($repo);
+    }
+
+    /**
+     * Create a new GitHub client authenticated as a GitHub App installation.
+     *
+     * This creates a new instance configured to act on behalf of a specific
+     * installation, using installation tokens instead of JWT tokens.
+     *
+     * @param  int  $installationId  The installation ID to authenticate as
+     *
+     * @return self A new Github instance authenticated for the installation
+     */
+    public static function forInstallation(int $installationId): self
+    {
+        // Get GitHub App config
+        $appId = config('github-client.github_app.app_id');
+        $privateKey = self::resolvePrivateKey();
+
+        if (! $appId || ! $privateKey) {
+            throw new \RuntimeException(
+                'GitHub App not configured. Set GITHUB_APP_ID and GITHUB_APP_PRIVATE_KEY or GITHUB_APP_PRIVATE_KEY_PATH',
+            );
+        }
+
+        $auth = new GitHubAppAuthentication(
+            appId: $appId,
+            privateKey: $privateKey,
+            installationId: (string) $installationId,
+        );
+
+        $connector = new GithubConnector($auth);
+
+        return new self($connector);
+    }
+
+    /**
+     * Create a new GitHub client with custom GitHub App credentials.
+     *
+     * This allows using GitHub App authentication without relying on config files.
+     *
+     * @param  string  $appId  The GitHub App ID
+     * @param  string  $privateKey  The private key (PEM format or base64 encoded)
+     * @param  int|null  $installationId  Optional installation ID
+     *
+     * @return self A new Github instance with GitHub App authentication
+     */
+    public static function withApp(string $appId, string $privateKey, ?int $installationId = null): self
+    {
+        $auth = new GitHubAppAuthentication(
+            appId: $appId,
+            privateKey: $privateKey,
+            installationId: $installationId ? (string) $installationId : null,
+        );
+
+        $connector = new GithubConnector($auth);
+
+        return new self($connector);
+    }
+
+    /**
+     * Resolve the private key from config.
+     */
+    private static function resolvePrivateKey(): ?string
+    {
+        // Try direct key first
+        $key = config('github-client.github_app.private_key');
+        if ($key) {
+            return $key;
+        }
+
+        // Try file path
+        $path = config('github-client.github_app.private_key_path');
+        if ($path && file_exists($path)) {
+            return file_get_contents($path);
+        }
+
+        // Try base_path for relative paths
+        if ($path && file_exists(base_path($path))) {
+            return file_get_contents(base_path($path));
+        }
+
+        return null;
     }
 }
