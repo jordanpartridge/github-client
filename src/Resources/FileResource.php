@@ -42,10 +42,10 @@ readonly class FileResource extends BaseResource
     {
         $data = $this->contents($owner, $repo, $path, $ref);
 
-        if (($data['encoding'] ?? '') === 'base64') {
+        if ($data['encoding'] === 'base64') {
             return base64_decode($data['content']);
         }
 
-        return $data['content'] ?? '';
+        return $data['content'];
     }
 }
