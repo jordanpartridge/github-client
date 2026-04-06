@@ -7,6 +7,7 @@ use JordanPartridge\GithubClient\Enums\MergeMethod;
 use JordanPartridge\GithubClient\Facades\Github;
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
+use Illuminate\Support\Collection;
 
 beforeEach(function () {
     config(['github-client.token' => 'fake-token']);
@@ -162,7 +163,7 @@ describe('pull request reviews', function () {
         $reviews = Github::pullRequests()->reviews('test', 'repo', 1);
 
         expect($reviews)
-            ->toBeInstanceOf(\Illuminate\Support\Collection::class)
+            ->toBeInstanceOf(Collection::class)
             ->and($reviews->isEmpty())->toBeFalse()
             ->and($reviews->first())
             ->toBeInstanceOf(PullRequestReviewDTO::class)

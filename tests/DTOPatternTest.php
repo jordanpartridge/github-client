@@ -3,6 +3,7 @@
 use JordanPartridge\GithubClient\Data\Pulls\PullRequestDetailDTO;
 use JordanPartridge\GithubClient\Data\Pulls\PullRequestDTOFactory;
 use JordanPartridge\GithubClient\Data\Pulls\PullRequestSummaryDTO;
+use JordanPartridge\GithubClient\Data\Pulls\PullRequestDTO;
 
 describe('DTO Pattern: Summary vs Detail DTOs', function () {
     beforeEach(function () {
@@ -175,7 +176,7 @@ describe('DTO Pattern: Summary vs Detail DTOs', function () {
     describe('Backward Compatibility', function () {
         it('maintains compatibility with existing PullRequestDTO usage', function () {
             // The original PullRequestDTO still works exactly as before
-            $originalDto = \JordanPartridge\GithubClient\Data\Pulls\PullRequestDTO::fromApiResponse($this->detailResponseData);
+            $originalDto = PullRequestDTO::fromApiResponse($this->detailResponseData);
 
             expect($originalDto->number)->toBe(47)
                 ->and($originalDto->comments)->toBe(1)

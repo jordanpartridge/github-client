@@ -1,6 +1,7 @@
 <?php
 
 use JordanPartridge\GithubClient\Resources\BaseResource;
+use Saloon\Http\Request;
 
 describe('General', function () {
     it('will not use debugging functions', function () {
@@ -15,6 +16,6 @@ describe('Resources', function () {
 
 describe('Requests', function () {
     arch('requests extend the base resource', function () {
-        expect('JordanPartridge\GithubClient\Requests')->toExtend(\Saloon\Http\Request::class);
+        expect('JordanPartridge\GithubClient\Requests')->toExtend(Request::class);
     });
 });

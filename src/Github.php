@@ -9,6 +9,7 @@ use JordanPartridge\GithubClient\Exceptions\ApiException;
 use JordanPartridge\GithubClient\Exceptions\NetworkException;
 use JordanPartridge\GithubClient\Requests\RateLimit\Get;
 use JordanPartridge\GithubClient\Resources\ActionsResource;
+use JordanPartridge\GithubClient\Resources\ChecksResource;
 use JordanPartridge\GithubClient\Resources\CommentsResource;
 use JordanPartridge\GithubClient\Resources\CommitResource;
 use JordanPartridge\GithubClient\Resources\FileResource;
@@ -55,6 +56,11 @@ class Github
     public function actions(): ActionsResource
     {
         return new ActionsResource($this);
+    }
+
+    public function checks(): ChecksResource
+    {
+        return new ChecksResource($this);
     }
 
     public function issues(): IssuesResource

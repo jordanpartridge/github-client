@@ -5,6 +5,7 @@ namespace JordanPartridge\GithubClient\Commands;
 use Illuminate\Console\Command;
 use JordanPartridge\GithubClient\Facades\Github;
 use JordanPartridge\GithubClient\ValueObjects\Repo;
+use Illuminate\Support\Str;
 
 class GithubClientCommand extends Command
 {
@@ -109,7 +110,7 @@ class GithubClientCommand extends Command
                     substr($commit->sha, 0, 8),
                     $commit->commit->author->name,
                     $commit->commit->author->date->format('Y-m-d H:i'),
-                    \Illuminate\Support\Str::limit($commit->commit->message, 50),
+                    Str::limit($commit->commit->message, 50),
                 ];
             }
 
