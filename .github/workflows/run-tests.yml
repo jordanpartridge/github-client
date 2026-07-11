@@ -19,17 +19,21 @@ jobs:
         # Laravel 10 EOL: Feb 4, 2025 - dropped from test matrix
         # See: https://laravel.com/docs/12.x/releases#support-policy
         php: [8.2, 8.3, 8.4]
-        laravel: [11.*, 12.*]
+        laravel: [11.*, 12.*, 13.*]
         stability: [prefer-stable]
         include:
+          - laravel: 13.*
+            testbench: 11.*
           - laravel: 12.*
             testbench: 10.*
           - laravel: 11.*
             testbench: 9.*
         exclude:
-          # Laravel 12 requires PHP 8.3+
+          # Laravel 12+ requires PHP 8.3+
           - php: 8.2
             laravel: 12.*
+          - php: 8.2
+            laravel: 13.*
 
     name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }}
 

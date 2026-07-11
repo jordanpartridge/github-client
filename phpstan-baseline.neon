@@ -1,0 +1,37 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Called ''env'' outside of the config directory which returns null when the config is cached, use ''config''\.$#'
+			identifier: larastan.noEnvCallsOutsideOfConfig
+			count: 4
+			path: src/Auth/TokenResolver.php
+
+		-
+			message: '#^Instantiated class JordanPartridge\\GithubClient\\Exceptions\\ResourceNotFoundException not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Connectors/GithubConnector.php
+
+		-
+			message: '#^Missing parameter \$message \(string\) in call to JordanPartridge\\GithubClient\\Exceptions\\NetworkException constructor\.$#'
+			identifier: argument.missing
+			count: 1
+			path: src/Connectors/GithubConnector.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between non\-falsy\-string and '''' will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/Connectors/GithubConnector.php
+
+		-
+			message: '#^Unknown parameter \$reason in call to JordanPartridge\\GithubClient\\Exceptions\\NetworkException constructor\.$#'
+			identifier: argument.unknown
+			count: 1
+			path: src/Connectors/GithubConnector.php
+
+		-
+			message: '#^PHPDoc tag @method for method JordanPartridge\\GithubClient\\Facades\\Github\:\:connector\(\) return type contains unknown class JordanPartridge\\GithubClient\\Contracts\\GithubConnectorInterface\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Facades/Github.php
