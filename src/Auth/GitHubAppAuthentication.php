@@ -6,6 +6,7 @@ use DateTimeImmutable;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use JordanPartridge\GithubClient\Exceptions\AuthenticationException;
+use JordanPartridge\GithubClient\Requests\Installations\CreateAccessToken;
 
 /**
  * GitHub App authentication strategy using JWT tokens.
@@ -121,7 +122,7 @@ class GitHubAppAuthentication implements AuthenticationStrategy
         }
 
         // Import the required classes
-        $createTokenRequest = new \JordanPartridge\GithubClient\Requests\Installations\CreateAccessToken(
+        $createTokenRequest = new CreateAccessToken(
             (int) $this->installationId,
         );
 

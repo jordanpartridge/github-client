@@ -16,7 +16,7 @@ beforeEach(function () {
     ]);
 
     Github::connector()->withMockClient($mockClient);
-    $this->resource = new CommitResource(app(\JordanPartridge\GithubClient\Github::class));
+    $this->resource = new CommitResource(app(JordanPartridge\GithubClient\Github::class));
 });
 
 it('can fetch all commits for a repository', function () {

@@ -25,6 +25,7 @@ use JordanPartridge\GithubClient\Requests\Pulls\Merge;
 use JordanPartridge\GithubClient\Requests\Pulls\Reviews;
 use JordanPartridge\GithubClient\Requests\Pulls\Update;
 use JordanPartridge\GithubClient\Requests\Pulls\UpdateComment;
+use Illuminate\Support\Collection;
 
 readonly class PullRequestResource extends BaseResource
 {
@@ -99,7 +100,7 @@ readonly class PullRequestResource extends BaseResource
         string $owner,
         string $repo,
         int $number,
-    ): \Illuminate\Support\Collection {
+    ): Collection {
         $response = $this->github()->connector()->send(new Reviews("{$owner}/{$repo}", $number));
 
         return $response->dto();

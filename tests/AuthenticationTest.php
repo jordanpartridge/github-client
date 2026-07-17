@@ -5,6 +5,7 @@ use JordanPartridge\GithubClient\Connectors\GithubConnector;
 use JordanPartridge\GithubClient\Facades\Github;
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
+use JordanPartridge\GithubClient\Data\Repos\RepoData;
 
 describe('Authentication improvements', function () {
     it('allows unauthenticated requests for public repositories', function () {
@@ -168,12 +169,12 @@ describe('Authentication improvements', function () {
         $connector->withMockClient($mockClient);
 
         // Create Github instance with unauthenticated connector
-        $github = new \JordanPartridge\GithubClient\Github($connector);
+        $github = new JordanPartridge\GithubClient\Github($connector);
 
         // Should be able to get public repo without auth
         $repo = $github->getRepo('owner/public-repo');
 
-        expect($repo)->toBeInstanceOf(\JordanPartridge\GithubClient\Data\Repos\RepoData::class)
+        expect($repo)->toBeInstanceOf(RepoData::class)
             ->and($repo->name)->toBe('public-repo')
             ->and($repo->private)->toBeFalse();
     });

@@ -2,6 +2,7 @@
 
 use JordanPartridge\GithubClient\Data\GitUserData;
 use JordanPartridge\GithubClient\Data\Repos\RepoData;
+use Carbon\Carbon;
 
 it('can create RepoData from array', function () {
     $data = [
@@ -193,9 +194,9 @@ it('can convert RepoData to array', function () {
         labels_url: 'https://api.github.com/repos/user/test-repo/labels{/name}',
         releases_url: 'https://api.github.com/repos/user/test-repo/releases{/id}',
         deployments_url: 'https://api.github.com/repos/user/test-repo/deployments',
-        created_at: \Carbon\Carbon::parse('2011-01-26T19:01:12Z'),
-        updated_at: \Carbon\Carbon::parse('2024-01-26T19:14:43Z'),
-        pushed_at: \Carbon\Carbon::parse('2024-01-26T19:14:43Z'),
+        created_at: Carbon::parse('2011-01-26T19:01:12Z'),
+        updated_at: Carbon::parse('2024-01-26T19:14:43Z'),
+        pushed_at: Carbon::parse('2024-01-26T19:14:43Z'),
         git_url: 'git://github.com/user/test-repo.git',
         ssh_url: 'git@github.com:user/test-repo.git',
         clone_url: 'https://github.com/user/test-repo.git',

@@ -14,20 +14,20 @@ describe('Repo ValueObject', function () {
 
         it('throws exception for invalid format', function () {
             expect(fn () => Repo::fromFullName('invalid'))
-                ->toThrow(\InvalidArgumentException::class, 'Repository must be in format "owner/repo"');
+                ->toThrow(InvalidArgumentException::class, 'Repository must be in format "owner/repo"');
         });
 
         it('throws exception for empty owner or name', function () {
             expect(fn () => Repo::fromFullName('/repository'))
-                ->toThrow(\InvalidArgumentException::class, 'Owner and repo name cannot be empty.');
+                ->toThrow(InvalidArgumentException::class, 'Owner and repo name cannot be empty.');
 
             expect(fn () => Repo::fromFullName('owner/'))
-                ->toThrow(\InvalidArgumentException::class, 'Owner and repo name cannot be empty.');
+                ->toThrow(InvalidArgumentException::class, 'Owner and repo name cannot be empty.');
         });
 
         it('throws exception for invalid characters', function () {
             expect(fn () => Repo::fromFullName('owner@invalid/repository'))
-                ->toThrow(\InvalidArgumentException::class, "Invalid characters in repository name 'owner@invalid/repository'.");
+                ->toThrow(InvalidArgumentException::class, "Invalid characters in repository name 'owner@invalid/repository'.");
         });
 
         it('accepts valid characters (letters, numbers, dots, underscores, hyphens)', function () {
@@ -49,22 +49,22 @@ describe('Repo ValueObject', function () {
 
         it('throws exception for empty owner', function () {
             expect(fn () => Repo::fromOwnerAndRepo('', 'repository'))
-                ->toThrow(\InvalidArgumentException::class, 'Owner cannot be empty.');
+                ->toThrow(InvalidArgumentException::class, 'Owner cannot be empty.');
         });
 
         it('throws exception for empty repository name', function () {
             expect(fn () => Repo::fromOwnerAndRepo('owner', ''))
-                ->toThrow(\InvalidArgumentException::class, 'Repository name cannot be empty.');
+                ->toThrow(InvalidArgumentException::class, 'Repository name cannot be empty.');
         });
 
         it('throws exception for invalid characters in owner', function () {
             expect(fn () => Repo::fromOwnerAndRepo('owner@invalid', 'repository'))
-                ->toThrow(\InvalidArgumentException::class, "Invalid characters in owner name 'owner@invalid'.");
+                ->toThrow(InvalidArgumentException::class, "Invalid characters in owner name 'owner@invalid'.");
         });
 
         it('throws exception for invalid characters in repository name', function () {
             expect(fn () => Repo::fromOwnerAndRepo('owner', 'repo@invalid'))
-                ->toThrow(\InvalidArgumentException::class, "Invalid characters in repository name 'repo@invalid'.");
+                ->toThrow(InvalidArgumentException::class, "Invalid characters in repository name 'repo@invalid'.");
         });
 
         it('accepts valid characters in both parameters', function () {

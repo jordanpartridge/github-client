@@ -2,6 +2,8 @@
 
 namespace JordanPartridge\GithubClient\Auth;
 
+use JordanPartridge\GithubClient\Exceptions\AuthenticationException;
+
 /**
  * Interface for different GitHub authentication strategies.
  */
@@ -15,7 +17,7 @@ interface AuthenticationStrategy
     /**
      * Validate that the authentication credentials are properly configured.
      *
-     * @throws \JordanPartridge\GithubClient\Exceptions\AuthenticationException
+     * @throws AuthenticationException
      */
     public function validate(): void;
 
@@ -32,7 +34,7 @@ interface AuthenticationStrategy
     /**
      * Refresh the authentication if needed.
      *
-     * @throws \JordanPartridge\GithubClient\Exceptions\AuthenticationException
+     * @throws AuthenticationException
      */
     public function refresh(): void;
 }
