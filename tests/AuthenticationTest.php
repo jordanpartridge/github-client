@@ -3,6 +3,7 @@
 use JordanPartridge\GithubClient\Auth\TokenResolver;
 use JordanPartridge\GithubClient\Connectors\GithubConnector;
 use JordanPartridge\GithubClient\Facades\Github;
+use JordanPartridge\GithubClient\Github as GithubClient;
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
 use JordanPartridge\GithubClient\Data\Repos\RepoData;
@@ -169,7 +170,7 @@ describe('Authentication improvements', function () {
         $connector->withMockClient($mockClient);
 
         // Create Github instance with unauthenticated connector
-        $github = new JordanPartridge\GithubClient\Github($connector);
+        $github = new GithubClient($connector);
 
         // Should be able to get public repo without auth
         $repo = $github->getRepo('owner/public-repo');

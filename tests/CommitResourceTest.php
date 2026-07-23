@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use JordanPartridge\GithubClient\Facades\Github;
+use JordanPartridge\GithubClient\Github as GithubClient;
 use JordanPartridge\GithubClient\Resources\CommitResource;
 use JordanPartridge\GithubClient\ValueObjects\Repo;
 use Saloon\Http\Faking\MockClient;
@@ -16,7 +17,7 @@ beforeEach(function () {
     ]);
 
     Github::connector()->withMockClient($mockClient);
-    $this->resource = new CommitResource(app(JordanPartridge\GithubClient\Github::class));
+    $this->resource = new CommitResource(app(GithubClient::class));
 });
 
 it('can fetch all commits for a repository', function () {

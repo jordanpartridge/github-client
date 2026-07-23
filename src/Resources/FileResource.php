@@ -24,7 +24,9 @@ readonly class FileResource extends BaseResource
     /**
      * Get the contents of a file at a specific ref (branch, tag, or SHA).
      *
-     * @return array{name: string, path: string, sha: string, size: int, content: string, encoding: string}
+     * Note: If the path is a directory, GitHub returns an array of entries instead.
+     *
+     * @return array{name: string, path: string, sha: string, size: int, content: string, encoding: string}|array<int, array<string, mixed>>
      */
     public function contents(string $owner, string $repo, string $path, ?string $ref = null): array
     {

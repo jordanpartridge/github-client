@@ -12,10 +12,10 @@ readonly class ChecksResource extends BaseResource
      *
      * @return array{total_count: int, check_runs: array<int, array<string, mixed>>}
      */
-    public function forRef(string $owner, string $repo, string $ref): array
+    public function forRef(string $owner, string $repo, string $ref, ?int $perPage = null, ?int $page = null): array
     {
         $response = $this->github()->connector()->send(
-            new GetCheckRunsForRef($owner, $repo, $ref),
+            new GetCheckRunsForRef($owner, $repo, $ref, $perPage, $page),
         );
 
         return $response->json();
