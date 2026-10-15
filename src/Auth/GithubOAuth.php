@@ -8,18 +8,23 @@ use JordanPartridge\GithubClient\Exceptions\AuthenticationException;
 class GithubOAuth
 {
     public function __construct(
-        protected string $clientId,
-        protected string $clientSecret,
-        protected string $redirectUrl,
+        protected ?string $clientId,
+        protected ?string $clientSecret,
+        protected ?string $redirectUrl,
     ) {}
 
-    public function getAuthorizationUrl(array $scopes = ['repo']): string
+    /**
+     * @param  array<int, string>  $scopes
+     */
+    public function getAuthorizationUrl(array $scopes = ['repo'], ?string $state = null): string
     {
+        $this->assertConfigured();
+
         $queryParams = http_build_query([
             'client_id' => $this->clientId,
             'redirect_uri' => $this->redirectUrl,
             'scope' => implode(' ', $scopes),
-            'state' => $this->generateState(),
+            'state' => $state ?? $this->generateState(),
         ]);
 
         return "https://github.com/login/oauth/authorize?{$queryParams}";
@@ -27,6 +32,8 @@ class GithubOAuth
 
     public function getAccessToken(string $code): string
     {
+        $this->assertConfigured();
+
         $response = Http::post('https://github.com/login/oauth/access_token', [
             'client_id' => $this->clientId,
             'client_secret' => $this->clientSecret,
@@ -46,5 +53,17 @@ class GithubOAuth
     protected function generateState(): string
     {
         return bin2hex(random_bytes(16));
+    }
+
+    protected function assertConfigured(): void
+    {
+        if ($this->clientId === null || $this->clientId === ''
+            || $this->clientSecret === null || $this->clientSecret === ''
+            || $this->redirectUrl === null || $this->redirectUrl === '') {
+            throw new AuthenticationException(
+                'GitHub OAuth is not configured. Set GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, and GITHUB_REDIRECT_URL.',
+                'oauth',
+            );
+        }
     }
 }

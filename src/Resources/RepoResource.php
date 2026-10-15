@@ -169,14 +169,14 @@ readonly class RepoResource extends BaseResource
      *
      * @param  Repo  $repo  -- the repo value object, which handles the validation
      *
-     * @return RepoData Returns a Saloon response containing the repository details
+     * @return RepoData Repository details
      *
      * @link https://docs.github.com/en/rest/repos/repos#get-a-repository
      *
      * Example Usage:
      * ```php
-     * $repo = $repos->get('jordanpartridge/github-client');
-     * $details = $repo->json();
+     * $repo = $repos->get(Repo::fromFullName('jordanpartridge/github-client'));
+     * echo $repo->full_name;
      * ```
      */
     public function get(Repo $repo): RepoData
@@ -192,10 +192,9 @@ readonly class RepoResource extends BaseResource
     /**
      * Search for repositories on GitHub
      *
-     * Searches for repositories based on a query string. This is useful for discovering
-     * repositories that match specific criteria, such as components for the Conduit project.
+     * Searches for repositories based on a query string.
      *
-     * @param  string  $query  The search query string (e.g., "topic:conduit-component")
+     * @param  string  $query  The search query string (e.g., "language:php stars:>1000")
      * @param  string|null  $sort  Sort field: stars, forks, help-wanted-issues, updated
      * @param  Direction|null  $order  Sort order: asc or desc
      * @param  int|null  $per_page  Number of results per page (max 100)
@@ -207,8 +206,8 @@ readonly class RepoResource extends BaseResource
      *
      * Example Usage:
      * ```php
-     * // Search for repositories by topic
-     * $results = $repos->search('topic:conduit-component');
+     * // Search for repositories by language
+     * $results = $repos->search('language:php');
      *
      * // Search with sorting and pagination
      * $results = $repos->search(

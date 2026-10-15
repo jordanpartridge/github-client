@@ -4,6 +4,13 @@ All notable changes to `github-client` will be documented in this file.
 
 ## Unreleased
 
+* Documentation matches the public methods and return types
+* Removed the unused skeleton migration, factory, and view
+* OAuth throws `AuthenticationException` when the client id, secret, or redirect URL is missing, and `getAuthorizationUrl()` accepts a state value
+* Tokens are read from config (`GITHUB_TOKEN`, then `GH_TOKEN`) before the GitHub CLI
+* PHPStan baseline no longer ignores errors the analyser does not report
+* The test badge tracks the `master` branch
+
 ## v2.5.0 - Complete GitHub Issues API - 2025-01-19
 
 ### Major New Features
@@ -43,29 +50,29 @@ All notable changes to `github-client` will be documented in this file.
 #### Key Features
 
 ```php
-// List user issues
-$issues = GitHub::issues()->index(
+// List user issues. all() returns a Saloon response.
+$issues = Github::issues()->all(
     state: State::OPEN,
     labels: 'bug,enhancement',
     sort: Sort::CREATED,
-    direction: Direction::DESC
-);
+    direction: Direction::DESC,
+)->dto();
 
 // Get specific issue
-$issue = GitHub::issues()->get('owner', 'repo', 42);
+$issue = Github::issues()->get('owner', 'repo', 42);
 
 // Create new issue
-$newIssue = GitHub::issues()->create('owner', 'repo', 'Bug Report', 
-    bodyText: 'Detailed description...',
+$newIssue = Github::issues()->create('owner', 'repo', 'Bug Report',
+    body: 'Detailed description...',
     labels: ['bug', 'priority-high'],
     assignees: ['username']
 );
 
 // Add comment
-$comment = GitHub::issues()->createComment('owner', 'repo', 42, 'Thanks for reporting!');
+$comment = Github::issues()->addComment('owner', 'repo', 42, 'Thanks for reporting!');
 
 // Auto-pagination support
-$allIssues = GitHub::issues()->index()->collect();
+$allIssues = Github::issues()->allForRepo('owner', 'repo');
 ```
 
 #### Quality Improvements
@@ -113,7 +120,7 @@ $allIssues = GitHub::issues()->index()->collect();
 * Added support for retrieving individual commits by SHA
 
 ```php
-GitHub::commits()->get('sha-hash');
+Github::commits()->get('owner/repo', '0123456789abcdef0123456789abcdef01234567');
 
 ```
 #### Details
@@ -130,10 +137,9 @@ The new commit endpoint provides authenticated access to detailed commit informa
 #### Usage Example
 
 ```php
-$commit = GitHub::commits()->get('abc123def456...');
-// Access commit data
-$author = $commit->author;
-$message = $commit->message;
+$commit = Github::commits()->get('owner/repo', '0123456789abcdef0123456789abcdef01234567');
+$author = $commit->commit->author->name;
+$message = $commit->commit->message;
 $changes = $commit->files;
 
 ```

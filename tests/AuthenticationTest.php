@@ -179,11 +179,6 @@ describe('Authentication improvements', function () {
             ->and($repo->private)->toBeFalse();
     });
 
-    it('provides helpful error message when rate limit is exceeded without auth', function () {
-        // Skip this test for now - mock client exception handling needs investigation
-        expect(true)->toBeTrue();
-    })->skip('Mock client exception handling needs investigation');
-
     it('provides authentication status from available sources', function () {
         // This test verifies that TokenResolver returns a valid authentication status
         // Priority order: env vars -> config -> GitHub CLI -> none

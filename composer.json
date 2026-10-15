@@ -1,6 +1,6 @@
 {
     "name": "jordanpartridge/github-client",
-    "description": "A powerful, Laravel-first GitHub API client with auto-pagination, strong typing, and comprehensive GitHub integration for repositories, pull requests, issues, and more.",
+    "description": "Laravel client for the GitHub REST API, built with Saloon. Typed responses for repositories, issues, pull requests, commits, releases, and Actions.",
     "keywords": [
         "laravel",
         "github",
@@ -9,7 +9,6 @@
         "php",
         "saloon",
         "api-client",
-        "conduit-ui",
         "repositories",
         "pull-requests",
         "issues",
@@ -46,8 +45,7 @@
     },
     "autoload": {
         "psr-4": {
-            "JordanPartridge\\GithubClient\\": "src/",
-            "JordanPartridge\\GithubClient\\Database\\Factories\\": "database/factories/"
+            "JordanPartridge\\GithubClient\\": "src/"
         }
     },
     "autoload-dev": {

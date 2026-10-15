@@ -5,7 +5,6 @@ namespace JordanPartridge\GithubClient\Resources;
 use JordanPartridge\GithubClient\Requests\Actions\GetWorkflowRuns;
 use JordanPartridge\GithubClient\Requests\Actions\ListWorkflows;
 use JordanPartridge\GithubClient\Requests\Actions\TriggerWorkflow;
-use JordanPartridge\GithubClient\ValueObjects\Repo;
 use Saloon\Http\Response;
 
 /**
@@ -19,18 +18,13 @@ use Saloon\Http\Response;
  *
  * Usage example:
  * ```php
- * $actions = new ActionsResource($connector);
+ * $workflows = $actions->listWorkflows('owner', 'repo');
  *
- * // List workflows for a repository
- * $workflows = $actions->listWorkflows('owner/repo');
+ * $runs = $actions->getWorkflowRuns('owner', 'repo', $workflowId);
  *
- * // Get workflow runs
- * $runs = $actions->getWorkflowRuns('owner/repo', $workflow_id);
- *
- * // Trigger a workflow
- * $result = $actions->triggerWorkflow('owner/repo', $workflow_id, [
+ * $result = $actions->triggerWorkflow('owner', 'repo', $workflowId, [
  *     'ref' => 'main',
- *     'inputs' => ['test' => 'value']
+ *     'inputs' => ['test' => 'value'],
  * ]);
  * ```
  */

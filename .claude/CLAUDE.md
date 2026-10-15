@@ -1,186 +1,40 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Notes for working in this repository.
 
-## Project Overview
+## What this package is
 
-A Laravel package providing a strongly-typed GitHub API client built on Saloon. This package integrates with Laravel's service container and configuration system while providing resource-based access to GitHub's API endpoints.
+A Laravel package that calls the GitHub REST API with Saloon. Resources live in `src/Resources` and build request classes in `src/Requests`. Responses are mapped by `createDtoFromResponse()` onto plain PHP objects in `src/Data`. Those objects are not Spatie Laravel Data objects.
 
-## Key Commands
+The facade `JordanPartridge\GithubClient\Facades\Github` resolves `JordanPartridge\GithubClient\Github`. Inject that class. There is no `GithubConnectorInterface`.
 
-### Testing
+The connector is `JordanPartridge\GithubClient\Connectors\GithubConnector`. Its base URL is `https://api.github.com`.
+
+## Commands
+
 ```bash
-# Run all tests
-vendor/bin/pest
-
-# Run specific test file
-vendor/bin/pest tests/Feature/ReposTest.php
-
-# Run with coverage
-vendor/bin/pest --coverage
-
-# Run tests matching pattern
-vendor/bin/pest --filter="it can get a repository"
+composer test
+composer analyse
+composer format
 ```
 
-### Code Quality
-```bash
-# Format code with Laravel Pint
-vendor/bin/pint
+Tests are Pest. HTTP is faked with Saloon's `MockClient`. `GITHUB_TOKEN` is set in `tests/Pest.php` so token resolution does not call the GitHub CLI.
 
-# Check formatting without fixing
-vendor/bin/pint --test
+## Public API shape
 
-# Run static analysis
-vendor/bin/phpstan analyse
-```
+- `Github::repos()->all()` returns a Saloon response. Call `dto()`.
+- `Github::repos()->get()` takes `Repo::fromFullName('owner/repo')`.
+- `Github::getRepo('owner/repo')` is the string helper.
+- `Github::issues()->forRepo()` returns a Saloon response. `dto()` drops items that include a `pull_request` key.
+- `Github::pullRequests()->merge()` returns a boolean.
+- `Github::commits()->get($repo, $sha)` and `Github::files()->all($repo, $sha)` require a 40 character SHA.
+- `Github::files()` has `all` only.
+- `Github::releases()` has `all`, `get`, and `latest`.
+- `Github::actions()` methods are `listWorkflows`, `getWorkflowRuns`, and `triggerWorkflow`.
+- Token order is `github-client.token`, then `github-client.gh_token`, then `gh auth token`.
 
-### Development
-```bash
-# Install dependencies
-composer install
+`Github::forInstallation()`, `Github::withApp()`, and `installations()` are on the default branch. They are not in the Packagist `v3.0.0` tag.
 
-# Update dependencies
-composer update
+## Tests and docs
 
-# Run tests in CI environment
-GITHUB_TOKEN=dummy-token-for-testing vendor/bin/pest
-```
-
-## Architecture
-
-### Core Components
-
-**Resource Pattern**: All API endpoints are organized as resources extending `BaseResource`:
-- Resources live in `src/Resources/` and handle high-level API operations
-- Each resource maps to a GitHub API entity (repos, pulls, issues, etc.)
-- Resources use request classes in `src/Requests/` for actual API calls
-- Resources return strongly-typed DTOs from `src/Data/`
-
-**Request/Response Flow**:
-1. User calls method on resource (e.g., `Github::repos()->get()`)
-2. Resource creates appropriate request object from `src/Requests/`
-3. Request is sent via Saloon connector (`ConduitUi\GitHubConnector\GithubConnector`)
-4. Response is transformed into DTO using `spatie/laravel-data`
-5. Typed DTO is returned to user
-
-**Authentication System**:
-- Uses `ConduitUi\GitHubConnector\GithubConnector` with token authentication
-- Token configured via `GITHUB_TOKEN` environment variable
-- OAuth support available through `GithubOAuth` class for user authentication flows
-
-### Directory Structure
-
-```
-src/
-├── Auth/                  # Authentication strategies
-├── Commands/              # Artisan commands
-├── Concerns/              # Shared traits
-├── Contracts/             # Interfaces
-├── Data/                  # DTOs for API responses
-│   ├── Commits/
-│   ├── Issues/
-│   ├── Pulls/
-│   ├── Releases/
-│   └── Repos/
-├── Enums/                 # Type-safe enums for API parameters
-├── Exceptions/            # Custom exception classes
-├── Facades/               # Laravel facades
-├── Requests/              # Saloon request classes
-│   ├── Actions/
-│   ├── Commits/
-│   ├── Files/
-│   ├── Issues/
-│   ├── Pulls/
-│   ├── Releases/
-│   └── Repos/
-├── Resources/             # Resource classes for API entities
-└── ValueObjects/          # Value objects (e.g., Repo)
-```
-
-### Key Design Patterns
-
-**Value Objects**: The `Repo` value object validates and parses repository identifiers:
-- `Repo::fromFullName("owner/repo")` - Creates from full name
-- `Repo::fromUrl("https://github.com/owner/repo")` - Creates from URL
-- Provides `owner()` and `name()` accessors
-
-**Enum-Based Validation**: All API parameters use PHP enums for type safety:
-- `Visibility` (PUBLIC, PRIVATE, ALL)
-- `Sort` (CREATED, UPDATED, PUSHED, FULL_NAME)
-- `Direction` (ASC, DESC)
-- `MergeMethod` (MERGE, SQUASH, REBASE)
-- Issue/PR specific enums in their respective namespaces
-
-**DTO Pattern**: All API responses are mapped to DTOs using `spatie/laravel-data`:
-- Provides type safety and IDE autocompletion
-- Handles nullable fields gracefully
-- Supports nested data structures
-
-## Testing Approach
-
-Tests use Pest PHP with Laravel testing helpers. Key patterns:
-- Mock Saloon responses using `MockClient`
-- Test both success and failure scenarios
-- Validate DTO structure and data transformation
-- Test enum validation and parameter handling
-
-## Known Issues & TODOs
-
-### ReleasesResource Bug
-The `ReleasesResource` class incorrectly calls `Repo::fromOwnerAndRepo()` which doesn't exist. Should use `Repo::fromFullName()` instead. Affected lines: ~77, ~106, ~122
-
-### Authentication Enhancement Needed
-- Make authentication optional for public repositories
-- Support GitHub CLI token reuse (`gh auth token`)
-- Better error messages for missing tokens
-- Check authentication sources in order: GitHub CLI → env vars → config
-
-### Missing Helper Method
-Add `Repo::fromOwnerAndRepo(string $owner, string $repo)` convenience method that internally calls `fromFullName()`.
-
-## Integration Points
-
-### Laravel Service Provider
-`GithubClientServiceProvider` registers:
-- GitHub facade binding
-- Configuration publishing
-- Service container bindings
-
-### Configuration
-Published via `config/github-client.php`:
-- Token configuration
-- OAuth settings
-- API endpoint customization
-
-### Facade Usage
-```php
-use JordanPartridge\GithubClient\Facades\Github;
-
-$repos = Github::repos()->all();
-```
-
-### Dependency Injection
-```php
-use JordanPartridge\GithubClient\Contracts\GithubConnectorInterface;
-
-public function __construct(GithubConnectorInterface $github) {
-    $this->github = $github;
-}
-```
-
-## Error Handling
-
-Custom exceptions provide context-specific error information:
-- `ApiException` - API request failures
-- `AuthenticationException` - Auth issues
-- `RateLimitException` - Rate limit exceeded
-- `ValidationException` - Input validation failures
-- `NetworkException` - Connectivity issues
-
-## Performance Considerations
-
-- Auto-pagination available via `allWithPagination()` methods
-- Rate limit checking via `getRateLimitStatus()`
-- Response caching handled by Saloon
-- Lazy loading of resources to minimize memory usage
+README examples are exercised in `tests/DocumentationExamplesTest.php`. If a signature changes, update that test and the README together.

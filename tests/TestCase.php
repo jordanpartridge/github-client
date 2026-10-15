@@ -2,21 +2,11 @@
 
 namespace JordanPartridge\GithubClient\Tests;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use JordanPartridge\GithubClient\GithubClientServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'JordanPartridge\\GithubClient\\Database\\Factories\\' . class_basename($modelName) . 'Factory',
-        );
-    }
-
     protected function getPackageProviders($app)
     {
         return [
@@ -28,14 +18,7 @@ class TestCase extends Orchestra
     {
         config()->set('database.default', 'testing');
 
-        // Set up github-client configuration for testing
         config()->set('github-client.token', 'test-token');
-        config()->set('github-client.base_url', 'https://api.github.com');
-
-        /*
-        $migration = include __DIR__.'/../database/migrations/create_github-client_table.php.stub';
-        $migration->up();
-        */
     }
 
     protected function createMockUserData(string $login = 'testuser', int $id = 1): array
