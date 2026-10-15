@@ -1,70 +1,16 @@
-# Core Concepts
+# How the client is put together
 
-## Architecture Overview
+`GithubClientServiceProvider` registers four things:
 
-The GitHub Client is built on several key concepts:
+- The `github-client` config file
+- The `github-client` Artisan command
+- A singleton `GithubConnector`
+- `JordanPartridge\GithubClient\Github`, which the `Github` facade resolves
 
-### 1. Resource Pattern
+Each resource (`repos()`, `issues()`, `pullRequests()`, and the rest) builds a Saloon request, sends it through `GithubConnector`, and maps the body in `createDtoFromResponse()`.
 
-The package follows Laravel's resource pattern for intuitive API interactions:
+DTOs in `src/Data` are plain PHP objects with a `fromArray()` or `fromApiResponse()` method. They are not Spatie Laravel Data objects. A missing key throws while the object is constructed. List endpoints that use `HandlesIssueResponses` skip an item that cannot be mapped.
 
-```php
-GitHub::resource()->action();
-```
+`Repo::fromFullName('owner/repo')` checks that the string has one slash and that each side matches `[a-zA-Z0-9._-]+`.
 
-### 2. Typed Responses
-
-All responses are fully typed using Spatie's Data objects:
-
-```php
-class Repository extends Data
-{
-    public string $name;
-    public string $full_name;
-    // ...
-}
-```
-
-### 3. Dependency Injection
-
-The package supports Laravel's dependency injection:
-
-```php
-public function __construct(
-    private readonly GitHub $github
-) {}
-```
-
-## Key Components
-
-### 1. Saloon Integration
-
-Built on Saloon for reliable API handling:
-
-```php
-class GitHubConnector extends Connector
-{
-    public function resolveBaseUrl(): string
-    {
-        return 'https://api.github.com';
-    }
-}
-```
-
-### 2. Configuration
-
-Flexible configuration through Laravel's config system:
-
-```php
-return [
-    'token' => env('GITHUB_TOKEN'),
-    'token_type' => 'bearer',
-];
-```
-
-## Best Practices
-
-1. Use typed responses for better IDE support
-2. Leverage dependency injection
-3. Follow resource patterns consistently
-4. Handle rate limiting appropriately
+Enums replace a few query strings: `Visibility`, `Sort`, `Direction`, `Repos\Type`, `Issues\State`, `Issues\Sort`, `Pulls\State`, `Pulls\Sort`, and `MergeMethod`. Pull request list filters are still a plain array.

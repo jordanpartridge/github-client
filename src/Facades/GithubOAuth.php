@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Facade;
 use JordanPartridge\GithubClient\Auth\GithubOAuth as GithubOAuthClass;
 
 /**
- * @method static string getAuthorizationUrl(array $scopes = ['repo'])
+ * @method static string getAuthorizationUrl(array $scopes = ['repo'], ?string $state = null)
  * @method static string getAccessToken(string $code)
  *
  * @see GithubOAuthClass

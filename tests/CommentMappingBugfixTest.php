@@ -4,8 +4,7 @@ use JordanPartridge\GithubClient\Data\Pulls\PullRequestDTO;
 
 describe('Comment Mapping Bug Fix (Issue #71)', function () {
     it('handles GitHub API returning string values for comment counts', function () {
-        // This reproduces the exact scenario from conduit know:
-        // API returns comments: 1, review_comments: 20 but DTO shows 0, 0
+        // GitHub sometimes returns comment counts that need an integer cast.
         $githubApiResponse = [
             'id' => 123456,
             'number' => 42,

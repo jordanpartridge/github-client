@@ -1,48 +1,39 @@
-# Getting Started
+# Getting started
 
-## Installation
-
-Install the package via Composer:
+## Install
 
 ```bash
 composer require jordanpartridge/github-client
+php artisan vendor:publish --tag=github-client-config
 ```
 
-## Basic Configuration
+That Composer command installs the latest Packagist tag. The calls on this page match the default branch.
 
-1. Generate a GitHub token in your [GitHub Settings](https://github.com/settings/tokens)
-2. Add the token to your `.env` file:
+## Token
 
-```dotenv
-GITHUB_TOKEN=your-token-here
+```env
+GITHUB_TOKEN=ghp_your_token_here
 ```
 
-## Basic Usage
+`TokenResolver` checks `config('github-client.token')`, then `config('github-client.gh_token')`, then `gh auth token`. With no token, public repository requests still run, on GitHub's unauthenticated rate limit.
 
-### Working with Repositories
+## First calls
 
 ```php
 use JordanPartridge\GithubClient\Facades\Github;
 
-// List repositories
-$repos = Github::repos()->all();
+$repos = Github::repos()->all()->dto();
 
-// Get specific repository
-$repo = Github::repos()->get('owner/repo');
+$repo = Github::getRepo('laravel/framework');
+
+$commits = Github::commits()->all('laravel/framework');
 ```
 
-### Working with Commits
+`repos()->all()` returns a Saloon response, so call `dto()` before reading `RepoData` properties. `repos()->get()` does not accept a string. Pass `Repo::fromFullName('owner/repo')`, or use `Github::getRepo()`.
 
-```php
-// List commits
-$commits = Github::commits()->all('owner/repo');
+`commits()->get($repo, $sha)` needs the full `owner/repo` name and a 40 character SHA.
 
-// Get specific commit
-$commit = Github::commits()->get('sha');
-```
+## Next
 
-## Next Steps
-
-- Learn about [Core Concepts](./core-concepts.md)
-- Explore [Advanced Usage](./advanced-usage.md)
-- Review [Security Best Practices](./security.md)
+- [API reference](./api-reference.md)
+- [Authentication and errors](./advanced-usage.md)

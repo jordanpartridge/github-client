@@ -118,7 +118,7 @@ describe('Search functionality', function () {
                     'allow_forking' => true,
                     'is_template' => false,
                     'web_commit_signoff_required' => false,
-                    'topics' => ['conduit-component', 'laravel'],
+                    'topics' => ['laravel-package', 'laravel'],
                     'visibility' => 'public',
                     'forks' => 9,
                     'open_issues' => 0,
@@ -135,7 +135,7 @@ describe('Search functionality', function () {
             ],
         ], 200));
 
-        $result = Github::repos()->search('topic:conduit-component');
+        $result = Github::repos()->search('topic:laravel-package');
 
         expect($result)->toBeInstanceOf(SearchRepositoriesData::class);
         expect($result->total_count)->toBe(2);
@@ -183,7 +183,7 @@ describe('Search functionality', function () {
 
     it('constructs correct query parameters', function () {
         $search = new Search(
-            searchQuery: 'topic:conduit-component',
+            searchQuery: 'topic:laravel-package',
             sort: 'stars',
             order: Direction::DESC,
             per_page: 20,
@@ -196,7 +196,7 @@ describe('Search functionality', function () {
         $query = $method->invoke($search);
 
         expect($query)->toBe([
-            'q' => 'topic:conduit-component',
+            'q' => 'topic:laravel-package',
             'sort' => 'stars',
             'order' => 'desc',
             'per_page' => 20,

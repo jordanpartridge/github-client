@@ -15,8 +15,6 @@ class GithubClientServiceProvider extends PackageServiceProvider
         $package
             ->name('github-client')
             ->hasConfigFile()
-            ->hasViews()
-            ->hasMigration('create_github_client_table')
             ->hasCommand(GithubClientCommand::class);
 
         $this->app->singleton(GithubConnector::class, function () {

@@ -1,6 +1,8 @@
 <?php
 
 use JordanPartridge\GithubClient\Facades\Github;
+use Saloon\Http\Faking\MockClient;
+use Saloon\Http\Faking\MockResponse;
 
 describe('Issues validation', function () {
     beforeEach(function () {
@@ -37,9 +39,13 @@ describe('Issues validation', function () {
             ->toThrow(InvalidArgumentException::class, 'Comment body cannot be empty');
     });
 
-    it('accepts valid issue numbers', function () {
-        // These should not throw exceptions during validation
-        // (they would fail when actually making HTTP calls without mocking)
-        $this->assertTrue(true); // Placeholder - validation passes
+    it('accepts a positive issue number', function () {
+        Github::connector()->withMockClient(new MockClient([
+            '*' => MockResponse::make($this->createMockIssueData(['number' => 7]), 200),
+        ]));
+
+        $issue = Github::issues()->get('test', 'repo', 7);
+
+        expect($issue->number)->toBe(7);
     });
 });

@@ -10,7 +10,7 @@ describe('General', function () {
 });
 describe('Resources', function () {
     arch('resources extend the base resource', function () {
-        expect('JordanPartridge\GithubClient\Response')->toExtend(BaseResource::class);
+        expect('JordanPartridge\GithubClient\Resources')->toExtend(BaseResource::class);
     });
 });
 

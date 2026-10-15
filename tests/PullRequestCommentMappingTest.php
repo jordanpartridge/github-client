@@ -163,7 +163,7 @@ describe('PullRequest Comment Mapping Diagnostics', function () {
 
         $dto = PullRequestDTO::fromApiResponse($debugApiResponse);
 
-        // The exact scenario mentioned in conduit know
+        // Comment counts from the pull request payload.
         expect($dto->comments)->toBe(1)
             ->and($dto->review_comments)->toBe(20)
             ->and($dto->number)->toBe(42);
