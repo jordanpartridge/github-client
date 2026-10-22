@@ -14,19 +14,49 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
-          ref: main
+          ref: master
+
+      # v3.1.0 is already written in CHANGELOG.md. Skip when this release's
+      # name or tag already has a heading, so the release does not add it again.
+      - name: Check for an existing changelog entry
+        id: changelog
+        env:
+          RELEASE_NAME: ${{ github.event.release.name }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          heading_exists() {
+            version="$1"
+            [ -n "$version" ] || return 1
+            awk -v version="$version" '
+              index($0, "## " version) == 1 {
+                rest = substr($0, length("## " version) + 1)
+                if (rest == "" || substr(rest, 1, 1) ~ /[[:space:]]/) {
+                  found = 1
+                }
+              }
+              END { exit found ? 0 : 1 }
+            ' CHANGELOG.md
+          }
+
+          if heading_exists "$RELEASE_NAME" || heading_exists "$RELEASE_TAG"; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Update Changelog
+        if: steps.changelog.outputs.exists != 'true'
         uses: stefanzweifel/changelog-updater-action@v1
         with:
           latest-version: ${{ github.event.release.name }}
           release-notes: ${{ github.event.release.body }}
 
-      - name: CommitDTO updated CHANGELOG
+      - name: Commit updated CHANGELOG
+        if: steps.changelog.outputs.exists != 'true'
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
-          branch: main
+          branch: master
           commit_message: Update CHANGELOG
           file_pattern: CHANGELOG.md
