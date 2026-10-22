@@ -130,7 +130,7 @@ class GithubConnector extends Connector
      */
     public function getAuthenticationStatus(): array
     {
-        if (! $this->token) {
+        if (! $this->isAuthenticated()) {
             return [
                 'authenticated' => false,
                 'source' => null,
@@ -141,7 +141,7 @@ class GithubConnector extends Connector
         return [
             'authenticated' => true,
             'source' => $this->tokenSource,
-            'token_preview' => substr($this->token, 0, 7) . '...',
+            'token_preview' => $this->token ? substr($this->token, 0, 7) . '...' : null,
             'message' => "Authenticated via {$this->tokenSource} (5,000 requests/hour).",
         ];
     }
@@ -192,7 +192,7 @@ class GithubConnector extends Connector
     {
         $helpMessage = $message ?: 'GitHub authentication failed';
 
-        if (! $this->token) {
+        if (! $this->isAuthenticated()) {
             $helpMessage .= "\n\nThis endpoint requires authentication. ";
             $helpMessage .= TokenResolver::getAuthenticationHelp();
         } else {
@@ -219,7 +219,7 @@ class GithubConnector extends Connector
         // Otherwise it's a permissions issue
         $helpMessage = $message ?: 'Access to this GitHub resource is forbidden';
 
-        if ($this->token) {
+        if ($this->isAuthenticated()) {
             $helpMessage .= "\n\nYour token may not have the required scopes for this operation.";
             $helpMessage .= "\nCheck that your token has the necessary permissions.";
         } else {
@@ -259,14 +259,14 @@ class GithubConnector extends Connector
     {
         $headers = $response->headers();
         $remaining = (int) ($headers->get('X-RateLimit-Remaining') ?? 0);
-        $limit = (int) ($headers->get('X-RateLimit-Limit') ?? ($this->token ? 5000 : 60));
+        $limit = (int) ($headers->get('X-RateLimit-Limit') ?? ($this->isAuthenticated() ? 5000 : 60));
         $reset = $headers->get('X-RateLimit-Reset');
         $resetTime = $reset ? new \DateTimeImmutable('@' . $reset) : new \DateTimeImmutable('+1 hour');
 
         // Build helpful message
         $helpMessage = $message ?: 'GitHub API rate limit exceeded';
 
-        if (! $this->token) {
+        if (! $this->isAuthenticated()) {
             $helpMessage .= "\n\nYou're using unauthenticated requests (60/hour limit).";
             $helpMessage .= "\n" . TokenResolver::getAuthenticationHelp();
         } else {

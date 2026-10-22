@@ -9,6 +9,7 @@ All notable changes to `github-client` will be documented in this file.
 * GitHub App authentication: `Github::forInstallation()`, `Github::withApp()`, and the `installations()` resource
 * Laravel 13 support
 * Requires `saloonphp/saloon` ^4.3 and `firebase/php-jwt` ^7.0
+* Connector status and error help recognize strategy-based authentication, including GitHub App auth
 * Documentation matches the public methods and return types
 * Removed the unused skeleton migration, factory, and view
 * OAuth throws `AuthenticationException` when the client id, secret, or redirect URL is missing, and `getAuthorizationUrl()` accepts a state value
