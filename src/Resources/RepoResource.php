@@ -26,7 +26,7 @@ use Saloon\Http\Response;
  *
  * Usage example:
  * ```php
- * $repos = new RepoResource($connector);
+ * $repos = Github::repos();
  *
  * // List all public repositories
  * $response = $repos->all(
