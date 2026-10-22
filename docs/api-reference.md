@@ -107,7 +107,7 @@ Github::hasRateLimitExceeded(): bool
 
 ## GitHub App
 
-On the default branch, and not in Packagist `v3.0.0`:
+Available from `v3.1.0`:
 
 ```php
 Github::forInstallation(int $installationId): Github

@@ -38,7 +38,7 @@ GITHUB_APP_PRIVATE_KEY=
 GITHUB_APP_PRIVATE_KEY_PATH=
 ```
 
-`Github::forInstallation($id)` and `Github::withApp($appId, $privateKey, $installationId)` return a new client. They are on the default branch and are not in the `v3.0.0` tag. The private key may be PEM text or a file path.
+`Github::forInstallation($id)` and `Github::withApp($appId, $privateKey, $installationId)` return a new client. They are available from `v3.1.0`. The private key may be PEM text or a file path.
 
 ## Errors
 

@@ -12,7 +12,7 @@ composer require jordanpartridge/github-client
 [![Downloads](https://img.shields.io/packagist/dt/jordanpartridge/github-client.svg?style=flat-square)](https://packagist.org/packages/jordanpartridge/github-client)
 [![License](https://img.shields.io/github/license/jordanpartridge/github-client?style=flat-square)](LICENSE.md)
 
-`composer require` installs the latest tag on Packagist. The examples below match the default branch. `Github::forInstallation()`, `Github::withApp()`, and `installations()` are on that branch and are not in the `v3.0.0` tag.
+`Github::forInstallation()`, `Github::withApp()`, and `installations()` are available from `v3.1.0`.
 
 ## Install
 
@@ -286,7 +286,7 @@ Missing OAuth config throws `AuthenticationException` from `getAuthorizationUrl(
 
 ## GitHub App
 
-These helpers are on the default branch. They are not in Packagist `v3.0.0`.
+Available from `v3.1.0`.
 
 ```env
 GITHUB_APP_ID=123456
