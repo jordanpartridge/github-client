@@ -27,6 +27,8 @@ SELF_JOBS = {j.strip() for j in os.environ.get("SELF_JOBS", "compose,post").spli
 OWNER, NAME = REPO.split("/", 1)
 
 NOISE = re.compile(r"(dependabot|renovate|^bump |^update .* requirement from|chore\(deps|^fix styling$|^update changelog|^merge (branch|pull request)|^merge remote|full changelog)", re.I)
+HOUSE_APPS = {"epic-werkflow", "lexi-chief-of-staff"}
+QR_DUPES = {"pest", "pint", "phpstan", "rector"}  # Lexi mirrors the quality-runners statuses under these names
 BOTS_SKIP_REVIEW = {"dependabot[bot]", "github-actions[bot]"}
 
 
@@ -266,14 +268,15 @@ def reviews_and_changes(prs):
 
 
 def local_pipeline(sha, prs):
-    """House pipeline: quality-runners commit statuses + epic-werkflow check runs."""
+    """House pipeline: quality-runners commit statuses, plus Lexi (risk) and Werkflow check runs."""
     lines = []
     targets = [(f"release {sha[:7]}", sha)] + [(f"PR {p['number']}", p["head"]["sha"]) for p in prs]
     for label, s in targets:
         st = api(f"repos/{REPO}/commits/{s}/status") or {}
         qr = {x["context"]: x for x in st.get("statuses", []) if x["context"].startswith("quality-runners/")}
         cr = api(f"repos/{REPO}/commits/{s}/check-runs?per_page=100&filter=latest") or {}
-        wf = [r for r in cr.get("check_runs", []) if (r.get("app") or {}).get("slug") == "epic-werkflow"]
+        wf = [r for r in cr.get("check_runs", []) if (r.get("app") or {}).get("slug") in HOUSE_APPS
+              and not r["name"].startswith("quality-runners/") and r["name"] not in QR_DUPES]
         if not qr and not wf:
             continue
         bits = []
@@ -283,7 +286,8 @@ def local_pipeline(sha, prs):
         if qr:
             bits.append(", ".join(f"{k.split('/', 1)[1]} {v['state']}" for k, v in sorted(qr.items())))
         for r in wf:
-            bits.append(f"{clean(r['name'], 40)} {r.get('conclusion') or r.get('status')}")
+            title = (r.get("output") or {}).get("title") or ""
+            bits.append(f"{clean(r['name'], 40)} {r.get('conclusion') or r.get('status')}" + (f" ({clean(title, 80)})" if title else ""))
         lines.append(f"- {label}: " + "; ".join(bits))
     return ("Local pipeline:", lines)
 
