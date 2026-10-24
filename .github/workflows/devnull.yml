@@ -56,7 +56,7 @@ jobs:
     if: needs.compose.outputs.body != ''
     runs-on: ubuntu-latest
     steps:
-      - uses: dev-null-sh/dev-null.sh/.github/actions/commit@production
+      - uses: dev-null-sh/dev-null.sh/.github/actions/commit@a003e08f15e49eb89a52c5208506bbf8ed37c270 # production
         with:
           body: ${{ needs.compose.outputs.body }}
           ssh-key: ${{ secrets.DEVNULL_SSH_KEY }}

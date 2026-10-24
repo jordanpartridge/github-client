@@ -298,6 +298,28 @@ def render(sections, head, tail):
     return "\n\n".join(b for b in blocks if b)
 
 
+def machine_footer(sha):
+    """Fixed trailer: repo, version (the tag), full commit SHA, release or commit link."""
+    link = URL or (f"https://github.com/{REPO}/commit/{sha}" if sha else "")
+    return "\n".join(x for x in [
+        f"repo: {REPO}",
+        f"version: {TAG}",
+        f"commit: {sha}" if sha else "",
+        link,
+    ] if x)
+
+
+def finish(text, footer):
+    """Keep the footer intact when the 4000-character cap trims the post."""
+    if len(text) > LIMIT and footer and text.endswith(footer):
+        body = text[: -len(footer)].rstrip()
+        room = LIMIT - len(footer) - 2
+        return (body[:room].rstrip() + "\n\n" + footer) if room > 0 else footer[:LIMIT]
+    if len(text) > LIMIT:
+        return text[:LIMIT]
+    return text
+
+
 def main():
     sha = tag_sha()
     prev = previous_tag()
@@ -308,7 +330,9 @@ def main():
     sections = [patch_notes(commits, prs), tests(sha) if sha else ("Tests:", []), acceptance(prs), rev, chg,
                 local_pipeline(sha, prs) if sha else ("Local pipeline:", [])]
     head = f"{NAME} {TAG}: {clean(PITCH, 400)}" if PITCH else f"{NAME} {TAG}"
-    tail = "\n".join(x for x in [f"composer require {PACKAGE}" if PACKAGE else "", URL] if x)
+    footer = machine_footer(sha)
+    install = f"composer require {PACKAGE}" if PACKAGE else ""
+    tail = "\n\n".join(x for x in [install, footer] if x)
     # trim lowest priority first: changed in review, local pipeline, reviews, AC, tests, patch notes
     order = [4, 5, 3, 2, 1, 0]
     for idx in order:
@@ -319,7 +343,7 @@ def main():
             main.dropped = {**getattr(main, "dropped", {}), idx: dropped}
             ls = ls[:-1]
             sections[idx] = (title, ls + ([f"- (+{dropped} more)"] if ls else []))
-    print(render(sections, head, tail)[:LIMIT])
+    print(finish(render(sections, head, tail), footer))
 
 
 if __name__ == "__main__":
