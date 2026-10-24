@@ -1,0 +1,30 @@
+name: Lean package
+
+on:
+  pull_request:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  lean-package-validator:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+          tools: none
+      - name: Validate .gitattributes and the dist archive
+        env:
+          LPV_VERSION: v6.3.2
+        run: |
+          curl -fsSL -o "$RUNNER_TEMP/lpv.phar" \
+            "https://github.com/raphaelstolt/lean-package-validator/releases/download/${LPV_VERSION}/lean-package-validator.phar"
+          args=(--keep-readme --validate-git-archive)
+          if ls LICENSE* >/dev/null 2>&1; then args+=(--keep-license); fi
+          php "$RUNNER_TEMP/lpv.phar" validate "${args[@]}" .

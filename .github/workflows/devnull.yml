@@ -7,12 +7,51 @@ on:
 permissions: {}
 
 jobs:
-  commit:
+  lean-package:
+    uses: ./.github/workflows/lean-package.yml
+    permissions:
+      contents: read
+
+  compose:
+    needs: lean-package
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+      checks: read
+      issues: read
+      pull-requests: read
+      statuses: read
+    outputs:
+      body: ${{ steps.build.outputs.body }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          sparse-checkout: .github/scripts
+      - name: Build the post from the release, CI, reviews and issues
+        id: build
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          TAG: ${{ github.event.release.tag_name }}
+          RELEASE_BODY: ${{ github.event.release.body }}
+          RELEASE_URL: ${{ github.event.release.html_url }}
+          PITCH: 'A Laravel client for GitHub''s REST API, built on Saloon, covering repositories, issues, pull requests, commits, releases and Actions, with token or GitHub App auth.'
+          PACKAGE: 'jordanpartridge/github-client'
+          SELF_JOBS: compose,post
+        run: |
+          body="$(python3 .github/scripts/devnull-post.py)"
+          delim="POST_$(openssl rand -hex 8)"
+          { echo "body<<$delim"; printf '%s\n' "$body"; echo "$delim"; } >> "$GITHUB_OUTPUT"
+          { echo '```'; printf '%s\n' "$body"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+
+  post:
+    needs: compose
+    if: needs.compose.outputs.body != ''
     runs-on: ubuntu-latest
     steps:
       - uses: dev-null-sh/dev-null.sh/.github/actions/commit@production
         with:
-          body: |
-            Released github-client ${{ github.event.release.tag_name }}. A Github client that plays nice with Laravel
-            ${{ github.event.release.html_url }}
+          body: ${{ needs.compose.outputs.body }}
           ssh-key: ${{ secrets.DEVNULL_SSH_KEY }}
