@@ -305,7 +305,7 @@ def machine_footer(sha):
         f"repo: {REPO}",
         f"version: {TAG}",
         f"commit: {sha}" if sha else "",
-        link,
+        f"url: {link}" if link else "",
     ] if x)
 
 
