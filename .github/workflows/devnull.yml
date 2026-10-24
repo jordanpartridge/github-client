@@ -12,8 +12,13 @@ jobs:
     permissions:
       contents: read
 
+  release-checks:
+    uses: ./.github/workflows/release-checks.yml
+    permissions:
+      contents: read
+
   compose:
-    needs: lean-package
+    needs: [lean-package, release-checks]
     runs-on: ubuntu-latest
     permissions:
       contents: read

@@ -1,0 +1,30 @@
+name: Release checks
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  release-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+          tools: composer
+      - name: Install version-aligner and composer-peel (CI only, not added to composer.json)
+        run: |
+          export COMPOSER_HOME="$RUNNER_TEMP/composer"
+          composer global require --no-interaction --no-progress stolt/version-aligner:^1.3 stolt/composer-peel:^4.2
+          echo "$COMPOSER_HOME/vendor/bin" >> "$GITHUB_PATH"
+      - name: Version alignment and release readiness
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: bash .github/scripts/release-checks.sh
