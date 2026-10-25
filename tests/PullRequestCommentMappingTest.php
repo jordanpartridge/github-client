@@ -114,22 +114,20 @@ describe('PullRequest Comment Mapping Diagnostics', function () {
             ->and($dto->review_comments)->toBe(15);
     });
 
-    it('debug: logs actual API response structure', function () {
-        // This test helps understand what the real API response looks like
-        $debugApiResponse = [
+    it('correctly maps comments with various comment counts', function () {
+        $apiResponse = [
             'id' => 999,
             'number' => 42,
             'state' => 'open',
-            'title' => 'Debug PR',
-            'body' => 'This PR is for debugging comment mapping',
-            'html_url' => 'https://github.com/debug/repo/pull/42',
-            'diff_url' => 'https://github.com/debug/repo/pull/42.diff',
-            'patch_url' => 'https://github.com/debug/repo/pull/42.patch',
+            'title' => 'PR with various comment counts',
+            'body' => 'Test PR',
+            'html_url' => 'https://github.com/test/repo/pull/42',
+            'diff_url' => 'https://github.com/test/repo/pull/42.diff',
+            'patch_url' => 'https://github.com/test/repo/pull/42.patch',
             'base' => ['ref' => 'main'],
-            'head' => ['ref' => 'debug-feature'],
+            'head' => ['ref' => 'feature'],
             'draft' => false,
             'merged' => false,
-            // Test different comment scenarios
             'comments' => 1,
             'review_comments' => 20,
             'commits' => 5,
@@ -137,22 +135,22 @@ describe('PullRequest Comment Mapping Diagnostics', function () {
             'deletions' => 200,
             'changed_files' => 10,
             'user' => [
-                'login' => 'debuguser',
+                'login' => 'testuser',
                 'id' => 999,
                 'node_id' => 'MDQ6VXNlcjk5OQ==',
-                'avatar_url' => 'https://github.com/debuguser.png',
+                'avatar_url' => 'https://github.com/testuser.png',
                 'gravatar_id' => '',
-                'url' => 'https://api.github.com/users/debuguser',
-                'html_url' => 'https://github.com/debuguser',
-                'followers_url' => 'https://api.github.com/users/debuguser/followers',
-                'following_url' => 'https://api.github.com/users/debuguser/following{/other_user}',
-                'gists_url' => 'https://api.github.com/users/debuguser/gists{/gist_id}',
-                'starred_url' => 'https://api.github.com/users/debuguser/starred{/owner}{/repo}',
-                'subscriptions_url' => 'https://api.github.com/users/debuguser/subscriptions',
-                'organizations_url' => 'https://api.github.com/users/debuguser/orgs',
-                'repos_url' => 'https://api.github.com/users/debuguser/repos',
-                'events_url' => 'https://api.github.com/users/debuguser/events{/privacy}',
-                'received_events_url' => 'https://api.github.com/users/debuguser/received_events',
+                'url' => 'https://api.github.com/users/testuser',
+                'html_url' => 'https://github.com/testuser',
+                'followers_url' => 'https://api.github.com/users/testuser/followers',
+                'following_url' => 'https://api.github.com/users/testuser/following{/other_user}',
+                'gists_url' => 'https://api.github.com/users/testuser/gists{/gist_id}',
+                'starred_url' => 'https://api.github.com/users/testuser/starred{/owner}{/repo}',
+                'subscriptions_url' => 'https://api.github.com/users/testuser/subscriptions',
+                'organizations_url' => 'https://api.github.com/users/testuser/orgs',
+                'repos_url' => 'https://api.github.com/users/testuser/repos',
+                'events_url' => 'https://api.github.com/users/testuser/events{/privacy}',
+                'received_events_url' => 'https://api.github.com/users/testuser/received_events',
                 'type' => 'User',
                 'user_view_type' => 'public',
                 'site_admin' => false,
@@ -161,27 +159,10 @@ describe('PullRequest Comment Mapping Diagnostics', function () {
             'updated_at' => '2024-12-01T15:45:00Z',
         ];
 
-        $dto = PullRequestDTO::fromApiResponse($debugApiResponse);
+        $dto = PullRequestDTO::fromApiResponse($apiResponse);
 
-        // Comment counts from the pull request payload.
         expect($dto->comments)->toBe(1)
             ->and($dto->review_comments)->toBe(20)
             ->and($dto->number)->toBe(42);
-
-        // Debug output to understand the mapping
-        expect([
-            'original_comments' => $debugApiResponse['comments'],
-            'original_review_comments' => $debugApiResponse['review_comments'],
-            'dto_comments' => $dto->comments,
-            'dto_review_comments' => $dto->review_comments,
-            'mapping_working' => ($dto->comments === $debugApiResponse['comments'] &&
-                                 $dto->review_comments === $debugApiResponse['review_comments']),
-        ])->toEqual([
-            'original_comments' => 1,
-            'original_review_comments' => 20,
-            'dto_comments' => 1,
-            'dto_review_comments' => 20,
-            'mapping_working' => true,
-        ]);
     });
 });
