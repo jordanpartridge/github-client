@@ -268,3 +268,260 @@ describe('pull request comments', function () {
             ->and($comment->body)->toBe('Consider using a different approach here');
     });
 });
+
+describe('manual pagination', function () {
+    beforeEach(function () {
+        config(['github-client.token' => 'fake-token']);
+    });
+
+    it('fetches all pull requests across multiple pages', function () {
+        $page1Response = MockResponse::make([
+            [
+                'id' => 1,
+                'number' => 1,
+                'state' => 'open',
+                'title' => 'PR 1',
+                'body' => '',
+                'html_url' => 'https://github.com/test/repo/pull/1',
+                'diff_url' => 'https://github.com/test/repo/pull/1.diff',
+                'patch_url' => 'https://github.com/test/repo/pull/1.patch',
+                'base' => ['ref' => 'main'],
+                'head' => ['ref' => 'feature-1'],
+                'draft' => false,
+                'merged' => false,
+                'merged_at' => null,
+                'merge_commit_sha' => null,
+                'comments' => 0,
+                'review_comments' => 0,
+                'commits' => 1,
+                'additions' => 10,
+                'deletions' => 5,
+                'changed_files' => 2,
+                'user' => $this->createMockUserData('testuser', 1),
+                'merged_by' => null,
+                'created_at' => '2024-01-01T00:00:00Z',
+                'updated_at' => '2024-01-01T00:00:00Z',
+                'closed_at' => null,
+            ],
+            [
+                'id' => 2,
+                'number' => 2,
+                'state' => 'open',
+                'title' => 'PR 2',
+                'body' => '',
+                'html_url' => 'https://github.com/test/repo/pull/2',
+                'diff_url' => 'https://github.com/test/repo/pull/2.diff',
+                'patch_url' => 'https://github.com/test/repo/pull/2.patch',
+                'base' => ['ref' => 'main'],
+                'head' => ['ref' => 'feature-2'],
+                'draft' => false,
+                'merged' => false,
+                'merged_at' => null,
+                'merge_commit_sha' => null,
+                'comments' => 0,
+                'review_comments' => 0,
+                'commits' => 1,
+                'additions' => 10,
+                'deletions' => 5,
+                'changed_files' => 2,
+                'user' => $this->createMockUserData('testuser', 1),
+                'merged_by' => null,
+                'created_at' => '2024-01-01T00:00:00Z',
+                'updated_at' => '2024-01-01T00:00:00Z',
+                'closed_at' => null,
+            ],
+        ], 200, [
+            'Link' => '</repos/test/repo/pulls?page=2>; rel="next", </repos/test/repo/pulls?page=2>; rel="last"',
+        ]);
+
+        $page2Response = MockResponse::make([
+            [
+                'id' => 3,
+                'number' => 3,
+                'state' => 'open',
+                'title' => 'PR 3',
+                'body' => '',
+                'html_url' => 'https://github.com/test/repo/pull/3',
+                'diff_url' => 'https://github.com/test/repo/pull/3.diff',
+                'patch_url' => 'https://github.com/test/repo/pull/3.patch',
+                'base' => ['ref' => 'main'],
+                'head' => ['ref' => 'feature-3'],
+                'draft' => false,
+                'merged' => false,
+                'merged_at' => null,
+                'merge_commit_sha' => null,
+                'comments' => 0,
+                'review_comments' => 0,
+                'commits' => 1,
+                'additions' => 10,
+                'deletions' => 5,
+                'changed_files' => 2,
+                'user' => $this->createMockUserData('testuser', 1),
+                'merged_by' => null,
+                'created_at' => '2024-01-01T00:00:00Z',
+                'updated_at' => '2024-01-01T00:00:00Z',
+                'closed_at' => null,
+            ],
+        ], 200, [
+            'Link' => '</repos/test/repo/pulls?page=1>; rel="first", </repos/test/repo/pulls?page=1>; rel="prev"',
+        ]);
+
+        $mockClient = new MockClient();
+        $mockClient->addResponse($page1Response);
+        $mockClient->addResponse($page2Response);
+
+        Github::connector()->withMockClient($mockClient);
+
+        $allPrs = Github::pullRequests()->paginate('test', 'repo');
+
+        expect($allPrs)
+            ->toBeArray()
+            ->toHaveCount(3)
+            ->and($allPrs[0]->title)->toBe('PR 1')
+            ->and($allPrs[1]->title)->toBe('PR 2')
+            ->and($allPrs[2]->title)->toBe('PR 3');
+    });
+
+    it('stops pagination when no more pages available', function () {
+        $singlePageResponse = MockResponse::make([
+            [
+                'id' => 1,
+                'number' => 1,
+                'state' => 'open',
+                'title' => 'PR 1',
+                'body' => '',
+                'html_url' => 'https://github.com/test/repo/pull/1',
+                'diff_url' => 'https://github.com/test/repo/pull/1.diff',
+                'patch_url' => 'https://github.com/test/repo/pull/1.patch',
+                'base' => ['ref' => 'main'],
+                'head' => ['ref' => 'feature-1'],
+                'draft' => false,
+                'merged' => false,
+                'merged_at' => null,
+                'merge_commit_sha' => null,
+                'comments' => 0,
+                'review_comments' => 0,
+                'commits' => 1,
+                'additions' => 10,
+                'deletions' => 5,
+                'changed_files' => 2,
+                'user' => $this->createMockUserData('testuser', 1),
+                'merged_by' => null,
+                'created_at' => '2024-01-01T00:00:00Z',
+                'updated_at' => '2024-01-01T00:00:00Z',
+                'closed_at' => null,
+            ],
+        ], 200);
+
+        Github::connector()->withMockClient(new MockClient([
+            '*' => $singlePageResponse,
+        ]));
+
+        $allPrs = Github::pullRequests()->paginate('test', 'repo');
+
+        expect($allPrs)
+            ->toBeArray()
+            ->toHaveCount(1)
+            ->and($allPrs[0]->title)->toBe('PR 1');
+    });
+
+    it('handles empty pull request list', function () {
+        Github::connector()->withMockClient(new MockClient([
+            '*' => MockResponse::make([], 200),
+        ]));
+
+        $allPrs = Github::pullRequests()->paginate('test', 'repo');
+
+        expect($allPrs)
+            ->toBeArray()
+            ->toHaveCount(0);
+    });
+
+    it('respects filtering parameters during pagination', function () {
+        $openPrsResponse = MockResponse::make([
+            [
+                'id' => 1,
+                'number' => 1,
+                'state' => 'open',
+                'title' => 'Open PR',
+                'body' => '',
+                'html_url' => 'https://github.com/test/repo/pull/1',
+                'diff_url' => 'https://github.com/test/repo/pull/1.diff',
+                'patch_url' => 'https://github.com/test/repo/pull/1.patch',
+                'base' => ['ref' => 'main'],
+                'head' => ['ref' => 'feature-1'],
+                'draft' => false,
+                'merged' => false,
+                'merged_at' => null,
+                'merge_commit_sha' => null,
+                'comments' => 0,
+                'review_comments' => 0,
+                'commits' => 1,
+                'additions' => 10,
+                'deletions' => 5,
+                'changed_files' => 2,
+                'user' => $this->createMockUserData('testuser', 1),
+                'merged_by' => null,
+                'created_at' => '2024-01-01T00:00:00Z',
+                'updated_at' => '2024-01-01T00:00:00Z',
+                'closed_at' => null,
+            ],
+        ], 200);
+
+        Github::connector()->withMockClient(new MockClient([
+            '*' => $openPrsResponse,
+        ]));
+
+        $allPrs = Github::pullRequests()->paginate('test', 'repo', [
+            'state' => 'open',
+            'sort' => 'created',
+            'direction' => 'desc',
+        ]);
+
+        expect($allPrs)
+            ->toBeArray()
+            ->toHaveCount(1)
+            ->and($allPrs[0]->title)->toBe('Open PR');
+    });
+
+    it('throws exception when maximum page limit is exceeded', function () {
+        $infiniteResponse = MockResponse::make([
+            [
+                'id' => 1,
+                'number' => 1,
+                'state' => 'open',
+                'title' => 'PR 1',
+                'body' => '',
+                'html_url' => 'https://github.com/test/repo/pull/1',
+                'diff_url' => 'https://github.com/test/repo/pull/1.diff',
+                'patch_url' => 'https://github.com/test/repo/pull/1.patch',
+                'base' => ['ref' => 'main'],
+                'head' => ['ref' => 'feature-1'],
+                'draft' => false,
+                'merged' => false,
+                'merged_at' => null,
+                'merge_commit_sha' => null,
+                'comments' => 0,
+                'review_comments' => 0,
+                'commits' => 1,
+                'additions' => 10,
+                'deletions' => 5,
+                'changed_files' => 2,
+                'user' => $this->createMockUserData('testuser', 1),
+                'merged_by' => null,
+                'created_at' => '2024-01-01T00:00:00Z',
+                'updated_at' => '2024-01-01T00:00:00Z',
+                'closed_at' => null,
+            ],
+        ], 200, [
+            'Link' => '</repos/test/repo/pulls?page=2>; rel="next"',
+        ]);
+
+        Github::connector()->withMockClient(new MockClient([
+            '*' => $infiniteResponse,
+        ]));
+
+        expect(fn () => Github::pullRequests()->paginate('test', 'repo'))
+            ->toThrow(RuntimeException::class, 'Maximum page limit (1000) exceeded during pagination');
+    });
+});

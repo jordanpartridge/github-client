@@ -36,6 +36,37 @@ readonly class PullRequestResource extends BaseResource
         return $response->dto();
     }
 
+    public function paginate(string $owner, string $repo, array $parameters = []): array
+    {
+        $page = 1;
+        $allPrs = [];
+        $maxPages = 1000; // Prevent infinite loops
+
+        do {
+            if ($page > $maxPages) {
+                throw new \RuntimeException("Maximum page limit ($maxPages) exceeded during pagination");
+            }
+
+            $response = $this->github()->connector()->send(new Index("{$owner}/{$repo}", array_merge($parameters, [
+                'page' => $page,
+            ])));
+
+            $prs = $response->dto();
+
+            if (! empty($prs)) {
+                $allPrs = array_merge($allPrs, $prs);
+            }
+
+            // Check if there are more pages by examining the Link header
+            $linkHeader = $response->header('Link');
+            $hasNextPage = $linkHeader && str_contains($linkHeader, 'rel="next"');
+
+            $page++;
+        } while ($hasNextPage && ! empty($prs));
+
+        return $allPrs;
+    }
+
     public function get(string $owner, string $repo, int $number): PullRequestDTO
     {
         $response = $this->github()->connector()->send(new Get("{$owner}/{$repo}", $number));
