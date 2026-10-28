@@ -389,8 +389,9 @@ Failed responses are mapped in `GithubConnector`:
 
 ## Requirements
 
-- PHP 8.2, 8.3, or 8.4
-- Laravel 11, 12, or 13 (`illuminate/contracts`)
+- PHP 8.2, 8.3, or 8.4, with the OpenSSL extension
+- Laravel 11, 12, or 13 (`illuminate/collections`, `illuminate/console`, `illuminate/http`, `illuminate/process`, and `illuminate/support`)
+- `nesbot/carbon` ^2.72.6 or ^3.8.4
 - `saloonphp/saloon` ^4.3
 - `firebase/php-jwt` ^7.0, used by GitHub App authentication
 - `spatie/laravel-package-tools` ^1.16 or ^2.0
