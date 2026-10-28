@@ -69,10 +69,20 @@ jobs:
 
       - name: Install dependencies
         run: |
+          # The matrix pins below rewrite composer.json for this job only.
+          # Put the published file back before validate and the dependency analyser.
+          cp composer.json "$RUNNER_TEMP/composer.json.orig"
           composer remove --dev --no-update larastan/larastan phpstan/phpstan-deprecation-rules phpstan/phpstan-phpunit phpstan/extension-installer
           composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
           composer require --dev --no-update "nunomaduro/collision:^8.0"
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction --with-all-dependencies
+          mv "$RUNNER_TEMP/composer.json.orig" composer.json
+
+      - name: Validate composer.json
+        run: composer validate --strict --no-check-lock
+
+      - name: Analyse composer dependencies
+        run: vendor/bin/composer-dependency-analyser
 
       - name: Execute tests
         run: vendor/bin/pest
