@@ -399,6 +399,20 @@ Failed responses are mapped in `GithubConnector`:
 
 Pull requests are welcome. Run `composer test` before opening one.
 
+## Patterns and Architecture
+
+### 3-Way CLI Pattern
+
+This package provides three complementary ways to interact with the GitHub API:
+
+| Pattern | Use Case | Example |
+|---------|----------|---------|
+| **Facade** (`Github::`) | Quick, static access | `Github::repos()->all()` |
+| **Resources** (`repos()`) | Organized, grouped methods | `Github::repos()->all()` |
+| **CLI** (`php artisan github-client`) | Command-line scripts | `php artisan github-client test` |
+
+The `Github` class is the **core package** that ties all three together. See [docs/3WAY-CLI-PATTERN.md](./docs/3WAY-CLI-PATTERN.md) for details.
+
 ## License
 
 MIT. See [LICENSE.md](LICENSE.md).
