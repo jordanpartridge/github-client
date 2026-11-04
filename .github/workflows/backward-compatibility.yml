@@ -1,0 +1,79 @@
+name: Backward compatibility
+
+on:
+  pull_request:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+
+jobs:
+  roave-bc-check:
+    name: Roave BC check
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Pick the versions to compare
+        id: refs
+        run: |
+          mapfile -t tags < <(git tag --list --sort=-v:refname | grep -E '^v?[0-9]+\.[0-9]+\.[0-9]+$' || true)
+          if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
+            to="${GITHUB_REF_NAME}"
+            from=""
+            seen=0
+            for t in "${tags[@]}"; do
+              if [ "$seen" = 1 ]; then from="$t"; break; fi
+              if [ "$t" = "$to" ]; then seen=1; fi
+            done
+            if [ -n "$from" ] && [ "${from%%.*}" != "${to%%.*}" ]; then
+              echo "::notice::${to} is a new major version after ${from}, skipping the check."
+              from=""
+            fi
+          else
+            to="HEAD"
+            from="${tags[0]:-}"
+          fi
+          if [ -z "$from" ]; then
+            echo "No earlier release tag to compare against, skipping."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "Comparing ${from} to ${to}"
+          {
+            echo "skip=false"
+            echo "from=${from}"
+            echo "to=${to}"
+          } >> "$GITHUB_OUTPUT"
+
+      - uses: shivammathur/setup-php@v2
+        if: steps.refs.outputs.skip != 'true'
+        with:
+          php-version: '8.4'
+          extensions: dom, curl, libxml, mbstring, zip, intl
+          coverage: none
+          tools: composer:v2
+
+      - name: Install roave/backward-compatibility-check (CI only, not added to composer.json)
+        if: steps.refs.outputs.skip != 'true'
+        run: |
+          export COMPOSER_HOME="$RUNNER_TEMP/bc-composer"
+          echo "COMPOSER_HOME=$COMPOSER_HOME" >> "$GITHUB_ENV"
+          # Let older tagged releases install their pinned dependencies for the comparison.
+          composer config --global audit.block-insecure false
+          composer global require --no-interaction --no-progress roave/backward-compatibility-check:^8.27
+
+      - name: Check for BC breaks
+        if: steps.refs.outputs.skip != 'true'
+        env:
+          FROM_REF: ${{ steps.refs.outputs.from }}
+          TO_REF: ${{ steps.refs.outputs.to }}
+        run: |
+          php -d memory_limit=-1 "$COMPOSER_HOME/vendor/bin/roave-backward-compatibility-check" \
+            --from="$FROM_REF" --to="$TO_REF" --format=console --format=github-actions
