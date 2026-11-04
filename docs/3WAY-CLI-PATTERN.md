@@ -42,11 +42,13 @@ Access the API through resource-specific methods that group related functionalit
 
 ```php
 use JordanPartridge\GithubClient\Facades\Github;
+use JordanPartridge\GithubClient\ValueObjects\Repo;
 
 // Repository resource
 $repos = Github::repos()->all()->dto();
-$repo = Github::repos()->get($repo);
-Github::repos()->delete($repo);
+$name = Repo::fromFullName('laravel/framework');
+$repo = Github::repos()->get($name);
+Github::repos()->delete($name);
 
 // Issue resource
 $issue = Github::issues()->create($owner, $repo, $title, $body);
