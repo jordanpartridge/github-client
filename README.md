@@ -6,11 +6,11 @@ A Laravel package for GitHub's REST API. It uses [Saloon](https://docs.saloon.de
 composer require jordanpartridge/github-client
 ```
 
-[![Tests](https://img.shields.io/github/actions/workflow/status/jordanpartridge/github-client/run-tests.yml?branch=master&label=tests&style=flat-square)](https://github.com/jordanpartridge/github-client/actions/workflows/run-tests.yml)
-[![PHPStan](https://img.shields.io/github/actions/workflow/status/jordanpartridge/github-client/phpstan.yml?branch=master&label=phpstan&style=flat-square)](https://github.com/jordanpartridge/github-client/actions/workflows/phpstan.yml)
+[![Tests](https://img.shields.io/github/actions/workflow/status/shadetheory/github-client/run-tests.yml?branch=master&label=tests&style=flat-square)](https://github.com/shadetheory/github-client/actions/workflows/run-tests.yml)
+[![PHPStan](https://img.shields.io/github/actions/workflow/status/shadetheory/github-client/phpstan.yml?branch=master&label=phpstan&style=flat-square)](https://github.com/shadetheory/github-client/actions/workflows/phpstan.yml)
 [![Latest Version](https://img.shields.io/packagist/v/jordanpartridge/github-client.svg?style=flat-square)](https://packagist.org/packages/jordanpartridge/github-client)
 [![Downloads](https://img.shields.io/packagist/dt/jordanpartridge/github-client.svg?style=flat-square)](https://packagist.org/packages/jordanpartridge/github-client)
-[![License](https://img.shields.io/github/license/jordanpartridge/github-client?style=flat-square)](LICENSE.md)
+[![License](https://img.shields.io/github/license/shadetheory/github-client?style=flat-square)](LICENSE.md)
 
 `Github::forInstallation()`, `Github::withApp()`, and `installations()` are available from `v3.1.0`.
 
@@ -403,4 +403,4 @@ Pull requests are welcome. Run `composer test` before opening one.
 
 MIT. See [LICENSE.md](LICENSE.md).
 
-Built with [Saloon](https://github.com/saloonphp/saloon) by [Jordan Partridge](https://github.com/jordanpartridge).
+Built with [Saloon](https://github.com/saloonphp/saloon) by [Jordan Partridge](https://github.com/shadetheory).
