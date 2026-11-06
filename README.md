@@ -433,6 +433,8 @@ Failed responses are mapped in `GithubConnector`:
 - `firebase/php-jwt` ^7.0, used by GitHub App authentication
 - `spatie/laravel-package-tools` ^1.16 or ^2.0
 
+CI tests maintained Laravel 12/13 releases on PHP 8.2–8.4 (Laravel 13 requires PHP 8.3+). Composer still accepts Laravel 11 for legacy consumers, but it is no longer tested: its security support ended March 12, 2026, and Composer blocks affected framework versions. CI does not bypass security advisories.
+
 ## Contributing
 
 Pull requests are welcome. In a checkout, install dependencies and run checks:
@@ -449,6 +451,8 @@ vendor/bin/pint --test
 ```
 
 Unit tests run without Testbench; package tests boot Laravel. Use `--filter=...` to select a test name or class and `--profile` to inspect timings. Saloon requests must be mocked, and tests need no GitHub credentials.
+
+Tests, PHPStan, dependency auditing, and read-only Pint checks run on every pull request and pushes to `master`, including documentation-only changes. New runs cancel superseded runs for the same branch or PR. CI reports formatting errors rather than committing fixes; run `composer format` locally to fix them.
 
 In an Amp orb, `.agents/setup` installs PHP 8.2 and Composer and restores cached dependencies (or installs them when no cache is available).
 

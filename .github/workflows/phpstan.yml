@@ -2,48 +2,57 @@ name: PHPStan
 
 on:
   push:
-    paths:
-      - '**.php'
-      - 'phpstan.neon.dist'
-      - 'phpstan-baseline.neon'
-      - '.github/workflows/phpstan.yml'
+    branches: [master]
   pull_request:
-    paths:
-      - '**.php'
-      - 'phpstan.neon.dist'
-      - 'phpstan-baseline.neon'
-      - '.github/workflows/phpstan.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   phpstan:
     name: phpstan
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    strategy:
-      fail-fast: false
-      matrix:
-        php: ['8.2', '8.3', '8.4']
     steps:
       - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php }}
+          php-version: '8.2'
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd
+          tools: composer:v2
           coverage: none
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v6
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-php-8.2-quality-composer-${{ hashFiles('composer.json') }}
+          restore-keys: ${{ runner.os }}-php-8.2-quality-composer-
+
+      - name: Validate Composer manifest
+        run: composer validate --strict --no-check-lock
 
       - name: Install composer dependencies
         run: |
-          # Use Laravel 11 for static analysis since it's more stable with PHPStan
-          composer require "laravel/framework:^11.0" --no-interaction --no-update
-          # Allow flexible larastan version for compatibility
-          composer require --dev "larastan/larastan:^2.0" --no-interaction --no-update
-          # Fix collision dependency for Laravel compatibility
-          composer require --dev "nunomaduro/collision:^7.0||^8.0" --no-interaction --no-update
-          composer update --prefer-stable --prefer-dist --no-interaction
+          composer require --dev "laravel/framework:^12.0" "orchestra/testbench:^10.0" "larastan/larastan:^3.0" --no-interaction --no-update
+          composer update --prefer-stable --prefer-dist --no-interaction --no-progress --with-all-dependencies
+
+      - name: Audit dependencies
+        run: composer audit
 
       - name: Run PHPStan
-        run: ./vendor/bin/phpstan --error-format=github
+        run: composer analyse -- --error-format=github
         env:
           GITHUB_TOKEN: dummy-token-for-static-analysis

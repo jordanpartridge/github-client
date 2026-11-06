@@ -52,7 +52,8 @@ $github->pullRequests()->all('owner', 'repo');
 * The `Unit` suite runs without Testbench; the `Package` suite boots Laravel. See [contributor commands](../README.md#contributing) for setup, filtering, and profiling.
 * `Process::fake()` in [`tests/Pest.php`](../tests/Pest.php) keeps the GitHub CLI out of the test run.
 * Architecture tests in [`tests/ArchTest.php`](../tests/ArchTest.php) enforce that resources extend `BaseResource`, requests extend Saloon `Request`, and no debug calls ship.
-* GitHub Actions runs the suite across PHP 8.2, 8.3, 8.4 and Laravel 11, 12, 13 ([`run-tests.yml`](../.github/workflows/run-tests.yml)), plus PHPStan (Larastan) and Laravel Pint.
+* GitHub Actions tests Laravel 12 on PHP 8.2/8.3/8.4 and Laravel 13 on PHP 8.3/8.4 ([`run-tests.yml`](../.github/workflows/run-tests.yml)). Laravel 11 remains accepted by Composer for legacy consumers but is outside CI after its March 12, 2026 security EOL; security-advisory blocking stays enabled.
+* PHPStan runs once on PHP 8.2 with Laravel 12 and Larastan 3, alongside Composer validation and dependency auditing. Pint is a read-only check, not an auto-commit bot. All three workflows run on every PR and pushes to `master`, with read-only repository permissions and cancellation of superseded runs.
 * Dependabot keeps Composer and Actions dependencies current. Minor and patch updates are set to auto-merge.
 
 ## Usage

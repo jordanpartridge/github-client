@@ -2,19 +2,15 @@ name: run-tests
 
 on:
   push:
-    paths:
-      - '**.php'
-      - '.github/workflows/run-tests.yml'
-      - 'phpunit.xml.dist'
-      - 'composer.json'
-      - 'composer.lock'
+    branches: [master]
   pull_request:
-    paths:
-      - '**.php'
-      - '.github/workflows/run-tests.yml'
-      - 'phpunit.xml.dist'
-      - 'composer.json'
-      - 'composer.lock'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:
@@ -23,30 +19,28 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # Laravel 10 EOL: Feb 4, 2025 - dropped from test matrix
+        # Laravel 11 security support ended March 12, 2026.
+        # Keep Composer's legacy compatibility, but test maintained releases.
         # See: https://laravel.com/docs/12.x/releases#support-policy
         php: [8.2, 8.3, 8.4]
-        laravel: [11.*, 12.*, 13.*]
-        stability: [prefer-stable]
+        laravel: [12.*, 13.*]
         include:
           - laravel: 13.*
             testbench: 11.*
           - laravel: 12.*
             testbench: 10.*
-          - laravel: 11.*
-            testbench: 9.*
         exclude:
-          # Laravel 12+ requires PHP 8.3+
-          - php: 8.2
-            laravel: 12.*
+          # Laravel 12 supports PHP 8.2; Laravel 13 requires PHP 8.3+.
           - php: 8.2
             laravel: 13.*
 
-    name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }}
+    name: P${{ matrix.php }} - L${{ matrix.laravel }} - prefer-stable
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
+        with:
+          persist-credentials: false
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -58,7 +52,7 @@ jobs:
 
       - name: Get composer cache directory
         id: composer-cache
-        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
 
       - name: Cache composer dependencies
         uses: actions/cache@v6
@@ -67,14 +61,16 @@ jobs:
           key: ${{ runner.os }}-php-${{ matrix.php }}-laravel-${{ matrix.laravel }}-composer-${{ hashFiles('**/composer.json') }}
           restore-keys: ${{ runner.os }}-php-${{ matrix.php }}-laravel-${{ matrix.laravel }}-composer-
 
+      - name: Validate Composer manifest
+        run: composer validate --strict --no-check-lock
+
       - name: Install dependencies
         run: |
           composer remove --dev --no-update larastan/larastan phpstan/phpstan-deprecation-rules phpstan/phpstan-phpunit phpstan/extension-installer
-          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
-          composer require --dev --no-update "nunomaduro/collision:^8.0"
-          composer update --${{ matrix.stability }} --prefer-dist --no-interaction --with-all-dependencies
+          composer require --dev "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "nunomaduro/collision:^8.0" --no-interaction --no-update
+          composer update --prefer-stable --prefer-dist --no-interaction --no-progress --with-all-dependencies
 
       - name: Execute tests
-        run: vendor/bin/pest
+        run: composer test -- --compact
         env:
           GITHUB_TOKEN: dummy-token-for-testing
