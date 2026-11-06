@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# PHP, Composer, and vendor/ survive orb pause/resume. Tests mock GitHub calls;
+# no services, credentials, or dependency installs are needed when waking.

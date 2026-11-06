@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+cd "$(dirname "${BASH_SOURCE[0]}")/.."
+SECONDS=0
+
+echo '== Installing missing PHP toolchain packages'
+# Debian 12 supplies PHP 8.2, the package's minimum supported version.
+# Match the test workflow's extensions, including SQLite for Testbench.
+packages=(
+    composer unzip php8.2-cli php8.2-curl php8.2-xml php8.2-mbstring
+    php8.2-zip php8.2-sqlite3 php8.2-bcmath php8.2-soap php8.2-intl php8.2-gd
+)
+missing=()
+for package in "${packages[@]}"; do
+    if [[ "$(dpkg-query -W -f='${Status}' "$package" 2>/dev/null || true)" != 'install ok installed' ]]; then
+        missing+=("$package")
+    fi
+done
+if (( ${#missing[@]} )); then
+    sudo apt-get update
+    sudo env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends "${missing[@]}"
+fi
+echo "== Toolchain ready (${SECONDS}s)"
+php --version
+composer --version
+
+echo '== Installing development dependencies'
+# This library intentionally ignores composer.lock. Keep the generated lock and
+# vendor directory in the snapshot, but resolve again if composer.json changes.
+if [[ -f composer.lock ]] && ! composer validate --no-check-publish --check-lock --quiet; then
+    composer update --prefer-dist --no-interaction --no-progress
+else
+    composer install --prefer-dist --no-interaction --no-progress
+fi
+echo "== Setup complete (${SECONDS}s total)"

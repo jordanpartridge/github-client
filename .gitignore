@@ -32,3 +32,6 @@ testbench.yaml
 
 **/.claude/settings.local.json
 composer.lock
+
+# Local Amp portal metadata
+/.amp/portals/*
