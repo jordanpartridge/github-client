@@ -13,6 +13,7 @@
 .gitignore            export-ignore
 .phpactor.json        export-ignore
 CHANGELOG.md          export-ignore
+composer-dependency-analyser.php export-ignore
 docs/                 export-ignore
 phpstan-baseline.neon export-ignore
 phpstan-bootstrap.php export-ignore
