@@ -38,7 +38,30 @@ GITHUB_APP_PRIVATE_KEY=
 GITHUB_APP_PRIVATE_KEY_PATH=
 ```
 
-`Github::forInstallation($id)` and `Github::withApp($appId, $privateKey, $installationId)` return a new client. They are available from `v3.1.0`. The private key may be PEM text or a file path.
+`Github::forInstallation(int $installationId): Github` reads the app id and key from config and returns an installation-authenticated client. These helpers are available from `v3.1.0`:
+
+```php
+use JordanPartridge\GithubClient\Facades\Github;
+
+$github = Github::forInstallation(12345678);
+$repo = $github->getRepo('owner/repo');
+```
+
+Choose a repository accessible to the installation. Installation tokens are refreshed before expiry. `repos()->all()` calls `/user/repos`, an authenticated-user endpoint, not an installation-repository listing.
+
+`Github::withApp(string $appId, string $privateKey, ?int $installationId = null): Github` accepts **PEM contents** (or base64-encoded PEM), not a key path. Supplying an installation id selects installation authentication; omitting it selects app-level JWT authentication for installation management:
+
+```php
+$privateKey = file_get_contents($pathToPem);
+$app = Github::withApp($appId, $privateKey);
+$installations = $app->installations()->list();
+$token = $app->installations()->createAccessToken(12345678);
+
+$github = Github::withApp($appId, $privateKey, 12345678);
+$repo = $github->getRepo('owner/repo');
+```
+
+`installations()->list()`, `listAll()`, `get()`, and `createAccessToken()` need an app JWT, not an installation token. With config-based `forInstallation()`, `GITHUB_APP_PRIVATE_KEY` supplies PEM contents; when it is empty, `GITHUB_APP_PRIVATE_KEY_PATH` supplies an absolute path or a path relative to the Laravel base directory. `withApp()` does not read that config or load a path itself.
 
 ## Errors
 

@@ -7,7 +7,7 @@
 - A singleton `GithubConnector`
 - `JordanPartridge\GithubClient\Github`, which the `Github` facade resolves
 
-Each resource (`repos()`, `issues()`, `pullRequests()`, and the rest) builds a Saloon request, sends it through `GithubConnector`, and maps the body in `createDtoFromResponse()`.
+Each resource (`repos()`, `issues()`, `pullRequests()`, and the rest) builds a Saloon request and sends it through `GithubConnector`. Methods returning DTOs map the body in `createDtoFromResponse()`; some methods return the raw response instead. For example, `files()->all()` returns a commit payload whose changed files are available through `json('files')`, not a Git tree.
 
 DTOs in `src/Data` are plain PHP objects with a `fromArray()` or `fromApiResponse()` method. They are not Spatie Laravel Data objects. A missing key throws while the object is constructed. List endpoints that use `HandlesIssueResponses` skip an item that cannot be mapped.
 

@@ -16,8 +16,12 @@
     backupStaticProperties="false"
 >
     <testsuites>
-        <testsuite name="JordanPartridge Test Suite">
+        <testsuite name="Unit">
+            <directory>tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Package">
             <directory>tests</directory>
+            <exclude>tests/Unit</exclude>
         </testsuite>
     </testsuites>
     <logging>

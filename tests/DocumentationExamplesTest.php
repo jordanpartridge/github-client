@@ -168,4 +168,22 @@ describe('README examples', function () {
 
         expect($merged)->toBeTrue();
     });
+
+    it('reads changed files from the commit response', function () {
+        $sha = '0123456789abcdef0123456789abcdef01234567';
+        $files = [
+            ['filename' => 'src/Github.php', 'status' => 'modified', 'additions' => 7, 'deletions' => 2],
+            ['filename' => 'README.md', 'status' => 'added', 'additions' => 15, 'deletions' => 0],
+        ];
+        Github::connector()->withMockClient(new MockClient([
+            "https://api.github.com/repos/owner/repo/commits/{$sha}" => MockResponse::make([
+                'sha' => $sha,
+                'files' => $files,
+            ]),
+        ]));
+
+        $response = Github::files()->all('owner/repo', $sha);
+
+        expect($response->json('files'))->toBe($files);
+    });
 });

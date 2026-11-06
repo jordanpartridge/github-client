@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Process;
 use JordanPartridge\GithubClient\Auth\TokenResolver;
 use JordanPartridge\GithubClient\Connectors\GithubConnector;
 use JordanPartridge\GithubClient\Facades\Github;
@@ -9,29 +10,27 @@ use JordanPartridge\GithubClient\Data\Repos\RepoData;
 
 describe('Authentication improvements', function () {
     it('allows unauthenticated requests for public repositories', function () {
-        // Temporarily disable authentication
-        $originalToken = env('GITHUB_TOKEN');
-        putenv('GITHUB_TOKEN=');
-
-        // Create connector without token
         $connector = new GithubConnector('');
 
-        // Should not throw exception
-        expect($connector)->toBeInstanceOf(GithubConnector::class);
-
-        // Restore original token
-        if ($originalToken) {
-            putenv("GITHUB_TOKEN={$originalToken}");
-        }
+        expect($connector->isAuthenticated())->toBeFalse();
     });
 
-    it('resolves tokens from multiple sources', function () {
-        // This test verifies the TokenResolver can find tokens
-        $token = TokenResolver::resolve();
+    it('resolves tokens in documented priority order', function (?string $primary, ?string $fallback, string $expected, string $source) {
+        config(['github-client.token' => $primary, 'github-client.gh_token' => $fallback]);
+        Process::fake(fn ($process) => Process::result(output: match ($process->command) {
+            'which gh' => '/usr/bin/gh',
+            'gh auth token' => "cli-token\n",
+            default => '',
+        }));
 
-        // In test environment, we should have a token
-        expect($token)->toBeString()->or->toBeNull();
-    });
+        expect(TokenResolver::resolve())->toBe($expected)
+            ->and(TokenResolver::getLastSource())->toBe($source);
+    })->with([
+        'primary config wins' => ['primary-token', 'fallback-token', 'primary-token', 'config'],
+        'GH_TOKEN fallback' => [null, 'fallback-token', 'fallback-token', 'GH_TOKEN'],
+        'placeholder ignored' => ['ghp_your_token_here', 'fallback-token', 'fallback-token', 'GH_TOKEN'],
+        'CLI fallback' => ['', '', 'cli-token', 'GitHub CLI'],
+    ]);
 
     it('provides authentication status information', function () {
         $status = TokenResolver::getAuthenticationStatus();
@@ -179,22 +178,15 @@ describe('Authentication improvements', function () {
             ->and($repo->private)->toBeFalse();
     });
 
-    it('provides authentication status from available sources', function () {
-        // This test verifies that TokenResolver returns a valid authentication status
-        // Priority order: env vars -> config -> GitHub CLI -> none
-        // (env vars and config are checked first for speed, CLI last due to process overhead)
+    it('clears the authentication source when credentials are no longer available', function () {
+        config(['github-client.token' => 'initial-token']);
+        expect(TokenResolver::resolve())->toBe('initial-token');
 
-        $status = TokenResolver::getAuthenticationStatus();
+        config(['github-client.token' => null, 'github-client.gh_token' => null]);
+        Process::fake(['*' => Process::result(exitCode: 1)]);
 
-        // Status should indicate one of the valid authentication sources
-        $validSources = ['environment variable', 'config', 'GitHub CLI', 'No authentication'];
-        $hasValidSource = false;
-        foreach ($validSources as $source) {
-            if (str_contains($status, $source)) {
-                $hasValidSource = true;
-                break;
-            }
-        }
-        expect($hasValidSource)->toBeTrue();
+        expect(TokenResolver::resolve())->toBeNull()
+            ->and(TokenResolver::getLastSource())->toBeNull()
+            ->and(TokenResolver::getAuthenticationStatus())->toBe('No authentication (public access only)');
     });
 });

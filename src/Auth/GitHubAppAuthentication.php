@@ -7,6 +7,7 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use JordanPartridge\GithubClient\Exceptions\AuthenticationException;
 use JordanPartridge\GithubClient\Requests\Installations\CreateAccessToken;
+use Saloon\Http\Auth\TokenAuthenticator;
 
 /**
  * GitHub App authentication strategy using JWT tokens.
@@ -90,7 +91,12 @@ class GitHubAppAuthentication implements AuthenticationStrategy
             'iss' => $this->appId,
         ];
 
-        return JWT::encode($payload, $this->privateKey, 'RS256');
+        $privateKey = $this->privateKey;
+        if (! str_contains($privateKey, '-----BEGIN')) {
+            $privateKey = base64_decode($privateKey, true) ?: $privateKey;
+        }
+
+        return JWT::encode($payload, $privateKey, 'RS256');
     }
 
     /**
@@ -125,6 +131,9 @@ class GitHubAppAuthentication implements AuthenticationStrategy
         $createTokenRequest = new CreateAccessToken(
             (int) $this->installationId,
         );
+        // The token exchange must use the app JWT, not the installation auth
+        // that is currently being refreshed by this connector.
+        $createTokenRequest->authenticate(new TokenAuthenticator($this->generateJwtToken()));
 
         // Make the API call to get the installation token
         // This will use JWT authentication (app-level) to get the installation token

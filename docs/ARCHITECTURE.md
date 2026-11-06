@@ -48,7 +48,8 @@ $github->pullRequests()->all('owner', 'repo');
 
 ### 6. Tests and CI
 
-* Pest tests use Saloon's `MockClient`, so no test touches the network.
+* Pest tests use Saloon's `MockClient`; unmocked Saloon network requests are blocked, and tests need no GitHub credentials.
+* The `Unit` suite runs without Testbench; the `Package` suite boots Laravel. See [contributor commands](../README.md#contributing) for setup, filtering, and profiling.
 * `Process::fake()` in [`tests/Pest.php`](../tests/Pest.php) keeps the GitHub CLI out of the test run.
 * Architecture tests in [`tests/ArchTest.php`](../tests/ArchTest.php) enforce that resources extend `BaseResource`, requests extend Saloon `Request`, and no debug calls ship.
 * GitHub Actions runs the suite across PHP 8.2, 8.3, 8.4 and Laravel 11, 12, 13 ([`run-tests.yml`](../.github/workflows/run-tests.yml)), plus PHPStan (Larastan) and Laravel Pint.

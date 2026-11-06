@@ -6,7 +6,7 @@ The CommitResource provides access to GitHub's Git commit API endpoints. It allo
 
 ### all(string $repo_name, ?int $per_page = 100, ?int $page = 1): array
 
-Fetches all commits for a given repository with pagination support.
+Fetches one page of `CommitData` objects for a repository. Pass `page` explicitly to fetch subsequent pages.
 
 ```php
 use JordanPartridge\GithubClient\Facades\Github;
@@ -25,10 +25,11 @@ Parameters:
 
 ### get(string $repo_name, string $commit_sha)
 
-Fetches a specific commit by its SHA.
+Fetches a specific commit as `CommitData` by its full 40-character hexadecimal SHA. Replace the example SHA with one from the repository.
 
 ```php
-$commit = Github::commits()->get('owner/repo', '123abc');
+$commit = Github::commits()->get('owner/repo', '0123456789abcdef0123456789abcdef01234567');
+$files = $commit->files; // CommitFileData[] when supplied by GitHub
 ```
 
 Parameters:
@@ -38,17 +39,17 @@ Parameters:
 ## Error Handling
 
 The resource validates repository names and will throw:
-- `InvalidArgumentException` for invalid repository names
-- `RequestException` for API errors (404 for non-existent repos/commits)
+- `InvalidArgumentException` for invalid repository names or commit SHAs
+
+API errors use the connector's [exception mapping](../../docs/advanced-usage.md#errors), including `ResourceNotFoundException` for a missing repository or commit.
 
 ## Testing
 
-The CommitResource has comprehensive test coverage in `tests/CommitResourceTest.php`. Tests cover:
+`tests/CommitResourceTest.php` covers:
 
-- Fetching all commits with pagination
+- Fetching a page of commits with pagination parameters
 - Fetching specific commits by SHA
 - Repository name validation
-- Error handling
 
 When adding new methods, ensure to:
 1. Add corresponding test cases

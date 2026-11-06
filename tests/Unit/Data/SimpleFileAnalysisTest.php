@@ -2,7 +2,7 @@
 
 use JordanPartridge\GithubClient\Data\Pulls\PullRequestFileDTO;
 
-describe('Simple File Analysis (Laravel 10 Compatible)', function () {
+describe('Simple File Analysis', function () {
 
     it('can create and analyze file DTOs without external dependencies', function () {
         $fileData = [

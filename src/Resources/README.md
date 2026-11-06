@@ -19,6 +19,6 @@ $issue = Github::issues()->get('laravel', 'framework', 1);
 $pulls = Github::pullRequests()->all('laravel', 'framework');
 ```
 
-`FileResource` has `all($ownerRepo, $sha)` and returns the response for that commit tree. `ReleasesResource` has `all`, `get`, and `latest`. `ActionsResource` has `listWorkflows`, `getWorkflowRuns`, and `triggerWorkflow`, each with separate owner and repo arguments.
+`FileResource` has `all($repo_name, $commit_sha)` and returns a raw commit response, not a Git tree. Read its changed files with `$response->json('files')`. `ReleasesResource` has `all`, `get`, and `latest`. `ActionsResource` has `listWorkflows`, `getWorkflowRuns`, and `triggerWorkflow`, each with separate owner and repo arguments.
 
 The method list that matches the code is in [docs/api-reference.md](../../docs/api-reference.md).

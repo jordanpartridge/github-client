@@ -14,6 +14,8 @@ composer require jordanpartridge/github-client
 
 `Github::forInstallation()`, `Github::withApp()`, and `installations()` are available from `v3.1.0`.
 
+See the [documentation index](docs/README.md) for the API reference, authentication details, and architecture.
+
 ## Install
 
 ```bash
@@ -154,6 +156,30 @@ $merged = Github::pullRequests()->merge(
 
 `pullRequests()->all($owner, $repo)` returns `PullRequestDTO` objects. Pass GitHub query parameters in the third argument, for example `['state' => 'open']`. `files($owner, $repo, $number)` returns the changed files. There is no `commits()` method on the pull request resource. Use `commits()` for commit history.
 
+`all()` returns one page. To follow next-page links (up to 1000 pages), use:
+
+```php
+$prs = Github::pullRequests()->paginate('owner', 'repo', [
+    'state' => 'open',
+    'per_page' => 100,
+]);
+```
+
+Use `summaries()` for one page of `PullRequestSummaryDTO` objects without detailed statistics, and `detail()` for one PR's counts and change statistics. Missing statistics in `all()` default to zero; they are not actual counts. `detailsForMultiple()` fetches one detail per PR (default cap 20), skipping caught failures. `recentDetails()` makes one list request plus one detail request per selected PR (default 5, list capped at 10).
+
+`reviews()` and `createReview()` read and submit reviews. `createComment()` creates an inline review comment with a commit id, path, and diff position; `issues()->addComment()` writes a conversation comment, including on a PR. Filter review comments with an explicit repository:
+
+```php
+$comments = Github::comments()->bots(42, [
+    'repository' => 'owner/repo',
+    'contains' => 'security',
+    'per_page' => 100,
+    'page' => 1,
+]);
+```
+
+Filtering is local to **one fetched API page**, not an automatic scan of every comment. An empty filtered page does not mean later pages have no matches. See the [review and comment reference](docs/api-reference.md#reviews-and-review-comments) for signatures and all supported filters.
+
 ### Commits, releases, files, Actions
 
 ```php
@@ -179,13 +205,15 @@ echo $latest->tag_name;
 `releases()` can list releases and fetch one by id. It cannot create a release.
 
 ```php
-$tree = Github::files()->all(
+$response = Github::files()->all(
     'laravel/framework',
     '0123456789abcdef0123456789abcdef01234567',
 );
+
+$files = $response->json('files');
 ```
 
-`files()->all()` returns the Saloon response for that commit's tree. There is no `get()` or `contents()` method.
+Replace the example SHA with a real commit SHA from the repository. `files()->all()` returns a raw Saloon response containing the commit payload, **not a Git tree**. Read its changed files with `json('files')`; `commits()->get(...)->files` is the typed `CommitFileData` alternative. Neither automatically fetches additional pages of changed files. There is no `get()` or `contents()` method on the file resource.
 
 ```php
 $workflows = Github::actions()->listWorkflows('laravel', 'framework');
@@ -212,14 +240,14 @@ The package does not retry rate-limited calls. A rate limit response throws `Rat
 
 | Call | Methods | Returns |
 | --- | --- | --- |
-| `repos()` | `all`, `allWithPagination`, `get(Repo)`, `delete(Repo)`, `search` | `all` is a Saloon response. `allWithPagination` and `get` return `RepoData`. `search` returns `SearchRepositoriesData`. |
+| `repos()` | `all`, `allWithPagination`, `get(Repo)`, `delete(Repo)`, `search` | `all` is a Saloon response. `allWithPagination` returns `RepoData[]`; `get` returns `RepoData`. `search` returns `SearchRepositoriesData`. |
 | `issues()` | `all`, `forRepo`, `allForRepo`, `get`, `create`, `update`, `close`, `reopen`, `comments`, `addComment`, `getComment`, `updateComment`, `deleteComment` | `all` and `forRepo` are Saloon responses. `get`, `create`, `update`, `close`, and `reopen` return `IssueDTO`. |
-| `pullRequests()` | `all`, `get`, `create`, `update`, `merge`, `files`, `diff`, `comments`, `summaries`, `detail` | `all` and `get` return pull request DTOs. `merge` returns a boolean. |
-| `commits()` | `all(owner/repo)`, `get(owner/repo, sha)` | `CommitData` |
-| `files()` | `all(owner/repo, sha)` | Saloon response |
-| `releases()` | `all`, `get`, `latest` | `ReleaseData` |
+| `pullRequests()` | `all`, `paginate`, `get`, `create`, `update`, `merge`, `files`, `diff`, review/comment helpers, `summaries`, `detail`, `detailsForMultiple`, `recentDetails` | `all` and `paginate` return `PullRequestDTO[]`; `get` returns `PullRequestDTO`. `merge` returns a boolean. See the [reference](docs/api-reference.md#pull-requests) for review and detail return types. |
+| `commits()` | `all(owner/repo)`, `get(owner/repo, sha)` | `all` returns `CommitData[]`; `get` returns `CommitData`. |
+| `files()` | `all(owner/repo, sha)` | Raw Saloon response containing a commit payload; use `json('files')`. |
+| `releases()` | `all`, `get`, `latest` | `all` returns `ReleaseData[]`; `get` and `latest` return `ReleaseData`. |
 | `actions()` | `listWorkflows`, `getWorkflowRuns`, `triggerWorkflow` | Saloon response |
-| `comments()` | `forPullRequest`, `byAuthor`, `byAuthorType`, `bySeverity`, `forFile` | Pull request review comments. Pass `'repository' => 'owner/repo'` in the filters. `pullRequests()->comments($owner, $repo, $number)` is the direct call. |
+| `comments()` | `forPullRequest`, `byAuthor`, `byAuthorType`, `bySeverity`, `forFile`, `codeRabbit`, `bots`, `humans` | Pull request review comments, filtered locally from one page. Pass `'repository' => 'owner/repo'` in the filters. `pullRequests()->comments($owner, $repo, $number)` is the direct call. |
 | `installations()` | `list`, `listAll`, `get`, `createAccessToken` | GitHub App installation data. Requires app authentication. |
 
 `Github::getRepo('owner/repo')` and `Github::deleteRepo('owner/repo')` validate the name and call the repository resource.
@@ -300,10 +328,20 @@ use JordanPartridge\GithubClient\Facades\Github;
 
 $github = Github::forInstallation(12345678);
 
-$repos = $github->repos()->all()->dto();
+$repo = $github->getRepo('owner/repo');
 ```
 
-`Github::withApp($appId, $privateKey, $installationId)` does the same without reading config. `installations()` lists installations and creates installation tokens. Those calls need a JWT, which `forInstallation()` and `withApp()` set up. Pass the installation id to `forInstallation()`.
+Use a repository accessible to the installation. `Github::withApp($appId, $privateKey, $installationId)` creates an installation client without reading config; pass PEM contents as `$privateKey`, not a path. For example, load them with `file_get_contents($path)`.
+
+Installation management needs **app-level JWT authentication**, not an installation token. Omit the installation id for those calls:
+
+```php
+$app = Github::withApp($appId, $privateKey);
+$installations = $app->installations()->list();
+$token = $app->installations()->createAccessToken(12345678);
+```
+
+`forInstallation($id)` and `withApp(..., $id)` instead use installation tokens for repository operations, refreshing them before expiry. `repos()->all()` targets the authenticated-user endpoint `/user/repos`; it does not list installation repositories.
 
 ## Artisan
 
@@ -317,7 +355,7 @@ php artisan github-client commits --repo=laravel/framework --limit=10
 
 ## Testing
 
-Mock the connector with Saloon. `IssueDTO` reads a full issue payload, including `user`. A short fixture will throw while mapping. `tests/TestCase.php` builds a complete one, and `tests/DocumentationExamplesTest.php` runs the calls from this README.
+Mock the connector with Saloon. The test suite blocks unmocked Saloon network requests; no GitHub credentials are needed. `IssueDTO` reads a full issue payload, including `user`. A short fixture will throw while mapping. `tests/TestCase.php` builds a complete one, and `tests/DocumentationExamplesTest.php` covers README examples.
 
 ```php
 use JordanPartridge\GithubClient\Facades\Github;
@@ -365,13 +403,13 @@ it('creates an issue', function () {
 });
 ```
 
-Run the package tests with:
+For contributor setup and focused test commands, see [Contributing](#contributing). Run the full suite with:
 
 ```bash
 composer test
 ```
 
-`composer analyse` runs PHPStan. `composer format` runs Pint.
+`composer analyse` runs PHPStan. `vendor/bin/pint --test` checks formatting without changing files; `composer format` applies Pint fixes.
 
 ## Errors
 
@@ -397,7 +435,22 @@ Failed responses are mapped in `GithubConnector`:
 
 ## Contributing
 
-Pull requests are welcome. Run `composer test` before opening one.
+Pull requests are welcome. In a checkout, install dependencies and run checks:
+
+```bash
+composer install
+composer test
+composer test -- --testsuite=Unit
+composer test -- --testsuite=Package
+composer test -- --filter=DocumentationExamplesTest
+composer test -- --profile
+composer analyse
+vendor/bin/pint --test
+```
+
+Unit tests run without Testbench; package tests boot Laravel. Use `--filter=...` to select a test name or class and `--profile` to inspect timings. Saloon requests must be mocked, and tests need no GitHub credentials.
+
+In an Amp orb, `.agents/setup` installs PHP 8.2 and Composer and restores cached dependencies (or installs them when no cache is available).
 
 ## License
 
