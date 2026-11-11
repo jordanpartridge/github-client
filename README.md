@@ -456,6 +456,20 @@ Tests, PHPStan, dependency auditing, and read-only Pint checks run on every pull
 
 In an Amp orb, `.agents/setup` installs PHP 8.2 and Composer and restores cached dependencies (or installs them when no cache is available).
 
+## Patterns and Architecture
+
+### 3-Way CLI Pattern
+
+This package provides three complementary ways to interact with the GitHub API:
+
+| Pattern | Use Case | Example |
+|---------|----------|---------|
+| **Facade** (`Github::`) | Quick, static access | `Github::repos()->all()` |
+| **Resources** (`repos()`) | Organized, grouped methods | `Github::repos()->all()` |
+| **CLI** (`php artisan github-client`) | Command-line scripts | `php artisan github-client test` |
+
+The `Github` class is the **core package** that ties all three together. See [docs/3WAY-CLI-PATTERN.md](./docs/3WAY-CLI-PATTERN.md) for details.
+
 ## License
 
 MIT. See [LICENSE.md](LICENSE.md).

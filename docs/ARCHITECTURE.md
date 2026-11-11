@@ -2,6 +2,16 @@
 
 `jordanpartridge/github-client` is a Laravel package for the GitHub REST API. It is built on [Saloon](https://docs.saloon.dev) and returns typed PHP objects instead of raw arrays. It requires PHP 8.2 or newer and Laravel 11, 12, or 13. CI runs the suite on PHP 8.2, 8.3, and 8.4.
 
+## 3-Way CLI Pattern
+
+This package implements a **3-Way CLI Pattern** with three complementary ways to access the GitHub API:
+
+1. **Facade** (`Github::`) - Static access for convenience
+2. **Resources** (`repos()`, `issues()`) - Grouped methods by feature area
+3. **CLI Command** (`php artisan github-client`) - Command-line interface
+
+The `Github` class is the **core package** that orchestrates all three access patterns. See [docs/3WAY-CLI-PATTERN.md](./3WAY-CLI-PATTERN.md) for a detailed explanation.
+
 ## Layers
 
 ```
