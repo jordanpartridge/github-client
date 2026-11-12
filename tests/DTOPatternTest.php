@@ -1,9 +1,9 @@
 <?php
 
-use JordanPartridge\GithubClient\Data\Pulls\PullRequestDetailDTO;
-use JordanPartridge\GithubClient\Data\Pulls\PullRequestDTOFactory;
-use JordanPartridge\GithubClient\Data\Pulls\PullRequestSummaryDTO;
-use JordanPartridge\GithubClient\Data\Pulls\PullRequestDTO;
+use ShadeTheory\GithubClient\Data\Pulls\PullRequestDetailDTO;
+use ShadeTheory\GithubClient\Data\Pulls\PullRequestDTOFactory;
+use ShadeTheory\GithubClient\Data\Pulls\PullRequestSummaryDTO;
+use ShadeTheory\GithubClient\Data\Pulls\PullRequestDTO;
 
 describe('DTO Pattern: Summary vs Detail DTOs', function () {
     beforeEach(function () {

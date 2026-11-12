@@ -3,7 +3,7 @@
 ## Install
 
 ```bash
-composer require jordanpartridge/github-client
+composer require shadetheory/github-client
 php artisan vendor:publish --tag=github-client-config
 ```
 
@@ -20,7 +20,7 @@ GITHUB_TOKEN=ghp_your_token_here
 ## First calls
 
 ```php
-use JordanPartridge\GithubClient\Facades\Github;
+use ShadeTheory\GithubClient\Facades\Github;
 
 $repos = Github::repos()->all()->dto();
 

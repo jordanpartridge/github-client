@@ -1,9 +1,9 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Requests\Pulls;
+namespace ShadeTheory\GithubClient\Requests\Pulls;
 
-use JordanPartridge\GithubClient\Data\Pulls\PullRequestDTO;
-use JordanPartridge\GithubClient\ValueObjects\Repo;
+use ShadeTheory\GithubClient\Data\Pulls\PullRequestDTO;
+use ShadeTheory\GithubClient\ValueObjects\Repo;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use Saloon\Http\Response;

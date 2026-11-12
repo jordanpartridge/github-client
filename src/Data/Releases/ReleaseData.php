@@ -1,9 +1,9 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Data\Releases;
+namespace ShadeTheory\GithubClient\Data\Releases;
 
 use Carbon\Carbon;
-use JordanPartridge\GithubClient\Data\GitUserData;
+use ShadeTheory\GithubClient\Data\GitUserData;
 
 class ReleaseData
 {

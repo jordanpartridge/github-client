@@ -1,8 +1,8 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Data\Commits;
+namespace ShadeTheory\GithubClient\Data\Commits;
 
-use JordanPartridge\GithubClient\Data\GitUserData;
+use ShadeTheory\GithubClient\Data\GitUserData;
 
 class CommitData
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace JordanPartridge\GithubClient\Enums;
+namespace ShadeTheory\GithubClient\Enums;
 
 enum Visibility: string
 {

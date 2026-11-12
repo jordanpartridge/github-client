@@ -1,12 +1,12 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Resources;
+namespace ShadeTheory\GithubClient\Resources;
 
-use JordanPartridge\GithubClient\Data\Installations\InstallationData;
-use JordanPartridge\GithubClient\Data\Installations\InstallationTokenData;
-use JordanPartridge\GithubClient\Requests\Installations\CreateAccessToken;
-use JordanPartridge\GithubClient\Requests\Installations\GetInstallation;
-use JordanPartridge\GithubClient\Requests\Installations\ListInstallations;
+use ShadeTheory\GithubClient\Data\Installations\InstallationData;
+use ShadeTheory\GithubClient\Data\Installations\InstallationTokenData;
+use ShadeTheory\GithubClient\Requests\Installations\CreateAccessToken;
+use ShadeTheory\GithubClient\Requests\Installations\GetInstallation;
+use ShadeTheory\GithubClient\Requests\Installations\ListInstallations;
 
 /**
  * GitHub App Installations Resource Handler

@@ -1,8 +1,8 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Tests;
+namespace ShadeTheory\GithubClient\Tests;
 
-use JordanPartridge\GithubClient\GithubClientServiceProvider;
+use ShadeTheory\GithubClient\GithubClientServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra

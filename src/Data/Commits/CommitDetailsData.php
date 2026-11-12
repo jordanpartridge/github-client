@@ -1,10 +1,10 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Data\Commits;
+namespace ShadeTheory\GithubClient\Data\Commits;
 
-use JordanPartridge\GithubClient\Data\FileDTO;
-use JordanPartridge\GithubClient\Data\TreeData;
-use JordanPartridge\GithubClient\Data\VerificationData;
+use ShadeTheory\GithubClient\Data\FileDTO;
+use ShadeTheory\GithubClient\Data\TreeData;
+use ShadeTheory\GithubClient\Data\VerificationData;
 
 class CommitDetailsData
 {

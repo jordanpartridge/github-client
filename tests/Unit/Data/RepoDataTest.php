@@ -1,7 +1,7 @@
 <?php
 
-use JordanPartridge\GithubClient\Data\GitUserData;
-use JordanPartridge\GithubClient\Data\Repos\RepoData;
+use ShadeTheory\GithubClient\Data\GitUserData;
+use ShadeTheory\GithubClient\Data\Repos\RepoData;
 use Carbon\Carbon;
 
 it('can create RepoData from array', function () {

@@ -1,6 +1,6 @@
 <?php
 
-use JordanPartridge\GithubClient\Resources\BaseResource;
+use ShadeTheory\GithubClient\Resources\BaseResource;
 use Saloon\Http\Request;
 
 describe('General', function () {
@@ -10,12 +10,12 @@ describe('General', function () {
 });
 describe('Resources', function () {
     arch('resources extend the base resource', function () {
-        expect('JordanPartridge\GithubClient\Resources')->toExtend(BaseResource::class);
+        expect('ShadeTheory\GithubClient\Resources')->toExtend(BaseResource::class);
     });
 });
 
 describe('Requests', function () {
     arch('requests extend the base resource', function () {
-        expect('JordanPartridge\GithubClient\Requests')->toExtend(Request::class);
+        expect('ShadeTheory\GithubClient\Requests')->toExtend(Request::class);
     });
 });

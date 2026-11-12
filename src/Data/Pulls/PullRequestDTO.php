@@ -1,8 +1,8 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Data\Pulls;
+namespace ShadeTheory\GithubClient\Data\Pulls;
 
-use JordanPartridge\GithubClient\Data\GitUserData;
+use ShadeTheory\GithubClient\Data\GitUserData;
 
 class PullRequestDTO
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Requests\Issues;
+namespace ShadeTheory\GithubClient\Requests\Issues;
 
-use JordanPartridge\GithubClient\Data\Issues\IssueDTO;
+use ShadeTheory\GithubClient\Data\Issues\IssueDTO;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use Saloon\Http\Response;

@@ -1,9 +1,9 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Requests\Installations;
+namespace ShadeTheory\GithubClient\Requests\Installations;
 
 use InvalidArgumentException;
-use JordanPartridge\GithubClient\Data\Installations\InstallationData;
+use ShadeTheory\GithubClient\Data\Installations\InstallationData;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use Saloon\Http\Response;

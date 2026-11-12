@@ -1,6 +1,6 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Data\Pulls;
+namespace ShadeTheory\GithubClient\Data\Pulls;
 
 /**
  * Factory for creating appropriate PullRequest DTOs based on API response data.

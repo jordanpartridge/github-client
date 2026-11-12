@@ -1,6 +1,6 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Data\Commits;
+namespace ShadeTheory\GithubClient\Data\Commits;
 
 class CommitFileData
 {

@@ -1,6 +1,6 @@
 <?php
 
-use JordanPartridge\GithubClient\Data\GitUserData;
+use ShadeTheory\GithubClient\Data\GitUserData;
 
 it('can create GitUserData from array', function () {
     $data = [

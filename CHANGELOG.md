@@ -4,6 +4,8 @@ All notable changes to `github-client` will be documented in this file.
 
 ## Unreleased
 
+* **Breaking:** Composer package renamed from `jordanpartridge/github-client` to `shadetheory/github-client`. PHP namespace renamed from `JordanPartridge\GithubClient` to `ShadeTheory\GithubClient`, including PSR-4 autoload, the Laravel service provider, and the `Github` facade alias. Install with `composer require shadetheory/github-client`.
+
 ## v3.1.0 - 2026-10-21
 
 * GitHub App authentication: `Github::forInstallation()`, `Github::withApp()`, and the `installations()` resource

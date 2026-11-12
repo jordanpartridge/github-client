@@ -1,6 +1,6 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Enums\Pulls;
+namespace ShadeTheory\GithubClient\Enums\Pulls;
 
 enum State: string
 {

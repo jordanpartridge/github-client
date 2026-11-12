@@ -1,6 +1,6 @@
 <?php
 
-use JordanPartridge\GithubClient\Data\Pulls\PullRequestFileDTO;
+use ShadeTheory\GithubClient\Data\Pulls\PullRequestFileDTO;
 
 describe('Simple File Analysis', function () {
 

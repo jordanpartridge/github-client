@@ -1,6 +1,6 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Data\Pulls;
+namespace ShadeTheory\GithubClient\Data\Pulls;
 
 /**
  * Pull Request File DTO representing a single file change in a PR.

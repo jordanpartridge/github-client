@@ -1,6 +1,6 @@
 <?php
 
-use JordanPartridge\GithubClient\ValueObjects\Repo;
+use ShadeTheory\GithubClient\ValueObjects\Repo;
 
 describe('Repo ValueObject', function () {
     describe('fromFullName method', function () {

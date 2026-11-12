@@ -1,16 +1,16 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Connectors;
+namespace ShadeTheory\GithubClient\Connectors;
 
-use JordanPartridge\GithubClient\Auth\AuthenticationStrategy;
-use JordanPartridge\GithubClient\Auth\GitHubAppAuthentication;
-use JordanPartridge\GithubClient\Auth\TokenResolver;
-use JordanPartridge\GithubClient\Exceptions\ApiException;
-use JordanPartridge\GithubClient\Exceptions\AuthenticationException;
-use JordanPartridge\GithubClient\Exceptions\NetworkException;
-use JordanPartridge\GithubClient\Exceptions\RateLimitException;
-use JordanPartridge\GithubClient\Exceptions\ResourceNotFoundException;
-use JordanPartridge\GithubClient\Exceptions\ValidationException;
+use ShadeTheory\GithubClient\Auth\AuthenticationStrategy;
+use ShadeTheory\GithubClient\Auth\GitHubAppAuthentication;
+use ShadeTheory\GithubClient\Auth\TokenResolver;
+use ShadeTheory\GithubClient\Exceptions\ApiException;
+use ShadeTheory\GithubClient\Exceptions\AuthenticationException;
+use ShadeTheory\GithubClient\Exceptions\NetworkException;
+use ShadeTheory\GithubClient\Exceptions\RateLimitException;
+use ShadeTheory\GithubClient\Exceptions\ResourceNotFoundException;
+use ShadeTheory\GithubClient\Exceptions\ValidationException;
 use Saloon\Contracts\Authenticator;
 use Saloon\Http\Auth\TokenAuthenticator;
 use Saloon\Http\Connector;

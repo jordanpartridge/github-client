@@ -1,11 +1,11 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Resources;
+namespace ShadeTheory\GithubClient\Resources;
 
-use JordanPartridge\GithubClient\Concerns\ValidatesRepoName;
-use JordanPartridge\GithubClient\Requests\Commits\Get;
-use JordanPartridge\GithubClient\Requests\Commits\Index;
-use JordanPartridge\GithubClient\ValueObjects\Repo;
+use ShadeTheory\GithubClient\Concerns\ValidatesRepoName;
+use ShadeTheory\GithubClient\Requests\Commits\Get;
+use ShadeTheory\GithubClient\Requests\Commits\Index;
+use ShadeTheory\GithubClient\ValueObjects\Repo;
 
 readonly class CommitResource extends BaseResource
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Data\Issues;
+namespace ShadeTheory\GithubClient\Data\Issues;
 
 class LabelDTO
 {

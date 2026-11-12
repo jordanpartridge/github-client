@@ -1,8 +1,8 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Data\Issues;
+namespace ShadeTheory\GithubClient\Data\Issues;
 
-use JordanPartridge\GithubClient\Data\GitUserData;
+use ShadeTheory\GithubClient\Data\GitUserData;
 
 class IssueCommentDTO
 {

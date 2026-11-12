@@ -1,11 +1,11 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Resources;
+namespace ShadeTheory\GithubClient\Resources;
 
-use JordanPartridge\GithubClient\Data\Releases\ReleaseData;
-use JordanPartridge\GithubClient\Requests\Releases\Get;
-use JordanPartridge\GithubClient\Requests\Releases\Index;
-use JordanPartridge\GithubClient\Requests\Releases\Latest;
+use ShadeTheory\GithubClient\Data\Releases\ReleaseData;
+use ShadeTheory\GithubClient\Requests\Releases\Get;
+use ShadeTheory\GithubClient\Requests\Releases\Index;
+use ShadeTheory\GithubClient\Requests\Releases\Latest;
 
 /**
  * GitHub Releases Resource Handler

@@ -1,6 +1,6 @@
 <?php
 
-use JordanPartridge\GithubClient\Data\Pulls\PullRequestDTO;
+use ShadeTheory\GithubClient\Data\Pulls\PullRequestDTO;
 
 describe('PullRequestDTO defensive programming', function () {
     it('handles missing optional fields gracefully', function () {

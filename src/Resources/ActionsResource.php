@@ -1,10 +1,10 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Resources;
+namespace ShadeTheory\GithubClient\Resources;
 
-use JordanPartridge\GithubClient\Requests\Actions\GetWorkflowRuns;
-use JordanPartridge\GithubClient\Requests\Actions\ListWorkflows;
-use JordanPartridge\GithubClient\Requests\Actions\TriggerWorkflow;
+use ShadeTheory\GithubClient\Requests\Actions\GetWorkflowRuns;
+use ShadeTheory\GithubClient\Requests\Actions\ListWorkflows;
+use ShadeTheory\GithubClient\Requests\Actions\TriggerWorkflow;
 use Saloon\Http\Response;
 
 /**

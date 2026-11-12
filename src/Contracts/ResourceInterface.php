@@ -1,8 +1,8 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Contracts;
+namespace ShadeTheory\GithubClient\Contracts;
 
-use JordanPartridge\GithubClient\Github;
+use ShadeTheory\GithubClient\Github;
 
 interface ResourceInterface
 {

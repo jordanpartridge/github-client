@@ -1,15 +1,15 @@
 <?php
 
-use JordanPartridge\GithubClient\Data\Issues\IssueDTO;
-use JordanPartridge\GithubClient\Data\Pulls\PullRequestDTO;
-use JordanPartridge\GithubClient\Data\Repos\RepoData;
-use JordanPartridge\GithubClient\Enums\Direction;
-use JordanPartridge\GithubClient\Enums\Issues\State;
-use JordanPartridge\GithubClient\Enums\MergeMethod;
-use JordanPartridge\GithubClient\Enums\Sort;
-use JordanPartridge\GithubClient\Enums\Visibility;
-use JordanPartridge\GithubClient\Facades\Github;
-use JordanPartridge\GithubClient\ValueObjects\Repo;
+use ShadeTheory\GithubClient\Data\Issues\IssueDTO;
+use ShadeTheory\GithubClient\Data\Pulls\PullRequestDTO;
+use ShadeTheory\GithubClient\Data\Repos\RepoData;
+use ShadeTheory\GithubClient\Enums\Direction;
+use ShadeTheory\GithubClient\Enums\Issues\State;
+use ShadeTheory\GithubClient\Enums\MergeMethod;
+use ShadeTheory\GithubClient\Enums\Sort;
+use ShadeTheory\GithubClient\Enums\Visibility;
+use ShadeTheory\GithubClient\Facades\Github;
+use ShadeTheory\GithubClient\ValueObjects\Repo;
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
 
@@ -19,7 +19,7 @@ beforeEach(function () {
 
 describe('README examples', function () {
     it('lists repositories and loads one by full name', function () {
-        $payload = $this->createMockRepoData('github-client', 1, 'jordanpartridge');
+        $payload = $this->createMockRepoData('github-client', 1, 'shadetheory');
 
         Github::connector()->withMockClient(new MockClient([
             '*' => MockResponse::make([$payload], 200),
@@ -34,21 +34,21 @@ describe('README examples', function () {
             '*' => MockResponse::make($payload, 200),
         ]));
 
-        $repo = Github::getRepo('jordanpartridge/github-client');
+        $repo = Github::getRepo('shadetheory/github-client');
 
         expect($repo->name)->toBe('github-client')
-            ->and($repo->owner->login)->toBe('jordanpartridge')
+            ->and($repo->owner->login)->toBe('shadetheory')
             ->and($repo->stargazers_count)->toBe(80);
 
-        $same = Github::repos()->get(Repo::fromFullName('jordanpartridge/github-client'));
+        $same = Github::repos()->get(Repo::fromFullName('shadetheory/github-client'));
 
-        expect($same->full_name)->toBe('jordanpartridge/github-client');
+        expect($same->full_name)->toBe('shadetheory/github-client');
     });
 
     it('paginates public repositories with enums', function () {
         Github::connector()->withMockClient(new MockClient([
             '*' => MockResponse::make([
-                $this->createMockRepoData('github-client', 1, 'jordanpartridge'),
+                $this->createMockRepoData('github-client', 1, 'shadetheory'),
             ], 200),
         ]));
 
@@ -66,7 +66,7 @@ describe('README examples', function () {
         $created = $this->createMockIssueData([
             'number' => 42,
             'title' => 'Bug: Something broke',
-            'html_url' => 'https://github.com/jordanpartridge/github-client/issues/42',
+            'html_url' => 'https://github.com/shadetheory/github-client/issues/42',
             'labels' => [
                 ['id' => 1, 'name' => 'bug', 'color' => 'd73a4a', 'description' => null, 'default' => true],
             ],
@@ -77,24 +77,24 @@ describe('README examples', function () {
         ]));
 
         $issue = Github::issues()->create(
-            owner: 'jordanpartridge',
+            owner: 'shadetheory',
             repo: 'github-client',
             title: 'Bug: Something broke',
             body: 'Here are the details...',
             labels: ['bug'],
-            assignees: ['jordanpartridge'],
+            assignees: ['shadetheory'],
         );
 
         expect($issue)->toBeInstanceOf(IssueDTO::class)
             ->and($issue->number)->toBe(42)
-            ->and($issue->html_url)->toBe('https://github.com/jordanpartridge/github-client/issues/42');
+            ->and($issue->html_url)->toBe('https://github.com/shadetheory/github-client/issues/42');
 
         Github::connector()->withMockClient(new MockClient([
             '*' => MockResponse::make([$created], 200),
         ]));
 
         $bugs = Github::issues()->forRepo(
-            owner: 'jordanpartridge',
+            owner: 'shadetheory',
             repo: 'github-client',
             state: State::OPEN,
             labels: 'bug',
@@ -107,7 +107,7 @@ describe('README examples', function () {
             '*' => MockResponse::make([$this->createMockCommentData()], 200),
         ]));
 
-        $comments = Github::issues()->comments('jordanpartridge', 'github-client', $issue->number);
+        $comments = Github::issues()->comments('shadetheory', 'github-client', $issue->number);
 
         expect($comments)->toHaveCount(1);
 
@@ -116,7 +116,7 @@ describe('README examples', function () {
         ]));
 
         $comment = Github::issues()->addComment(
-            'jordanpartridge',
+            'shadetheory',
             'github-client',
             $issue->number,
             'Fixed in the latest release.',
@@ -128,7 +128,7 @@ describe('README examples', function () {
             '*' => MockResponse::make($this->createMockIssueData(['number' => 42, 'state' => 'closed']), 200),
         ]));
 
-        $closed = Github::issues()->close('jordanpartridge', 'github-client', $issue->number);
+        $closed = Github::issues()->close('shadetheory', 'github-client', $issue->number);
 
         expect($closed->state)->toBe('closed');
     });
@@ -139,7 +139,7 @@ describe('README examples', function () {
         ]));
 
         $pr = Github::pullRequests()->create(
-            owner: 'jordanpartridge',
+            owner: 'shadetheory',
             repo: 'github-client',
             title: 'Add a feature',
             head: 'feature-branch',
@@ -160,7 +160,7 @@ describe('README examples', function () {
         ]));
 
         $merged = Github::pullRequests()->merge(
-            owner: 'jordanpartridge',
+            owner: 'shadetheory',
             repo: 'github-client',
             number: $pr->number,
             mergeMethod: MergeMethod::Squash,

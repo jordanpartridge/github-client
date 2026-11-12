@@ -1,6 +1,6 @@
 <?php
 
-use JordanPartridge\GithubClient\Data\Pulls\PullRequestFileDTO;
+use ShadeTheory\GithubClient\Data\Pulls\PullRequestFileDTO;
 
 describe('Pull Request Files API', function () {
     beforeEach(function () {

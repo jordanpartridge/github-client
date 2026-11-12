@@ -1,9 +1,9 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Resources;
+namespace ShadeTheory\GithubClient\Resources;
 
-use JordanPartridge\GithubClient\Contracts\ResourceInterface;
-use JordanPartridge\GithubClient\Github;
+use ShadeTheory\GithubClient\Contracts\ResourceInterface;
+use ShadeTheory\GithubClient\Github;
 
 abstract readonly class BaseResource implements ResourceInterface
 {

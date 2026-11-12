@@ -1,10 +1,10 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Requests\Pulls;
+namespace ShadeTheory\GithubClient\Requests\Pulls;
 
-use JordanPartridge\GithubClient\Data\Pulls\Params;
-use JordanPartridge\GithubClient\Data\Pulls\PullRequestDTO;
-use JordanPartridge\GithubClient\ValueObjects\Repo;
+use ShadeTheory\GithubClient\Data\Pulls\Params;
+use ShadeTheory\GithubClient\Data\Pulls\PullRequestDTO;
+use ShadeTheory\GithubClient\ValueObjects\Repo;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use Saloon\Http\Response;
@@ -36,7 +36,7 @@ class Index extends Request
      *
      * @see https://docs.github.com/en/rest/pulls/pulls?apiVersion=2022-11-28
      *
-     * @param  string  $owner_repo  - eg jordanpartridge/github-client
+     * @param  string  $owner_repo  - eg shadetheory/github-client
      */
     public function __construct(string $owner_repo, array $parameters = [])
     {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace JordanPartridge\GithubClient\Enums\Pulls;
+namespace ShadeTheory\GithubClient\Enums\Pulls;
 
 enum Sort: string
 {

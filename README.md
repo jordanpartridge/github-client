@@ -3,13 +3,13 @@
 A Laravel package for GitHub's REST API. It uses [Saloon](https://docs.saloon.dev) for HTTP, maps responses onto PHP objects, and exposes repositories, issues, pull requests, commits, releases, and Actions from a facade or the container.
 
 ```bash
-composer require jordanpartridge/github-client
+composer require shadetheory/github-client
 ```
 
 [![Tests](https://img.shields.io/github/actions/workflow/status/shadetheory/github-client/run-tests.yml?branch=master&label=tests&style=flat-square)](https://github.com/shadetheory/github-client/actions/workflows/run-tests.yml)
 [![PHPStan](https://img.shields.io/github/actions/workflow/status/shadetheory/github-client/phpstan.yml?branch=master&label=phpstan&style=flat-square)](https://github.com/shadetheory/github-client/actions/workflows/phpstan.yml)
-[![Latest Version](https://img.shields.io/packagist/v/jordanpartridge/github-client.svg?style=flat-square)](https://packagist.org/packages/jordanpartridge/github-client)
-[![Downloads](https://img.shields.io/packagist/dt/jordanpartridge/github-client.svg?style=flat-square)](https://packagist.org/packages/jordanpartridge/github-client)
+[![Latest Version](https://img.shields.io/packagist/v/shadetheory/github-client.svg?style=flat-square)](https://packagist.org/packages/shadetheory/github-client)
+[![Downloads](https://img.shields.io/packagist/dt/shadetheory/github-client.svg?style=flat-square)](https://packagist.org/packages/shadetheory/github-client)
 [![License](https://img.shields.io/github/license/shadetheory/github-client?style=flat-square)](LICENSE.md)
 
 `Github::forInstallation()`, `Github::withApp()`, and `installations()` are available from `v3.1.0`.
@@ -19,7 +19,7 @@ See the [documentation index](docs/README.md) for the API reference, authenticat
 ## Install
 
 ```bash
-composer require jordanpartridge/github-client
+composer require shadetheory/github-client
 ```
 
 Publish the config file:
@@ -53,11 +53,11 @@ OAuth and GitHub App settings are in the same config file. See [OAuth](#oauth) a
 ## Usage
 
 ```php
-use JordanPartridge\GithubClient\Facades\Github;
+use ShadeTheory\GithubClient\Facades\Github;
 
 $repos = Github::repos()->all()->dto();
 
-$repo = Github::getRepo('jordanpartridge/github-client');
+$repo = Github::getRepo('shadetheory/github-client');
 
 echo $repo->name;
 echo $repo->stargazers_count;
@@ -69,9 +69,9 @@ echo $repo->owner->login;
 `repos()->get()` takes a `Repo` value object, not a string:
 
 ```php
-use JordanPartridge\GithubClient\ValueObjects\Repo;
+use ShadeTheory\GithubClient\ValueObjects\Repo;
 
-$repo = Github::repos()->get(Repo::fromFullName('jordanpartridge/github-client'));
+$repo = Github::repos()->get(Repo::fromFullName('shadetheory/github-client'));
 ```
 
 `repos()->delete()` takes the same value object and returns the Saloon response.
@@ -81,9 +81,9 @@ $repo = Github::repos()->get(Repo::fromFullName('jordanpartridge/github-client')
 `all()` requests one page (GitHub's default is 30). `allWithPagination()` follows the `Link` header and returns every `RepoData` it can fetch, up to 1000 pages.
 
 ```php
-use JordanPartridge\GithubClient\Enums\Direction;
-use JordanPartridge\GithubClient\Enums\Sort;
-use JordanPartridge\GithubClient\Enums\Visibility;
+use ShadeTheory\GithubClient\Enums\Direction;
+use ShadeTheory\GithubClient\Enums\Sort;
+use ShadeTheory\GithubClient\Enums\Visibility;
 
 $repos = Github::repos()->allWithPagination(
     visibility: Visibility::PUBLIC,
@@ -95,32 +95,32 @@ $repos = Github::repos()->allWithPagination(
 ### Issues
 
 ```php
-use JordanPartridge\GithubClient\Enums\Issues\State;
+use ShadeTheory\GithubClient\Enums\Issues\State;
 
 $issue = Github::issues()->create(
-    owner: 'jordanpartridge',
+    owner: 'shadetheory',
     repo: 'github-client',
     title: 'Bug: Something broke',
     body: 'Here are the details...',
     labels: ['bug'],
-    assignees: ['jordanpartridge'],
+    assignees: ['shadetheory'],
 );
 
 echo $issue->number;
 echo $issue->html_url;
 
 $bugs = Github::issues()->forRepo(
-    owner: 'jordanpartridge',
+    owner: 'shadetheory',
     repo: 'github-client',
     state: State::OPEN,
     labels: 'bug',
 )->dto();
 
-$comments = Github::issues()->comments('jordanpartridge', 'github-client', $issue->number);
+$comments = Github::issues()->comments('shadetheory', 'github-client', $issue->number);
 
-Github::issues()->addComment('jordanpartridge', 'github-client', $issue->number, 'Fixed in the latest release.');
+Github::issues()->addComment('shadetheory', 'github-client', $issue->number, 'Fixed in the latest release.');
 
-Github::issues()->close('jordanpartridge', 'github-client', $issue->number);
+Github::issues()->close('shadetheory', 'github-client', $issue->number);
 ```
 
 `forRepo()` and `all()` return a Saloon response. Call `dto()` for `IssueDTO` objects. `allForRepo()` paginates the same way `allWithPagination()` does and returns the array itself.
@@ -132,10 +132,10 @@ GitHub's issue list includes pull requests. List endpoints skip items that have 
 ### Pull requests
 
 ```php
-use JordanPartridge\GithubClient\Enums\MergeMethod;
+use ShadeTheory\GithubClient\Enums\MergeMethod;
 
 $pr = Github::pullRequests()->create(
-    owner: 'jordanpartridge',
+    owner: 'shadetheory',
     repo: 'github-client',
     title: 'Add a feature',
     head: 'feature-branch',
@@ -145,7 +145,7 @@ $pr = Github::pullRequests()->create(
 );
 
 $merged = Github::pullRequests()->merge(
-    owner: 'jordanpartridge',
+    owner: 'shadetheory',
     repo: 'github-client',
     number: $pr->number,
     mergeMethod: MergeMethod::Squash,
@@ -254,10 +254,10 @@ The package does not retry rate-limited calls. A rate limit response throws `Rat
 
 ## Dependency injection
 
-The container binds `JordanPartridge\GithubClient\Github`. There is no connector interface.
+The container binds `ShadeTheory\GithubClient\Github`. There is no connector interface.
 
 ```php
-use JordanPartridge\GithubClient\Github;
+use ShadeTheory\GithubClient\Github;
 
 class RepoListing
 {
@@ -283,8 +283,8 @@ GITHUB_REDIRECT_URL=https://example.com/auth/github/callback
 ```
 
 ```php
-use JordanPartridge\GithubClient\Connectors\GithubConnector;
-use JordanPartridge\GithubClient\Facades\GithubOAuth;
+use ShadeTheory\GithubClient\Connectors\GithubConnector;
+use ShadeTheory\GithubClient\Facades\GithubOAuth;
 
 $state = bin2hex(random_bytes(16));
 
@@ -298,14 +298,14 @@ $token = GithubOAuth::getAccessToken($request->string('code'));
 
 $github = new GithubConnector($token);
 $repos = $github->send(
-    new \JordanPartridge\GithubClient\Requests\Repos\Index(),
+    new \ShadeTheory\GithubClient\Requests\Repos\Index(),
 );
 ```
 
 To keep using the facade-style resources with that token, build a client around the connector:
 
 ```php
-$github = new \JordanPartridge\GithubClient\Github(new GithubConnector($token));
+$github = new \ShadeTheory\GithubClient\Github(new GithubConnector($token));
 
 $repos = $github->repos()->all()->dto();
 ```
@@ -324,7 +324,7 @@ GITHUB_APP_PRIVATE_KEY="-----BEGIN RSA PRIVATE KEY-----\n...\n-----END RSA PRIVA
 `GITHUB_APP_PRIVATE_KEY_PATH` is used when `GITHUB_APP_PRIVATE_KEY` is empty. The path may be absolute or relative to the Laravel base path.
 
 ```php
-use JordanPartridge\GithubClient\Facades\Github;
+use ShadeTheory\GithubClient\Facades\Github;
 
 $github = Github::forInstallation(12345678);
 
@@ -358,7 +358,7 @@ php artisan github-client commits --repo=laravel/framework --limit=10
 Mock the connector with Saloon. The test suite blocks unmocked Saloon network requests; no GitHub credentials are needed. `IssueDTO` reads a full issue payload, including `user`. A short fixture will throw while mapping. `tests/TestCase.php` builds a complete one, and `tests/DocumentationExamplesTest.php` covers README examples.
 
 ```php
-use JordanPartridge\GithubClient\Facades\Github;
+use ShadeTheory\GithubClient\Facades\Github;
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
 

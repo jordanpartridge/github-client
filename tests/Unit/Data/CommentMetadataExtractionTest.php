@@ -1,6 +1,6 @@
 <?php
 
-use JordanPartridge\GithubClient\Data\Pulls\CommentMetadata;
+use ShadeTheory\GithubClient\Data\Pulls\CommentMetadata;
 
 describe('CommentMetadata', function () {
     it('extracts severity from explicit markers', function () {

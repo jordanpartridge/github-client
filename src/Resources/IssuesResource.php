@@ -1,22 +1,22 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Resources;
+namespace ShadeTheory\GithubClient\Resources;
 
-use JordanPartridge\GithubClient\Data\Issues\IssueCommentDTO;
-use JordanPartridge\GithubClient\Data\Issues\IssueDTO;
-use JordanPartridge\GithubClient\Enums\Direction;
-use JordanPartridge\GithubClient\Enums\Issues\Sort;
-use JordanPartridge\GithubClient\Enums\Issues\State;
-use JordanPartridge\GithubClient\Requests\Issues\Comments;
-use JordanPartridge\GithubClient\Requests\Issues\Create;
-use JordanPartridge\GithubClient\Requests\Issues\CreateComment;
-use JordanPartridge\GithubClient\Requests\Issues\DeleteComment;
-use JordanPartridge\GithubClient\Requests\Issues\Get;
-use JordanPartridge\GithubClient\Requests\Issues\GetComment;
-use JordanPartridge\GithubClient\Requests\Issues\Index;
-use JordanPartridge\GithubClient\Requests\Issues\RepoIndex;
-use JordanPartridge\GithubClient\Requests\Issues\Update;
-use JordanPartridge\GithubClient\Requests\Issues\UpdateComment;
+use ShadeTheory\GithubClient\Data\Issues\IssueCommentDTO;
+use ShadeTheory\GithubClient\Data\Issues\IssueDTO;
+use ShadeTheory\GithubClient\Enums\Direction;
+use ShadeTheory\GithubClient\Enums\Issues\Sort;
+use ShadeTheory\GithubClient\Enums\Issues\State;
+use ShadeTheory\GithubClient\Requests\Issues\Comments;
+use ShadeTheory\GithubClient\Requests\Issues\Create;
+use ShadeTheory\GithubClient\Requests\Issues\CreateComment;
+use ShadeTheory\GithubClient\Requests\Issues\DeleteComment;
+use ShadeTheory\GithubClient\Requests\Issues\Get;
+use ShadeTheory\GithubClient\Requests\Issues\GetComment;
+use ShadeTheory\GithubClient\Requests\Issues\Index;
+use ShadeTheory\GithubClient\Requests\Issues\RepoIndex;
+use ShadeTheory\GithubClient\Requests\Issues\Update;
+use ShadeTheory\GithubClient\Requests\Issues\UpdateComment;
 use Saloon\Http\Response;
 
 readonly class IssuesResource extends BaseResource

@@ -1,12 +1,12 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Auth;
+namespace ShadeTheory\GithubClient\Auth;
 
 use DateTimeImmutable;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
-use JordanPartridge\GithubClient\Exceptions\AuthenticationException;
-use JordanPartridge\GithubClient\Requests\Installations\CreateAccessToken;
+use ShadeTheory\GithubClient\Exceptions\AuthenticationException;
+use ShadeTheory\GithubClient\Requests\Installations\CreateAccessToken;
 use Saloon\Http\Auth\TokenAuthenticator;
 
 /**

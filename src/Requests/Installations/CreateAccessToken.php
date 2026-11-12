@@ -1,8 +1,8 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Requests\Installations;
+namespace ShadeTheory\GithubClient\Requests\Installations;
 
-use JordanPartridge\GithubClient\Data\Installations\InstallationTokenData;
+use ShadeTheory\GithubClient\Data\Installations\InstallationTokenData;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;

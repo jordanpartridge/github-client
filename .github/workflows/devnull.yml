@@ -43,7 +43,7 @@ jobs:
           RELEASE_BODY: ${{ github.event.release.body }}
           RELEASE_URL: ${{ github.event.release.html_url }}
           PITCH: 'A Laravel client for GitHub''s REST API, built on Saloon, covering repositories, issues, pull requests, commits, releases and Actions, with token or GitHub App auth.'
-          PACKAGE: 'jordanpartridge/github-client'
+          PACKAGE: 'shadetheory/github-client'
           SELF_JOBS: compose,post
         run: |
           body="$(python3 .github/scripts/devnull-post.py)"

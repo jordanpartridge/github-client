@@ -1,6 +1,6 @@
 <?php
 
-namespace JordanPartridge\GithubClient\ValueObjects;
+namespace ShadeTheory\GithubClient\ValueObjects;
 
 use InvalidArgumentException;
 

@@ -1,11 +1,11 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Requests\Repos;
+namespace ShadeTheory\GithubClient\Requests\Repos;
 
 use InvalidArgumentException;
-use JordanPartridge\GithubClient\Data\Repos\RepoData;
-use JordanPartridge\GithubClient\Data\Repos\SearchRepositoriesData;
-use JordanPartridge\GithubClient\Enums\Direction;
+use ShadeTheory\GithubClient\Data\Repos\RepoData;
+use ShadeTheory\GithubClient\Data\Repos\SearchRepositoriesData;
+use ShadeTheory\GithubClient\Enums\Direction;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use Saloon\Http\Response;

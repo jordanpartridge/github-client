@@ -1,5 +1,5 @@
 {
-    "name": "jordanpartridge/github-client",
+    "name": "shadetheory/github-client",
     "description": "Laravel client for the GitHub REST API, built with Saloon. Typed responses for repositories, issues, pull requests, commits, releases, and Actions.",
     "keywords": [
         "laravel",
@@ -45,12 +45,12 @@
     },
     "autoload": {
         "psr-4": {
-            "JordanPartridge\\GithubClient\\": "src/"
+            "ShadeTheory\\GithubClient\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "JordanPartridge\\GithubClient\\Tests\\": "tests/",
+            "ShadeTheory\\GithubClient\\Tests\\": "tests/",
             "Workbench\\App\\": "workbench/app/"
         }
     },
@@ -82,10 +82,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "JordanPartridge\\GithubClient\\GithubClientServiceProvider"
+                "ShadeTheory\\GithubClient\\GithubClientServiceProvider"
             ],
             "aliases": {
-                "Github": "JordanPartridge\\GithubClient\\Facades\\Github"
+                "Github": "ShadeTheory\\GithubClient\\Facades\\Github"
             }
         }
     },

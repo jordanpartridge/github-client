@@ -1,10 +1,10 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Data\Pulls;
+namespace ShadeTheory\GithubClient\Data\Pulls;
 
-use JordanPartridge\GithubClient\Enums\Direction;
-use JordanPartridge\GithubClient\Enums\Pulls\Sort;
-use JordanPartridge\GithubClient\Enums\Pulls\State;
+use ShadeTheory\GithubClient\Enums\Direction;
+use ShadeTheory\GithubClient\Enums\Pulls\Sort;
+use ShadeTheory\GithubClient\Enums\Pulls\State;
 
 class Params
 {

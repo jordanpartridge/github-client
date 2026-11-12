@@ -1,8 +1,8 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Requests\Releases;
+namespace ShadeTheory\GithubClient\Requests\Releases;
 
-use JordanPartridge\GithubClient\Data\Releases\ReleaseData;
+use ShadeTheory\GithubClient\Data\Releases\ReleaseData;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use Saloon\Http\Response;

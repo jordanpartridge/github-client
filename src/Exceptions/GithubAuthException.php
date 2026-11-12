@@ -1,6 +1,6 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Exceptions;
+namespace ShadeTheory\GithubClient\Exceptions;
 
 /**
  * @deprecated Use AuthenticationException instead

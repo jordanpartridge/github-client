@@ -1,6 +1,6 @@
 <?php
 
-use JordanPartridge\GithubClient\Data\Pulls\PullRequestDTO;
+use ShadeTheory\GithubClient\Data\Pulls\PullRequestDTO;
 
 describe('Comment Mapping Bug Fix (Issue #71)', function () {
     it('handles GitHub API returning string values for comment counts', function () {
