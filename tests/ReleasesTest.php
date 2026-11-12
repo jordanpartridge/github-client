@@ -1,7 +1,7 @@
 <?php
 
-use JordanPartridge\GithubClient\Data\Releases\ReleaseData;
-use JordanPartridge\GithubClient\Facades\Github;
+use ShadeTheory\GithubClient\Data\Releases\ReleaseData;
+use ShadeTheory\GithubClient\Facades\Github;
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
 

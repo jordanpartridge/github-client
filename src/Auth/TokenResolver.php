@@ -1,6 +1,6 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Auth;
+namespace ShadeTheory\GithubClient\Auth;
 
 use Illuminate\Support\Facades\Process;
 

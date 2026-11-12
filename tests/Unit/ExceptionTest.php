@@ -1,10 +1,10 @@
 <?php
 
-use JordanPartridge\GithubClient\Exceptions\AuthenticationException;
-use JordanPartridge\GithubClient\Exceptions\GithubClientException;
-use JordanPartridge\GithubClient\Exceptions\NetworkException;
-use JordanPartridge\GithubClient\Exceptions\RateLimitException;
-use JordanPartridge\GithubClient\Exceptions\ValidationException;
+use ShadeTheory\GithubClient\Exceptions\AuthenticationException;
+use ShadeTheory\GithubClient\Exceptions\GithubClientException;
+use ShadeTheory\GithubClient\Exceptions\NetworkException;
+use ShadeTheory\GithubClient\Exceptions\RateLimitException;
+use ShadeTheory\GithubClient\Exceptions\ValidationException;
 
 describe('Exception Hierarchy', function () {
     it('base exception includes context', function () {
@@ -80,7 +80,7 @@ describe('RateLimitException', function () {
 describe('ApiException', function () {
     it('has proper structure', function () {
         // For now, just test that the class exists and has the expected interface
-        expect(class_exists('JordanPartridge\\GithubClient\\Exceptions\\ApiException'))->toBeTrue();
+        expect(class_exists('ShadeTheory\\GithubClient\\Exceptions\\ApiException'))->toBeTrue();
     });
 });
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Requests\Commits;
+namespace ShadeTheory\GithubClient\Requests\Commits;
 
 use InvalidArgumentException;
-use JordanPartridge\GithubClient\Data\Commits\CommitData;
+use ShadeTheory\GithubClient\Data\Commits\CommitData;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use Saloon\Http\Response;

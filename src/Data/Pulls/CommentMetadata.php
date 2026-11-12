@@ -1,6 +1,6 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Data\Pulls;
+namespace ShadeTheory\GithubClient\Data\Pulls;
 
 /**
  * Comment metadata extracted from AI reviewer and bot comments.

@@ -1,9 +1,9 @@
 <?php
 
-use JordanPartridge\GithubClient\Data\Repos\SearchRepositoriesData;
-use JordanPartridge\GithubClient\Enums\Direction;
-use JordanPartridge\GithubClient\Facades\Github;
-use JordanPartridge\GithubClient\Requests\Repos\Search;
+use ShadeTheory\GithubClient\Data\Repos\SearchRepositoriesData;
+use ShadeTheory\GithubClient\Enums\Direction;
+use ShadeTheory\GithubClient\Facades\Github;
+use ShadeTheory\GithubClient\Requests\Repos\Search;
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
 

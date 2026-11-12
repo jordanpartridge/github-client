@@ -1,8 +1,8 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Requests\Pulls;
+namespace ShadeTheory\GithubClient\Requests\Pulls;
 
-use JordanPartridge\GithubClient\Data\Pulls\PullRequestCommentDTO;
+use ShadeTheory\GithubClient\Data\Pulls\PullRequestCommentDTO;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use Saloon\Http\Response;

@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Process;
-use JordanPartridge\GithubClient\Tests\TestCase;
+use ShadeTheory\GithubClient\Tests\TestCase;
 use Saloon\Config;
 
 // Set token early to prevent CLI calls during bootstrap

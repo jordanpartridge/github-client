@@ -1,6 +1,6 @@
 <?php
 
-use JordanPartridge\GithubClient\Data\Pulls\PullRequestDTO;
+use ShadeTheory\GithubClient\Data\Pulls\PullRequestDTO;
 
 describe('PullRequest Comment Mapping Diagnostics', function () {
     it('correctly maps comments from GitHub API response', function () {

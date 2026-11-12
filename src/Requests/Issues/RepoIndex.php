@@ -1,12 +1,12 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Requests\Issues;
+namespace ShadeTheory\GithubClient\Requests\Issues;
 
 use InvalidArgumentException;
-use JordanPartridge\GithubClient\Concerns\HandlesIssueResponses;
-use JordanPartridge\GithubClient\Enums\Direction;
-use JordanPartridge\GithubClient\Enums\Issues\Sort;
-use JordanPartridge\GithubClient\Enums\Issues\State;
+use ShadeTheory\GithubClient\Concerns\HandlesIssueResponses;
+use ShadeTheory\GithubClient\Enums\Direction;
+use ShadeTheory\GithubClient\Enums\Issues\Sort;
+use ShadeTheory\GithubClient\Enums\Issues\State;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 

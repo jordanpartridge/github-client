@@ -1,9 +1,9 @@
 <?php
 
-use JordanPartridge\GithubClient\Enums\Direction;
-use JordanPartridge\GithubClient\Enums\Issues\Sort;
-use JordanPartridge\GithubClient\Enums\Issues\State;
-use JordanPartridge\GithubClient\Facades\Github;
+use ShadeTheory\GithubClient\Enums\Direction;
+use ShadeTheory\GithubClient\Enums\Issues\Sort;
+use ShadeTheory\GithubClient\Enums\Issues\State;
+use ShadeTheory\GithubClient\Facades\Github;
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
 

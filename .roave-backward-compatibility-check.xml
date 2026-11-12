@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
     Baseline for roave/backward-compatibility-check.
-    Only ignores changes that come from the Symfony and Laravel console base classes
-    that the package commands extend, not changes to this package's own API.
+
+    Console ignores cover method removals inherited from Symfony and Laravel
+    console base classes, not changes to this package's own API.
+
+    The JordanPartridge\GithubClient class removals are the approved rename to
+    ShadeTheory\GithubClient. Tags from before that rename compare as deletions.
+    This pattern does not match classes under the new namespace.
 -->
 <roave-bc-check
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -10,5 +15,6 @@
     <baseline>
         <ignored-regex>#\[BC\] REMOVED: Method [^ ]+ \(inherited from (Symfony\\Component\\Console|Illuminate\\Console)\\[^)]+\) was removed#</ignored-regex>
         <ignored-regex>#\[BC\] CHANGED: The return type of (Symfony\\Component\\Console|Illuminate\\Console)\\[^ ]+\#[A-Za-z_]+\(\) changed from no type to void#</ignored-regex>
+        <ignored-regex>#\[BC\] REMOVED: Class JordanPartridge\\GithubClient\\.* has been deleted#</ignored-regex>
     </baseline>
 </roave-bc-check>

@@ -1,10 +1,10 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Commands;
+namespace ShadeTheory\GithubClient\Commands;
 
 use Illuminate\Console\Command;
-use JordanPartridge\GithubClient\Facades\Github;
-use JordanPartridge\GithubClient\ValueObjects\Repo;
+use ShadeTheory\GithubClient\Facades\Github;
+use ShadeTheory\GithubClient\ValueObjects\Repo;
 use Illuminate\Support\Str;
 
 class GithubClientCommand extends Command

@@ -1,11 +1,11 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Requests\Commits;
+namespace ShadeTheory\GithubClient\Requests\Commits;
 
 use InvalidArgumentException;
-use JordanPartridge\GithubClient\Concerns\ValidatesRepoName;
-use JordanPartridge\GithubClient\Data\Commits\CommitData;
-use JordanPartridge\GithubClient\ValueObjects\Repo;
+use ShadeTheory\GithubClient\Concerns\ValidatesRepoName;
+use ShadeTheory\GithubClient\Data\Commits\CommitData;
+use ShadeTheory\GithubClient\ValueObjects\Repo;
 use JsonException;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;

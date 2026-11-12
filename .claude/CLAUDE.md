@@ -6,9 +6,9 @@ Notes for working in this repository.
 
 A Laravel package that calls the GitHub REST API with Saloon. Resources live in `src/Resources` and build request classes in `src/Requests`. Responses are mapped by `createDtoFromResponse()` onto plain PHP objects in `src/Data`. Those objects are not Spatie Laravel Data objects.
 
-The facade `JordanPartridge\GithubClient\Facades\Github` resolves `JordanPartridge\GithubClient\Github`. Inject that class. There is no `GithubConnectorInterface`.
+The facade `ShadeTheory\GithubClient\Facades\Github` resolves `ShadeTheory\GithubClient\Github`. Inject that class. There is no `GithubConnectorInterface`.
 
-The connector is `JordanPartridge\GithubClient\Connectors\GithubConnector`. Its base URL is `https://api.github.com`.
+The connector is `ShadeTheory\GithubClient\Connectors\GithubConnector`. Its base URL is `https://api.github.com`.
 
 ## Commands
 

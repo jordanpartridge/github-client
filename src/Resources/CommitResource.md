@@ -9,7 +9,7 @@ The CommitResource provides access to GitHub's Git commit API endpoints. It allo
 Fetches one page of `CommitData` objects for a repository. Pass `page` explicitly to fetch subsequent pages.
 
 ```php
-use JordanPartridge\GithubClient\Facades\Github;
+use ShadeTheory\GithubClient\Facades\Github;
 
 // Get first 100 commits
 $commits = Github::commits()->all('owner/repo');

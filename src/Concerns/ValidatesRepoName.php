@@ -1,6 +1,6 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Concerns;
+namespace ShadeTheory\GithubClient\Concerns;
 
 use InvalidArgumentException;
 

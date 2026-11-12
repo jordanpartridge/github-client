@@ -1,6 +1,6 @@
 <?php
 
-use JordanPartridge\GithubClient\Data\Pulls\PullRequestDetailDTO;
+use ShadeTheory\GithubClient\Data\Pulls\PullRequestDetailDTO;
 
 describe('Pull Request Improvements', function () {
 

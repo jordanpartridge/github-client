@@ -1,9 +1,9 @@
 <?php
 
 use Carbon\Carbon;
-use JordanPartridge\GithubClient\Facades\Github;
-use JordanPartridge\GithubClient\Resources\CommitResource;
-use JordanPartridge\GithubClient\ValueObjects\Repo;
+use ShadeTheory\GithubClient\Facades\Github;
+use ShadeTheory\GithubClient\Resources\CommitResource;
+use ShadeTheory\GithubClient\ValueObjects\Repo;
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
 
@@ -16,11 +16,11 @@ beforeEach(function () {
     ]);
 
     Github::connector()->withMockClient($mockClient);
-    $this->resource = new CommitResource(app(JordanPartridge\GithubClient\Github::class));
+    $this->resource = new CommitResource(app(ShadeTheory\GithubClient\Github::class));
 });
 
 it('can fetch all commits for a repository', function () {
-    $response = $this->resource->all('jordanpartridge/github-client');
+    $response = $this->resource->all('shadetheory/github-client');
 
     expect($response)->toBeArray();
 });
@@ -37,9 +37,9 @@ it('can fetch a specific commit by SHA', function () {
         '*' => MockResponse::make([
             'sha' => $sha,
             'node_id' => 'MDQ6QmxvYjE0ODMzNDY0NjpkZjE5N2EzZTgwMjhmN2E5ODM3MDc2M2ZlN2EzNWFlYjYzOTMxOGExOg==',
-            'url' => 'https://api.github.com/repos/jordanpartridge/github-client/git/commits/' . $sha,
-            'html_url' => 'https://github.com/jordanpartridge/github-client/commit/' . $sha,
-            'comments_url' => 'https://api.github.com/repos/jordanpartridge/github-client/commits/' . $sha . '/comments',
+            'url' => 'https://api.github.com/repos/shadetheory/github-client/git/commits/' . $sha,
+            'html_url' => 'https://github.com/shadetheory/github-client/commit/' . $sha,
+            'comments_url' => 'https://api.github.com/repos/shadetheory/github-client/commits/' . $sha . '/comments',
             'commit' => [
                 'author' => [
                     'name' => 'John Doe',
@@ -54,9 +54,9 @@ it('can fetch a specific commit by SHA', function () {
                 'message' => 'Test commit message',
                 'tree' => [
                     'sha' => '1234567890123456789012345678901234567890',
-                    'url' => 'https://api.github.com/repos/jordanpartridge/github-client/git/trees/1234567890123456789012345678901234567890',
+                    'url' => 'https://api.github.com/repos/shadetheory/github-client/git/trees/1234567890123456789012345678901234567890',
                 ],
-                'url' => 'https://api.github.com/repos/jordanpartridge/github-client/git/commits/' . $sha,
+                'url' => 'https://api.github.com/repos/shadetheory/github-client/git/commits/' . $sha,
                 'comment_count' => 0,
                 'verification' => [
                     'verified' => true,
@@ -77,7 +77,7 @@ it('can fetch a specific commit by SHA', function () {
         ], 200),
     ]));
 
-    $response = $this->resource->get('jordanpartridge/github-client', $sha);
+    $response = $this->resource->get('shadetheory/github-client', $sha);
 
     // Test passes if no exception is thrown
     expect($response->sha)->toBe($sha);
@@ -89,15 +89,15 @@ it('validates repository name format', function () {
 });
 
 it('handles pagination parameters correctly', function () {
-    $response = $this->resource->all('jordanpartridge/github-client', 50, 2);
+    $response = $this->resource->all('shadetheory/github-client', 50, 2);
 
     // Test passes if no exception is thrown
     expect($response)->toBeArray();
 });
 
 it('converts repository name to value object correctly', function () {
-    $repo = Repo::fromFullName('jordanpartridge/github-client');
+    $repo = Repo::fromFullName('shadetheory/github-client');
 
-    expect($repo->owner())->toBe('jordanpartridge')
+    expect($repo->owner())->toBe('shadetheory')
         ->and($repo->name())->toBe('github-client');
 });

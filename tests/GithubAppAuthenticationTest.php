@@ -2,9 +2,9 @@
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
-use JordanPartridge\GithubClient\Auth\GitHubAppAuthentication;
-use JordanPartridge\GithubClient\Exceptions\AuthenticationException;
-use JordanPartridge\GithubClient\Github;
+use ShadeTheory\GithubClient\Auth\GitHubAppAuthentication;
+use ShadeTheory\GithubClient\Exceptions\AuthenticationException;
+use ShadeTheory\GithubClient\Github;
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
 use Saloon\Http\PendingRequest;

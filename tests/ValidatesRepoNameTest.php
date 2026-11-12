@@ -1,6 +1,6 @@
 <?php
 
-use JordanPartridge\GithubClient\Concerns\ValidatesRepoName;
+use ShadeTheory\GithubClient\Concerns\ValidatesRepoName;
 
 uses(ValidatesRepoName::class);
 

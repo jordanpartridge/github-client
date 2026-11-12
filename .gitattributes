@@ -4,6 +4,7 @@
 # https://www.kernel.org/pub/software/scm/git/docs/gitattributes.html
 
 # Ignore all test and documentation with "export-ignore".
+.agents/              export-ignore
 .claude/              export-ignore
 .claude/agents/       export-ignore
 .claude/CLAUDE.md     export-ignore

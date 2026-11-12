@@ -7,8 +7,8 @@ Resources are `readonly` and extend `BaseResource`. The constructor receives the
 Methods do not share one return type. `RepoResource::all()` and `IssuesResource::forRepo()` return a Saloon response (`dto()` maps the body). `RepoResource::get()` returns `RepoData` and takes a `Repo` value object. `IssuesResource::get()` takes owner, repo, and issue number and returns `IssueDTO`.
 
 ```php
-use JordanPartridge\GithubClient\Facades\Github;
-use JordanPartridge\GithubClient\ValueObjects\Repo;
+use ShadeTheory\GithubClient\Facades\Github;
+use ShadeTheory\GithubClient\ValueObjects\Repo;
 
 $repos = Github::repos()->all()->dto();
 

@@ -1,8 +1,8 @@
 <?php
 
-use JordanPartridge\GithubClient\Data\RateLimitDTO;
-use JordanPartridge\GithubClient\Exceptions\ApiException;
-use JordanPartridge\GithubClient\Github;
+use ShadeTheory\GithubClient\Data\RateLimitDTO;
+use ShadeTheory\GithubClient\Exceptions\ApiException;
+use ShadeTheory\GithubClient\Github;
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
 

@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Http;
-use JordanPartridge\GithubClient\Auth\GithubOAuth;
-use JordanPartridge\GithubClient\Exceptions\AuthenticationException;
+use ShadeTheory\GithubClient\Auth\GithubOAuth;
+use ShadeTheory\GithubClient\Exceptions\AuthenticationException;
 
 describe('GitHub OAuth', function () {
     it('throws when oauth config is missing', function () {

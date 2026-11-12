@@ -1,24 +1,24 @@
 <?php
 
-namespace JordanPartridge\GithubClient;
+namespace ShadeTheory\GithubClient;
 
-use JordanPartridge\GithubClient\Connectors\GithubConnector;
-use JordanPartridge\GithubClient\Data\RateLimitDTO;
-use JordanPartridge\GithubClient\Data\Repos\RepoData;
-use JordanPartridge\GithubClient\Exceptions\ApiException;
-use JordanPartridge\GithubClient\Exceptions\NetworkException;
-use JordanPartridge\GithubClient\Requests\RateLimit\Get;
-use JordanPartridge\GithubClient\Auth\GitHubAppAuthentication;
-use JordanPartridge\GithubClient\Resources\ActionsResource;
-use JordanPartridge\GithubClient\Resources\CommentsResource;
-use JordanPartridge\GithubClient\Resources\CommitResource;
-use JordanPartridge\GithubClient\Resources\FileResource;
-use JordanPartridge\GithubClient\Resources\InstallationsResource;
-use JordanPartridge\GithubClient\Resources\IssuesResource;
-use JordanPartridge\GithubClient\Resources\PullRequestResource;
-use JordanPartridge\GithubClient\Resources\ReleasesResource;
-use JordanPartridge\GithubClient\Resources\RepoResource;
-use JordanPartridge\GithubClient\ValueObjects\Repo;
+use ShadeTheory\GithubClient\Connectors\GithubConnector;
+use ShadeTheory\GithubClient\Data\RateLimitDTO;
+use ShadeTheory\GithubClient\Data\Repos\RepoData;
+use ShadeTheory\GithubClient\Exceptions\ApiException;
+use ShadeTheory\GithubClient\Exceptions\NetworkException;
+use ShadeTheory\GithubClient\Requests\RateLimit\Get;
+use ShadeTheory\GithubClient\Auth\GitHubAppAuthentication;
+use ShadeTheory\GithubClient\Resources\ActionsResource;
+use ShadeTheory\GithubClient\Resources\CommentsResource;
+use ShadeTheory\GithubClient\Resources\CommitResource;
+use ShadeTheory\GithubClient\Resources\FileResource;
+use ShadeTheory\GithubClient\Resources\InstallationsResource;
+use ShadeTheory\GithubClient\Resources\IssuesResource;
+use ShadeTheory\GithubClient\Resources\PullRequestResource;
+use ShadeTheory\GithubClient\Resources\ReleasesResource;
+use ShadeTheory\GithubClient\Resources\RepoResource;
+use ShadeTheory\GithubClient\ValueObjects\Repo;
 use Saloon\Http\Response;
 
 class Github

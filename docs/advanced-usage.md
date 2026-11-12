@@ -20,7 +20,7 @@ GITHUB_REDIRECT_URL=
 ```
 
 ```php
-use JordanPartridge\GithubClient\Facades\GithubOAuth;
+use ShadeTheory\GithubClient\Facades\GithubOAuth;
 
 $url = GithubOAuth::getAuthorizationUrl(['repo'], $state);
 $token = GithubOAuth::getAccessToken($code);
@@ -41,7 +41,7 @@ GITHUB_APP_PRIVATE_KEY_PATH=
 `Github::forInstallation(int $installationId): Github` reads the app id and key from config and returns an installation-authenticated client. These helpers are available from `v3.1.0`:
 
 ```php
-use JordanPartridge\GithubClient\Facades\Github;
+use ShadeTheory\GithubClient\Facades\Github;
 
 $github = Github::forInstallation(12345678);
 $repo = $github->getRepo('owner/repo');
@@ -67,7 +67,7 @@ $repo = $github->getRepo('owner/repo');
 
 | Status | Exception |
 | --- | --- |
-| 401 | `JordanPartridge\GithubClient\Exceptions\AuthenticationException` |
+| 401 | `ShadeTheory\GithubClient\Exceptions\AuthenticationException` |
 | 403 when the body or headers say the rate limit is spent | `RateLimitException` |
 | 403 otherwise | `ApiException` |
 | 404 | `ResourceNotFoundException` |

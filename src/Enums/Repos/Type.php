@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace JordanPartridge\GithubClient\Enums\Repos;
+namespace ShadeTheory\GithubClient\Enums\Repos;
 
 enum Type: string
 {

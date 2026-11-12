@@ -1,30 +1,30 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Resources;
+namespace ShadeTheory\GithubClient\Resources;
 
-use JordanPartridge\GithubClient\Data\Pulls\PullRequestCommentDTO;
-use JordanPartridge\GithubClient\Data\Pulls\PullRequestDetailDTO;
-use JordanPartridge\GithubClient\Data\Pulls\PullRequestDTO;
-use JordanPartridge\GithubClient\Data\Pulls\PullRequestFileDTO;
-use JordanPartridge\GithubClient\Data\Pulls\PullRequestReviewDTO;
-use JordanPartridge\GithubClient\Data\Pulls\PullRequestSummaryDTO;
-use JordanPartridge\GithubClient\Enums\MergeMethod;
-use JordanPartridge\GithubClient\Requests\Pulls\Comments;
-use JordanPartridge\GithubClient\Requests\Pulls\CommentsWithFilters;
-use JordanPartridge\GithubClient\Requests\Pulls\Create;
-use JordanPartridge\GithubClient\Requests\Pulls\CreateComment;
-use JordanPartridge\GithubClient\Requests\Pulls\CreateReview;
-use JordanPartridge\GithubClient\Requests\Pulls\DeleteComment;
-use JordanPartridge\GithubClient\Requests\Pulls\Files;
-use JordanPartridge\GithubClient\Requests\Pulls\Get;
-use JordanPartridge\GithubClient\Requests\Pulls\GetComment;
-use JordanPartridge\GithubClient\Requests\Pulls\GetWithDetailDTO;
-use JordanPartridge\GithubClient\Requests\Pulls\Index;
-use JordanPartridge\GithubClient\Requests\Pulls\IndexWithSummaryDTO;
-use JordanPartridge\GithubClient\Requests\Pulls\Merge;
-use JordanPartridge\GithubClient\Requests\Pulls\Reviews;
-use JordanPartridge\GithubClient\Requests\Pulls\Update;
-use JordanPartridge\GithubClient\Requests\Pulls\UpdateComment;
+use ShadeTheory\GithubClient\Data\Pulls\PullRequestCommentDTO;
+use ShadeTheory\GithubClient\Data\Pulls\PullRequestDetailDTO;
+use ShadeTheory\GithubClient\Data\Pulls\PullRequestDTO;
+use ShadeTheory\GithubClient\Data\Pulls\PullRequestFileDTO;
+use ShadeTheory\GithubClient\Data\Pulls\PullRequestReviewDTO;
+use ShadeTheory\GithubClient\Data\Pulls\PullRequestSummaryDTO;
+use ShadeTheory\GithubClient\Enums\MergeMethod;
+use ShadeTheory\GithubClient\Requests\Pulls\Comments;
+use ShadeTheory\GithubClient\Requests\Pulls\CommentsWithFilters;
+use ShadeTheory\GithubClient\Requests\Pulls\Create;
+use ShadeTheory\GithubClient\Requests\Pulls\CreateComment;
+use ShadeTheory\GithubClient\Requests\Pulls\CreateReview;
+use ShadeTheory\GithubClient\Requests\Pulls\DeleteComment;
+use ShadeTheory\GithubClient\Requests\Pulls\Files;
+use ShadeTheory\GithubClient\Requests\Pulls\Get;
+use ShadeTheory\GithubClient\Requests\Pulls\GetComment;
+use ShadeTheory\GithubClient\Requests\Pulls\GetWithDetailDTO;
+use ShadeTheory\GithubClient\Requests\Pulls\Index;
+use ShadeTheory\GithubClient\Requests\Pulls\IndexWithSummaryDTO;
+use ShadeTheory\GithubClient\Requests\Pulls\Merge;
+use ShadeTheory\GithubClient\Requests\Pulls\Reviews;
+use ShadeTheory\GithubClient\Requests\Pulls\Update;
+use ShadeTheory\GithubClient\Requests\Pulls\UpdateComment;
 use Illuminate\Support\Collection;
 
 readonly class PullRequestResource extends BaseResource

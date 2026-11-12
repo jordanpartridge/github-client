@@ -1,8 +1,8 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Requests\RateLimit;
+namespace ShadeTheory\GithubClient\Requests\RateLimit;
 
-use JordanPartridge\GithubClient\Data\RateLimitDTO;
+use ShadeTheory\GithubClient\Data\RateLimitDTO;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use Saloon\Http\Response;

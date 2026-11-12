@@ -1,6 +1,6 @@
 # Architecture
 
-`jordanpartridge/github-client` is a Laravel package for the GitHub REST API. It is built on [Saloon](https://docs.saloon.dev) and returns typed PHP objects instead of raw arrays. It requires PHP 8.2 or newer and Laravel 11, 12, or 13. CI runs the suite on PHP 8.2, 8.3, and 8.4.
+`shadetheory/github-client` is a Laravel package for the GitHub REST API. It is built on [Saloon](https://docs.saloon.dev) and returns typed PHP objects instead of raw arrays. It requires PHP 8.2 or newer and Laravel 11, 12, or 13. CI runs the suite on PHP 8.2, 8.3, and 8.4.
 
 ## Layers
 
@@ -59,8 +59,8 @@ $github->pullRequests()->all('owner', 'repo');
 ## Usage
 
 ```php
-use JordanPartridge\GithubClient\Facades\Github;
-use JordanPartridge\GithubClient\Enums\MergeMethod;
+use ShadeTheory\GithubClient\Facades\Github;
+use ShadeTheory\GithubClient\Enums\MergeMethod;
 
 $repo = Github::getRepo('laravel/framework');           // RepoData
 $prs  = Github::pullRequests()->all('laravel', 'framework');

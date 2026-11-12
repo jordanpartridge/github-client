@@ -1,9 +1,9 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Facades;
+namespace ShadeTheory\GithubClient\Facades;
 
 use Illuminate\Support\Facades\Facade;
-use JordanPartridge\GithubClient\Auth\GithubOAuth as GithubOAuthClass;
+use ShadeTheory\GithubClient\Auth\GithubOAuth as GithubOAuthClass;
 
 /**
  * @method static string getAuthorizationUrl(array $scopes = ['repo'], ?string $state = null)

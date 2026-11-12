@@ -1,10 +1,10 @@
 <?php
 
-use JordanPartridge\GithubClient\Data\Pulls\PullRequestCommentDTO;
-use JordanPartridge\GithubClient\Data\Pulls\PullRequestDTO;
-use JordanPartridge\GithubClient\Data\Pulls\PullRequestReviewDTO;
-use JordanPartridge\GithubClient\Enums\MergeMethod;
-use JordanPartridge\GithubClient\Facades\Github;
+use ShadeTheory\GithubClient\Data\Pulls\PullRequestCommentDTO;
+use ShadeTheory\GithubClient\Data\Pulls\PullRequestDTO;
+use ShadeTheory\GithubClient\Data\Pulls\PullRequestReviewDTO;
+use ShadeTheory\GithubClient\Enums\MergeMethod;
+use ShadeTheory\GithubClient\Facades\Github;
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
 use Illuminate\Support\Collection;

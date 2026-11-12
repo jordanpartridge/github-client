@@ -1,10 +1,10 @@
 <?php
 
-namespace JordanPartridge\GithubClient;
+namespace ShadeTheory\GithubClient;
 
-use JordanPartridge\GithubClient\Auth\GithubOAuth;
-use JordanPartridge\GithubClient\Commands\GithubClientCommand;
-use JordanPartridge\GithubClient\Connectors\GithubConnector;
+use ShadeTheory\GithubClient\Auth\GithubOAuth;
+use ShadeTheory\GithubClient\Commands\GithubClientCommand;
+use ShadeTheory\GithubClient\Connectors\GithubConnector;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 

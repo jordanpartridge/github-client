@@ -1,11 +1,11 @@
 <?php
 
-use JordanPartridge\GithubClient\Auth\AuthenticationStrategy;
-use JordanPartridge\GithubClient\Connectors\GithubConnector;
-use JordanPartridge\GithubClient\Exceptions\ApiException;
-use JordanPartridge\GithubClient\Exceptions\AuthenticationException;
-use JordanPartridge\GithubClient\Exceptions\RateLimitException;
-use JordanPartridge\GithubClient\Requests\User;
+use ShadeTheory\GithubClient\Auth\AuthenticationStrategy;
+use ShadeTheory\GithubClient\Connectors\GithubConnector;
+use ShadeTheory\GithubClient\Exceptions\ApiException;
+use ShadeTheory\GithubClient\Exceptions\AuthenticationException;
+use ShadeTheory\GithubClient\Exceptions\RateLimitException;
+use ShadeTheory\GithubClient\Requests\User;
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
 

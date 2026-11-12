@@ -1,9 +1,9 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Requests\Issues;
+namespace ShadeTheory\GithubClient\Requests\Issues;
 
-use JordanPartridge\GithubClient\Data\Issues\IssueDTO;
-use JordanPartridge\GithubClient\Enums\Issues\State;
+use ShadeTheory\GithubClient\Data\Issues\IssueDTO;
+use ShadeTheory\GithubClient\Enums\Issues\State;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;

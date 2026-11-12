@@ -1,6 +1,6 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Data;
+namespace ShadeTheory\GithubClient\Data;
 
 use DateTimeImmutable;
 

@@ -29,7 +29,7 @@ Automatically categorize, label, and prioritize incoming issues based on content
 ### Example
 
 ```php
-use JordanPartridge\GithubClient\Facades\Github;
+use ShadeTheory\GithubClient\Facades\Github;
 
 // Fetch new issues without labels
 $issues = Github::issues()->all('owner/repo', state: 'open');
@@ -96,7 +96,7 @@ Perform automated code review checks on incoming pull requests.
 ### Example
 
 ```php
-use JordanPartridge\GithubClient\Facades\Github;
+use ShadeTheory\GithubClient\Facades\Github;
 
 // Get open PRs ready for review
 $pulls = Github::pulls()->all('owner/repo', state: 'open');
@@ -178,7 +178,7 @@ Detect and help resolve merge conflicts in pull requests.
 ### Example
 
 ```php
-use JordanPartridge\GithubClient\Facades\Github;
+use ShadeTheory\GithubClient\Facades\Github;
 
 // Find PRs with merge conflicts
 $pulls = Github::pulls()->all('owner/repo', state: 'open');
@@ -258,7 +258,7 @@ Automate the release process including changelog generation and version tagging.
 ### Example
 
 ```php
-use JordanPartridge\GithubClient\Facades\Github;
+use ShadeTheory\GithubClient\Facades\Github;
 
 // Get the latest release
 $releases = Github::releases()->all('owner/repo');
@@ -371,7 +371,7 @@ Identify and manage stale issues and pull requests to keep the repository clean.
 ### Example
 
 ```php
-use JordanPartridge\GithubClient\Facades\Github;
+use ShadeTheory\GithubClient\Facades\Github;
 use Carbon\Carbon;
 
 $staleDays = 30;
@@ -452,7 +452,7 @@ Monitor and respond to dependency security vulnerabilities.
 ### Example
 
 ```php
-use JordanPartridge\GithubClient\Facades\Github;
+use ShadeTheory\GithubClient\Facades\Github;
 use Illuminate\Support\Facades\Process;
 
 // Run composer audit to check for vulnerabilities
@@ -604,9 +604,9 @@ protected function schedule(Schedule $schedule)
 All skills should implement proper error handling:
 
 ```php
-use JordanPartridge\GithubClient\Exceptions\RateLimitException;
-use JordanPartridge\GithubClient\Exceptions\AuthenticationException;
-use JordanPartridge\GithubClient\Exceptions\ApiException;
+use ShadeTheory\GithubClient\Exceptions\RateLimitException;
+use ShadeTheory\GithubClient\Exceptions\AuthenticationException;
+use ShadeTheory\GithubClient\Exceptions\ApiException;
 
 try {
     $result = Github::issues()->all('owner/repo');

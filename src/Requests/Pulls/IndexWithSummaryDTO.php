@@ -1,11 +1,11 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Requests\Pulls;
+namespace ShadeTheory\GithubClient\Requests\Pulls;
 
-use JordanPartridge\GithubClient\Data\Pulls\Params;
-use JordanPartridge\GithubClient\Data\Pulls\PullRequestDTOFactory;
-use JordanPartridge\GithubClient\Data\Pulls\PullRequestSummaryDTO;
-use JordanPartridge\GithubClient\ValueObjects\Repo;
+use ShadeTheory\GithubClient\Data\Pulls\Params;
+use ShadeTheory\GithubClient\Data\Pulls\PullRequestDTOFactory;
+use ShadeTheory\GithubClient\Data\Pulls\PullRequestSummaryDTO;
+use ShadeTheory\GithubClient\ValueObjects\Repo;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use Saloon\Http\Response;
@@ -28,7 +28,7 @@ class IndexWithSummaryDTO extends Request
     private Params $parameters;
 
     /**
-     * @param  string  $owner_repo  - eg jordanpartridge/github-client
+     * @param  string  $owner_repo  - eg shadetheory/github-client
      * @param  array  $parameters  Optional query parameters
      */
     public function __construct(string $owner_repo, array $parameters = [])

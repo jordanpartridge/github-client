@@ -1,6 +1,6 @@
 The MIT License (MIT)
 
-Copyright (c) JordanPartridge <jordan.l.partridge@gmail.com>
+Copyright (c) shadetheory <jordan.l.partridge@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

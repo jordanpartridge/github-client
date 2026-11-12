@@ -1,9 +1,9 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Requests\Repos;
+namespace ShadeTheory\GithubClient\Requests\Repos;
 
-use JordanPartridge\GithubClient\Data\Repos\RepoData;
-use JordanPartridge\GithubClient\ValueObjects\Repo as RepoValue;
+use ShadeTheory\GithubClient\Data\Repos\RepoData;
+use ShadeTheory\GithubClient\ValueObjects\Repo as RepoValue;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use Saloon\Http\Response;

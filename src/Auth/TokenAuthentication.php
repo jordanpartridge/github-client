@@ -1,8 +1,8 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Auth;
+namespace ShadeTheory\GithubClient\Auth;
 
-use JordanPartridge\GithubClient\Exceptions\AuthenticationException;
+use ShadeTheory\GithubClient\Exceptions\AuthenticationException;
 
 /**
  * Personal Access Token authentication strategy.

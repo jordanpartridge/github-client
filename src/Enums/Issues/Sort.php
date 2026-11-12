@@ -1,6 +1,6 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Enums\Issues;
+namespace ShadeTheory\GithubClient\Enums\Issues;
 
 enum Sort: string
 {

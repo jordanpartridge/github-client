@@ -1,6 +1,6 @@
 # API reference
 
-Entry points are the `Github` facade and `JordanPartridge\GithubClient\Github` from the container.
+Entry points are the `Github` facade and `ShadeTheory\GithubClient\Github` from the container.
 
 Return values are not uniform. Some methods return a Saloon response; call `dto()` only when the request supplies a DTO mapper. Others return a DTO or an array of DTOs. The signatures below preserve public parameter names for PHP named arguments; they are reference notation, not executable statements. `Response` is `Saloon\Http\Response`, `Collection` is `Illuminate\Support\Collection`, and `Github` in return types is the client, not the facade.
 
@@ -17,7 +17,7 @@ Github::getRepo(string $fullName): RepoData
 Github::deleteRepo(string $fullName): Response
 ```
 
-`all` hits `GET /user/repos` and needs an authenticated user. `allWithPagination` returns `RepoData[]`, follows the next-page `Link` header, and caps at 1000 pages. `search` hits the repository search API. `sort` on search is a string such as `stars`, not the `Sort` enum. `Type` is `Enums\Repos\Type`; `Visibility`, `Sort`, and `Direction` are in `JordanPartridge\GithubClient\Enums`.
+`all` hits `GET /user/repos` and needs an authenticated user. `allWithPagination` returns `RepoData[]`, follows the next-page `Link` header, and caps at 1000 pages. `search` hits the repository search API. `sort` on search is a string such as `stars`, not the `Sort` enum. `Type` is `Enums\Repos\Type`; `Visibility`, `Sort`, and `Direction` are in `ShadeTheory\GithubClient\Enums`.
 
 ## Issues
 
@@ -37,7 +37,7 @@ Github::issues()->updateComment(string $owner, string $repo, int $commentId, str
 Github::issues()->deleteComment(string $owner, string $repo, int $commentId): bool
 ```
 
-Here `State` and `Sort` are in `JordanPartridge\GithubClient\Enums\Issues`. `State` is `OPEN`, `CLOSED`, or `ALL`; `Sort` is `CREATED`, `UPDATED`, or `COMMENTS`. `labels` is a comma-separated string for list filters, but an array for create/update. `all` and `forRepo` return one page; `allForRepo` follows next-page links up to 1000 pages and returns `IssueDTO[]`. It has no `page` argument. Issue lists exclude pull requests.
+Here `State` and `Sort` are in `ShadeTheory\GithubClient\Enums\Issues`. `State` is `OPEN`, `CLOSED`, or `ALL`; `Sort` is `CREATED`, `UPDATED`, or `COMMENTS`. `labels` is a comma-separated string for list filters, but an array for create/update. `all` and `forRepo` return one page; `allForRepo` follows next-page links up to 1000 pages and returns `IssueDTO[]`. It has no `page` argument. Issue lists exclude pull requests.
 
 ## Pull requests
 
@@ -188,4 +188,4 @@ Github::installations()->get(int $installationId): InstallationData
 Github::installations()->createAccessToken(int $installationId, ?array $repositories = null, ?array $permissions = null): InstallationTokenData
 ```
 
-Here `self` is `JordanPartridge\GithubClient\Github`. `forInstallation()` reads `github-client.github_app.app_id` and the private key from config, returning an installation-authenticated client. `withApp()` accepts PEM contents directly, not a key path. Omit its installation id for app-level JWT authentication when calling `installations()`; supply the id for repository operations as that installation. `list()` returns one page of `InstallationData`; `listAll()` follows next-page links up to 100 pages. See [authentication](./advanced-usage.md#github-app) for examples and config key paths.
+Here `self` is `ShadeTheory\GithubClient\Github`. `forInstallation()` reads `github-client.github_app.app_id` and the private key from config, returning an installation-authenticated client. `withApp()` accepts PEM contents directly, not a key path. Omit its installation id for app-level JWT authentication when calling `installations()`; supply the id for repository operations as that installation. `list()` returns one page of `InstallationData`; `listAll()` follows next-page links up to 100 pages. See [authentication](./advanced-usage.md#github-app) for examples and config key paths.

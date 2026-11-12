@@ -1,9 +1,9 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Auth;
+namespace ShadeTheory\GithubClient\Auth;
 
 use Illuminate\Support\Facades\Http;
-use JordanPartridge\GithubClient\Exceptions\AuthenticationException;
+use ShadeTheory\GithubClient\Exceptions\AuthenticationException;
 
 class GithubOAuth
 {

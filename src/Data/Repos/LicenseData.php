@@ -1,6 +1,6 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Data\Repos;
+namespace ShadeTheory\GithubClient\Data\Repos;
 
 class LicenseData
 {

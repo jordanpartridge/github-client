@@ -1,6 +1,6 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Exceptions;
+namespace ShadeTheory\GithubClient\Exceptions;
 
 /**
  * Exception thrown when authentication fails or token is invalid.

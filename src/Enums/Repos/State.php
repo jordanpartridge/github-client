@@ -1,6 +1,6 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Enums\Repos;
+namespace ShadeTheory\GithubClient\Enums\Repos;
 
 enum State
 {

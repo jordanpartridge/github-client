@@ -1,6 +1,6 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Requests\Issues;
+namespace ShadeTheory\GithubClient\Requests\Issues;
 
 use Saloon\Enums\Method;
 use Saloon\Http\Request;

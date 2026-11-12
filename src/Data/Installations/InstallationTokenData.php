@@ -1,6 +1,6 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Data\Installations;
+namespace ShadeTheory\GithubClient\Data\Installations;
 
 use Carbon\Carbon;
 

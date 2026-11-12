@@ -1,9 +1,9 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Resources;
+namespace ShadeTheory\GithubClient\Resources;
 
-use JordanPartridge\GithubClient\Data\Pulls\PullRequestCommentDTO;
-use JordanPartridge\GithubClient\Requests\Pulls\CommentsWithFilters;
+use ShadeTheory\GithubClient\Data\Pulls\PullRequestCommentDTO;
+use ShadeTheory\GithubClient\Requests\Pulls\CommentsWithFilters;
 
 /**
  * Resource for GitHub comment operations with filtering capabilities.

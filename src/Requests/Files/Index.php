@@ -1,10 +1,10 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Requests\Files;
+namespace ShadeTheory\GithubClient\Requests\Files;
 
 use InvalidArgumentException;
-use JordanPartridge\GithubClient\Concerns\ValidatesRepoName;
-use JordanPartridge\GithubClient\ValueObjects\Repo;
+use ShadeTheory\GithubClient\Concerns\ValidatesRepoName;
+use ShadeTheory\GithubClient\ValueObjects\Repo;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 

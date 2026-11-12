@@ -1,9 +1,9 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Requests\Issues;
+namespace ShadeTheory\GithubClient\Requests\Issues;
 
 use InvalidArgumentException;
-use JordanPartridge\GithubClient\Data\Issues\IssueCommentDTO;
+use ShadeTheory\GithubClient\Data\Issues\IssueCommentDTO;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use Saloon\Http\Response;

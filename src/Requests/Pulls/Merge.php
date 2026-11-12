@@ -1,10 +1,10 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Requests\Pulls;
+namespace ShadeTheory\GithubClient\Requests\Pulls;
 
-use JordanPartridge\GithubClient\Data\Pulls\MergeResponseDTO;
-use JordanPartridge\GithubClient\Enums\MergeMethod;
-use JordanPartridge\GithubClient\ValueObjects\Repo;
+use ShadeTheory\GithubClient\Data\Pulls\MergeResponseDTO;
+use ShadeTheory\GithubClient\Enums\MergeMethod;
+use ShadeTheory\GithubClient\ValueObjects\Repo;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;

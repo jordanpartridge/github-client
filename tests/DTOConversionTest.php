@@ -1,7 +1,7 @@
 <?php
 
-use JordanPartridge\GithubClient\Data\GitUserData;
-use JordanPartridge\GithubClient\Data\Pulls\PullRequestDTO;
+use ShadeTheory\GithubClient\Data\GitUserData;
+use ShadeTheory\GithubClient\Data\Pulls\PullRequestDTO;
 
 describe('DTO conversion methods', function () {
     it('can create GitUserData from array and convert back', function () {

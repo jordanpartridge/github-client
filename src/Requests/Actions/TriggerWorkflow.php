@@ -1,6 +1,6 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Requests\Actions;
+namespace ShadeTheory\GithubClient\Requests\Actions;
 
 use InvalidArgumentException;
 use Saloon\Contracts\Body\HasBody;

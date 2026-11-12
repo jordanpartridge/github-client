@@ -1,18 +1,18 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Resources;
+namespace ShadeTheory\GithubClient\Resources;
 
-use JordanPartridge\GithubClient\Data\Repos\RepoData;
-use JordanPartridge\GithubClient\Data\Repos\SearchRepositoriesData;
-use JordanPartridge\GithubClient\Enums\Direction;
-use JordanPartridge\GithubClient\Enums\Repos\Type;
-use JordanPartridge\GithubClient\Enums\Sort;
-use JordanPartridge\GithubClient\Enums\Visibility;
-use JordanPartridge\GithubClient\Requests\Repos\Delete;
-use JordanPartridge\GithubClient\Requests\Repos\Get;
-use JordanPartridge\GithubClient\Requests\Repos\Index;
-use JordanPartridge\GithubClient\Requests\Repos\Search;
-use JordanPartridge\GithubClient\ValueObjects\Repo;
+use ShadeTheory\GithubClient\Data\Repos\RepoData;
+use ShadeTheory\GithubClient\Data\Repos\SearchRepositoriesData;
+use ShadeTheory\GithubClient\Enums\Direction;
+use ShadeTheory\GithubClient\Enums\Repos\Type;
+use ShadeTheory\GithubClient\Enums\Sort;
+use ShadeTheory\GithubClient\Enums\Visibility;
+use ShadeTheory\GithubClient\Requests\Repos\Delete;
+use ShadeTheory\GithubClient\Requests\Repos\Get;
+use ShadeTheory\GithubClient\Requests\Repos\Index;
+use ShadeTheory\GithubClient\Requests\Repos\Search;
+use ShadeTheory\GithubClient\ValueObjects\Repo;
 use Saloon\Http\Response;
 
 /**
@@ -175,7 +175,7 @@ readonly class RepoResource extends BaseResource
      *
      * Example Usage:
      * ```php
-     * $repo = $repos->get(Repo::fromFullName('jordanpartridge/github-client'));
+     * $repo = $repos->get(Repo::fromFullName('shadetheory/github-client'));
      * echo $repo->full_name;
      * ```
      */

@@ -1,12 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Process;
-use JordanPartridge\GithubClient\Auth\TokenResolver;
-use JordanPartridge\GithubClient\Connectors\GithubConnector;
-use JordanPartridge\GithubClient\Facades\Github;
+use ShadeTheory\GithubClient\Auth\TokenResolver;
+use ShadeTheory\GithubClient\Connectors\GithubConnector;
+use ShadeTheory\GithubClient\Facades\Github;
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
-use JordanPartridge\GithubClient\Data\Repos\RepoData;
+use ShadeTheory\GithubClient\Data\Repos\RepoData;
 
 describe('Authentication improvements', function () {
     it('allows unauthenticated requests for public repositories', function () {
@@ -168,7 +168,7 @@ describe('Authentication improvements', function () {
         $connector->withMockClient($mockClient);
 
         // Create Github instance with unauthenticated connector
-        $github = new JordanPartridge\GithubClient\Github($connector);
+        $github = new ShadeTheory\GithubClient\Github($connector);
 
         // Should be able to get public repo without auth
         $repo = $github->getRepo('owner/public-repo');

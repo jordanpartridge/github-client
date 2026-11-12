@@ -1,10 +1,10 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Resources;
+namespace ShadeTheory\GithubClient\Resources;
 
-use JordanPartridge\GithubClient\Data\Pulls\PullRequestDTO;
-use JordanPartridge\GithubClient\Requests\Pulls\Get;
-use JordanPartridge\GithubClient\Requests\Pulls\Index;
+use ShadeTheory\GithubClient\Data\Pulls\PullRequestDTO;
+use ShadeTheory\GithubClient\Requests\Pulls\Get;
+use ShadeTheory\GithubClient\Requests\Pulls\Index;
 
 /**
  * Enhanced PullRequestResource with methods to fetch PRs with complete data including comment counts.

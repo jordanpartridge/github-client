@@ -1,10 +1,10 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Data\Repos;
+namespace ShadeTheory\GithubClient\Data\Repos;
 
 use Carbon\Carbon;
-use JordanPartridge\GithubClient\Data\GitUserData;
-use JordanPartridge\GithubClient\Enums\Visibility;
+use ShadeTheory\GithubClient\Data\GitUserData;
+use ShadeTheory\GithubClient\Enums\Visibility;
 
 class RepoData
 {

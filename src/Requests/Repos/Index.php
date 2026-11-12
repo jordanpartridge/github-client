@@ -1,13 +1,13 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Requests\Repos;
+namespace ShadeTheory\GithubClient\Requests\Repos;
 
 use InvalidArgumentException;
-use JordanPartridge\GithubClient\Data\Repos\RepoData;
-use JordanPartridge\GithubClient\Enums\Direction;
-use JordanPartridge\GithubClient\Enums\Repos\Type;
-use JordanPartridge\GithubClient\Enums\Sort;
-use JordanPartridge\GithubClient\Enums\Visibility;
+use ShadeTheory\GithubClient\Data\Repos\RepoData;
+use ShadeTheory\GithubClient\Enums\Direction;
+use ShadeTheory\GithubClient\Enums\Repos\Type;
+use ShadeTheory\GithubClient\Enums\Sort;
+use ShadeTheory\GithubClient\Enums\Visibility;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use Saloon\Http\Response;

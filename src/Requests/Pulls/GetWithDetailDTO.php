@@ -1,10 +1,10 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Requests\Pulls;
+namespace ShadeTheory\GithubClient\Requests\Pulls;
 
-use JordanPartridge\GithubClient\Data\Pulls\PullRequestDetailDTO;
-use JordanPartridge\GithubClient\Data\Pulls\PullRequestDTOFactory;
-use JordanPartridge\GithubClient\ValueObjects\Repo;
+use ShadeTheory\GithubClient\Data\Pulls\PullRequestDetailDTO;
+use ShadeTheory\GithubClient\Data\Pulls\PullRequestDTOFactory;
+use ShadeTheory\GithubClient\ValueObjects\Repo;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use Saloon\Http\Response;
@@ -27,7 +27,7 @@ class GetWithDetailDTO extends Request
     private int $number;
 
     /**
-     * @param  string  $owner_repo  - eg jordanpartridge/github-client
+     * @param  string  $owner_repo  - eg shadetheory/github-client
      * @param  int  $number  Pull request number
      */
     public function __construct(string $owner_repo, int $number)

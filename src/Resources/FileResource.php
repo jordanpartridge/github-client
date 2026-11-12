@@ -1,10 +1,10 @@
 <?php
 
-namespace JordanPartridge\GithubClient\Resources;
+namespace ShadeTheory\GithubClient\Resources;
 
 use InvalidArgumentException;
-use JordanPartridge\GithubClient\Requests\Files\Index;
-use JordanPartridge\GithubClient\ValueObjects\Repo;
+use ShadeTheory\GithubClient\Requests\Files\Index;
+use ShadeTheory\GithubClient\ValueObjects\Repo;
 use Saloon\Http\Response;
 
 readonly class FileResource extends BaseResource
